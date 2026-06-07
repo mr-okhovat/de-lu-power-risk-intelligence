@@ -46,6 +46,8 @@ def paths(start: str, end: str) -> dict[str, Path]:
         "artifact_manifest_report": Path("reports/project_artifact_manifest.md"),
         "data_availability_index": Path("dashboards/data_availability_index.csv"),
         "data_availability_report": Path("reports/data_availability_index.md"),
+        "run_catalog": Path("dashboards/market_month_run_catalog.csv"),
+        "run_catalog_report": Path("reports/market_month_run_catalog.md"),
         "reviewer": Path("reports/reviewer_ready_v1.md"),
         "visual_pack": Path("reports/visual_reviewer_pack.md"),
         "readme": Path("README.md"),
@@ -103,6 +105,10 @@ def load_artifact_manifest() -> pd.DataFrame:
 
 def load_data_availability_index() -> pd.DataFrame:
     return read_csv(Path("dashboards/data_availability_index.csv"))
+
+
+def load_run_catalog() -> pd.DataFrame:
+    return read_csv(Path("dashboards/market_month_run_catalog.csv"))
 
 
 def load_checkpoint_payload() -> dict:
@@ -368,6 +374,75 @@ def data_availability_core_table(df: pd.DataFrame) -> pd.DataFrame:
 
     available = [col for col in cols if col in df.columns]
     return df[available].reset_index(drop=True)
+
+
+def run_catalog_metrics(df: pd.DataFrame) -> dict[str, int | float]:
+    if df.empty:
+        return {
+            "runs": 0,
+            "ready_runs": 0,
+            "check_needed_runs": 0,
+            "markets": 0,
+            "mean_same_hour_lift": 0.0,
+            "mean_next_3h_lift": 0.0,
+        }
+
+    ready = df["run_status"].astype(str).eq("READY") if "run_status" in df.columns else pd.Series(False, index=df.index)
+
+    same = 0.0
+    if "same_hour_event_lift" in df.columns:
+        same = float(pd.to_numeric(df["same_hour_event_lift"], errors="coerce").mean())
+
+    next_3h = 0.0
+    if "window_next_3h_event_lift" in df.columns:
+        next_3h = float(pd.to_numeric(df["window_next_3h_event_lift"], errors="coerce").mean())
+
+    return {
+        "runs": int(len(df)),
+        "ready_runs": int(ready.sum()),
+        "check_needed_runs": int((~ready).sum()),
+        "markets": int(df["market"].nunique()) if "market" in df.columns else 0,
+        "mean_same_hour_lift": same,
+        "mean_next_3h_lift": next_3h,
+    }
+
+
+def run_catalog_core_table(df: pd.DataFrame) -> pd.DataFrame:
+    cols = [
+        "run_id",
+        "market",
+        "start",
+        "end",
+        "run_status",
+        "source_rows",
+        "same_hour_event_lift",
+        "exact_next_1h_event_lift",
+        "window_next_3h_event_lift",
+        "window_next_6h_event_lift",
+        "evaluation_file",
+        "behavior_report",
+    ]
+
+    available = [col for col in cols if col in df.columns]
+    return df[available].reset_index(drop=True)
+
+
+def run_catalog_lift_frame(df: pd.DataFrame) -> pd.DataFrame:
+    cols = [
+        "run_id",
+        "same_hour_event_lift",
+        "exact_next_1h_event_lift",
+        "window_next_3h_event_lift",
+        "window_next_6h_event_lift",
+    ]
+
+    available = [col for col in cols if col in df.columns]
+    out = df[available].copy()
+
+    if "run_id" in out.columns:
+        out = out.set_index("run_id")
+
+    return out
 
 
 def checkpoint_stage_table(payload: dict) -> pd.DataFrame:
@@ -725,6 +800,44 @@ def render_data_availability(index_df: pd.DataFrame) -> None:
     )
 
 
+def render_run_catalog(catalog_df: pd.DataFrame) -> None:
+    st.subheader("Run catalog")
+
+    st.write(
+        "This panel indexes completed market/month analysis runs and links readiness, same-hour metrics, lead-time metrics and output files."
+    )
+
+    metric = run_catalog_metrics(catalog_df)
+
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Runs", fmt(metric["runs"]))
+    c2.metric("Ready runs", fmt(metric["ready_runs"]))
+    c3.metric("Check needed", fmt(metric["check_needed_runs"]))
+    c4.metric("Markets", fmt(metric["markets"]))
+
+    c5, c6 = st.columns(2)
+    c5.metric("Mean same-hour lift", fmt(metric["mean_same_hour_lift"]))
+    c6.metric("Mean next-3h lift", fmt(metric["mean_next_3h_lift"]))
+
+    if metric["check_needed_runs"] == 0 and metric["runs"] > 0:
+        st.success("All cataloged market/month runs are ready.")
+    else:
+        st.warning("Some runs need attention before downstream use.")
+
+    st.markdown("#### Lift profile by run")
+    st.line_chart(run_catalog_lift_frame(catalog_df))
+
+    st.markdown("#### Run catalog")
+    st.dataframe(run_catalog_core_table(catalog_df), use_container_width=True)
+
+    st.download_button(
+        "Download run catalog",
+        data=csv_bytes(catalog_df),
+        file_name="market_month_run_catalog.csv",
+        mime="text/csv",
+    )
+
+
 def render_project_health(manifest_df: pd.DataFrame, checkpoint_payload: dict) -> None:
     st.subheader("Project health")
 
@@ -821,7 +934,7 @@ def render() -> None:
     cross = load_cross_month()
     metrics = kpis(df)
 
-    tabs = st.tabs(["Overview", "Selected month", "Diagnostics", "Lead time", "Dataset intake", "Data availability", "Project health", "Reviewer files"])
+    tabs = st.tabs(["Overview", "Selected month", "Diagnostics", "Lead time", "Dataset intake", "Data availability", "Run catalog", "Project health", "Reviewer files"])
 
     with tabs[0]:
         render_overview(cross)
@@ -842,9 +955,12 @@ def render() -> None:
         render_data_availability(load_data_availability_index())
 
     with tabs[6]:
-        render_project_health(load_artifact_manifest(), load_checkpoint_payload())
+        render_run_catalog(load_run_catalog())
 
     with tabs[7]:
+        render_project_health(load_artifact_manifest(), load_checkpoint_payload())
+
+    with tabs[8]:
         render_reports(selected_paths)
 
 

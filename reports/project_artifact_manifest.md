@@ -5,9 +5,9 @@ Manifest table: `dashboards/project_artifact_manifest.csv`
 
 ## Status
 
-- Artifacts tracked: `29`
-- Required artifacts: `29`
-- Existing artifacts: `29`
+- Artifacts tracked: `33`
+- Required artifacts: `33`
+- Existing artifacts: `33`
 - Missing required artifacts: `0`
 - All required present: `True`
 
@@ -17,7 +17,7 @@ Manifest table: `dashboards/project_artifact_manifest.csv`
 |---|---|---:|---:|---:|---|
 | project | `README.md` | True | True | 5118 | `a94471cd5af0` |
 | orchestration | `scripts/run_project_checkpoint.sh` | True | True | 183 | `4df4ad624c98` |
-| orchestration | `src/core/project_orchestrator.py` | True | True | 8406 | `13c8086e6ce9` |
+| orchestration | `src/core/project_orchestrator.py` | True | True | 8743 | `bdd79769c4a6` |
 | reviewer | `reports/reviewer_ready_v2.md` | True | True | 2967 | `fea96160e7aa` |
 | reviewer | `reports/reviewer_ready_v2.json` | True | True | 3163 | `1342aa5b0f4d` |
 | reviewer | `dashboards/reviewer_ready_v2_metrics.csv` | True | True | 736 | `6d6f78fd44a1` |
@@ -29,17 +29,21 @@ Manifest table: `dashboards/project_artifact_manifest.csv`
 | availability | `reports/data_availability_index.md` | True | True | 999 | `90db6eb54de6` |
 | availability | `reports/data_availability_index.json` | True | True | 273 | `389dca65f8aa` |
 | availability | `dashboards/data_availability_index.csv` | True | True | 2421 | `235a5335b4d2` |
+| run_catalog | `reports/market_month_run_catalog.md` | True | True | 1033 | `f9f116aa9484` |
+| run_catalog | `reports/market_month_run_catalog.json` | True | True | 350 | `d14cf3b9d3ed` |
+| run_catalog | `dashboards/market_month_run_catalog.csv` | True | True | 3416 | `5f00bbadc570` |
 | lead_time | `reports/lead_time_evaluation_2024-05_to_2024-08.md` | True | True | 1887 | `f0d1a87226e4` |
 | lead_time | `dashboards/lead_time_aggregate_DE-LU_2024-05_to_2024-08.csv` | True | True | 1869 | `f99fd55b36a9` |
 | visual | `reports/visual_reviewer_pack.md` | True | True | 1124 | `7281ae44fc53` |
-| dashboard | `app/streamlit_app.py` | True | True | 26786 | `5c3ad9038f25` |
-| dashboard | `reports/figures/dashboard/dashboard_overview.png` | True | True | 56464 | `586c6b9409f1` |
-| dashboard | `reports/figures/dashboard/dashboard_selected_month.png` | True | True | 44952 | `372b1bb1fd81` |
-| dashboard | `reports/figures/dashboard/dashboard_diagnostics.png` | True | True | 111953 | `db00f6550174` |
-| dashboard | `reports/figures/dashboard/dashboard_lead_time.png` | True | True | 98981 | `c942a5a3714d` |
-| dashboard | `reports/figures/dashboard/dashboard_dataset_intake.png` | True | True | 73256 | `a4173fef8229` |
-| dashboard | `reports/figures/dashboard/dashboard_data_availability.png` | True | True | 72313 | `a368b29a8cdf` |
-| dashboard | `reports/figures/dashboard/dashboard_reviewer_files.png` | True | True | 82436 | `91668145983d` |
+| dashboard | `app/streamlit_app.py` | True | True | 30402 | `e82a0dbca518` |
+| dashboard | `reports/figures/dashboard/dashboard_overview.png` | True | True | 79293 | `2b12de8a6cec` |
+| dashboard | `reports/figures/dashboard/dashboard_selected_month.png` | True | True | 131862 | `ba11b276745b` |
+| dashboard | `reports/figures/dashboard/dashboard_diagnostics.png` | True | True | 112366 | `54e6d94906a7` |
+| dashboard | `reports/figures/dashboard/dashboard_lead_time.png` | True | True | 99227 | `e45399c30356` |
+| dashboard | `reports/figures/dashboard/dashboard_dataset_intake.png` | True | True | 73512 | `2ede5e8bf905` |
+| dashboard | `reports/figures/dashboard/dashboard_data_availability.png` | True | True | 72572 | `cf41b2fdb343` |
+| dashboard | `reports/figures/dashboard/dashboard_run_catalog.png` | True | True | 74186 | `f8c3ed104aa1` |
+| dashboard | `reports/figures/dashboard/dashboard_reviewer_files.png` | True | True | 82747 | `c23965975aa2` |
 | core | `src/core/data_contracts.py` | True | True | 7775 | `9492d5e800e9` |
 | core | `src/core/dataset_adapters.py` | True | True | 7420 | `de45cac0f3cd` |
 | core | `src/core/adapter_registry.py` | True | True | 7995 | `a4cca01723d1` |

@@ -18,6 +18,7 @@ SHOTS = [
     ("Lead time", "reports/figures/dashboard/dashboard_lead_time.png"),
     ("Dataset intake", "reports/figures/dashboard/dashboard_dataset_intake.png"),
     ("Data availability", "reports/figures/dashboard/dashboard_data_availability.png"),
+    ("Run catalog", "reports/figures/dashboard/dashboard_run_catalog.png"),
     ("Project health", "reports/figures/dashboard/dashboard_project_health.png"),
     ("Reviewer files", "reports/figures/dashboard/dashboard_reviewer_files.png"),
 ]

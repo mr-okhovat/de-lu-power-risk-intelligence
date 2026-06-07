@@ -9,7 +9,9 @@ def test_dashboard_screenshot_targets() -> None:
     assert "Lead time" in names
     assert "Dataset intake" in names
     assert "Data availability" in names
+    assert "Run catalog" in names
     assert "Project health" in names
     assert "Reviewer files" in names
     assert "reports/figures/dashboard/dashboard_data_availability.png" in outputs
+    assert "reports/figures/dashboard/dashboard_run_catalog.png" in outputs
     assert "reports/figures/dashboard/dashboard_project_health.png" in outputs
