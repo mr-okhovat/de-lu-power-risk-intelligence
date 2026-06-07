@@ -1,10 +1,10 @@
 # Project checkpoint run
 
 Version: `13A.1`
-Timestamp UTC: `2026-06-07T21:40:54.161083+00:00`
+Timestamp UTC: `2026-06-07T21:42:00.456204+00:00`
 Status: `PASS`
 Dry run: `False`
-Dashboard screenshots included: `False`
+Dashboard screenshots included: `True`
 
 ## Stages
 
@@ -14,6 +14,7 @@ Dashboard screenshots included: `False`
 | dataset_registry | PASS | 0 |  |
 | intake_summary | PASS | 0 |  |
 | reviewer_ready_v2 | PASS | 0 |  |
+| dashboard_screenshots | PASS | 0 |  |
 
 ## Readout
 
