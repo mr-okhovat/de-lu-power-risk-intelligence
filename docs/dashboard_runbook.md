@@ -1,6 +1,6 @@
 # Dashboard runbook
 
-The local dashboard is a Streamlit app for reviewing the current analytics outputs.
+The local dashboard is a Streamlit app for reviewing current analytics outputs.
 
 Run:
 
@@ -11,6 +11,8 @@ The dashboard reads existing CSV and report outputs. It does not run ingestion a
 Current panels:
 
 - cross-month overview
+- monthly event lift
+- base event rate versus signal-positive event rate
 - selected month snapshot
 - KPI cards
 - price and risk timelines
@@ -20,5 +22,6 @@ Current panels:
 - price-event label table
 - top risk cases
 - reviewer file checklist
+- CSV download buttons
 
 This is an analyst dashboard prototype, not a production web app.

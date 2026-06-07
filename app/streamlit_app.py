@@ -6,14 +6,15 @@ import pandas as pd
 import streamlit as st
 
 
+APP_VERSION = "10C.1"
+MARKET = "DE-LU"
+
 MONTHS = {
     "May 2024": ("2024-05-01", "2024-05-31"),
     "June 2024": ("2024-06-01", "2024-06-30"),
     "July 2024": ("2024-07-01", "2024-07-31"),
     "August 2024": ("2024-08-01", "2024-08-31"),
 }
-
-MARKET = "DE-LU"
 
 
 def month_tag(start: str, end: str) -> str:
@@ -37,6 +38,15 @@ def paths(start: str, end: str) -> dict[str, Path]:
         "visual_pack": Path("reports/visual_reviewer_pack.md"),
         "readme": Path("README.md"),
     }
+
+
+def file_status_table(selected_paths: dict[str, Path]) -> pd.DataFrame:
+    return pd.DataFrame(
+        [
+            {"file": key, "path": str(path), "exists": path.exists()}
+            for key, path in selected_paths.items()
+        ]
+    )
 
 
 def read_csv(path: Path) -> pd.DataFrame:
@@ -120,6 +130,12 @@ def timeline_risk(df: pd.DataFrame) -> pd.DataFrame:
     return df[["timestamp_utc", "risk_score"]].set_index("timestamp_utc")
 
 
+def timeline_combined(df: pd.DataFrame) -> pd.DataFrame:
+    out = df[["timestamp_utc", "price_eur_per_mwh", "risk_score"]].copy()
+    out = out.set_index("timestamp_utc")
+    return out
+
+
 def bucket_counts(df: pd.DataFrame) -> pd.DataFrame:
     return (
         df["confusion_bucket"]
@@ -158,7 +174,9 @@ def explode_label_summary(df: pd.DataFrame, source_col: str, label_col: str) -> 
             )
 
     if not rows:
-        return pd.DataFrame(columns=[label_col, "rows", "signal_rows", "event_rows", "mean_price", "mean_risk_score"])
+        return pd.DataFrame(
+            columns=[label_col, "rows", "signal_rows", "event_rows", "mean_price", "mean_risk_score"]
+        )
 
     work = pd.DataFrame(rows)
 
@@ -221,6 +239,18 @@ def signal_cases(df: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def monthly_lift_frame(cross: pd.DataFrame) -> pd.DataFrame:
+    return cross[["month", "event_lift"]].set_index("month")
+
+
+def monthly_rate_frame(cross: pd.DataFrame) -> pd.DataFrame:
+    return cross[["month", "base_event_rate", "signal_event_rate"]].set_index("month")
+
+
+def csv_bytes(df: pd.DataFrame) -> bytes:
+    return df.to_csv(index=False).encode("utf-8")
+
+
 def render_kpis(metrics: dict[str, float | int | None]) -> None:
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Rows", fmt(metrics["rows"]))
@@ -235,6 +265,21 @@ def render_kpis(metrics: dict[str, float | int | None]) -> None:
     c8.metric("Signal event rate", fmt(metrics["signal_event_rate"]))
 
 
+def render_sidebar(selected_paths: dict[str, Path]) -> None:
+    st.sidebar.markdown("### Project")
+    st.sidebar.write(f"Market: {MARKET}")
+    st.sidebar.write(f"App version: {APP_VERSION}")
+    st.sidebar.write("Mode: local analyst dashboard")
+
+    status = file_status_table(selected_paths)
+    missing = int((~status["exists"]).sum())
+
+    if missing:
+        st.sidebar.warning(f"{missing} expected files missing")
+    else:
+        st.sidebar.success("Required files available")
+
+
 def render_overview(cross: pd.DataFrame) -> None:
     st.subheader("Cross-month overview")
 
@@ -247,22 +292,37 @@ def render_overview(cross: pd.DataFrame) -> None:
         "recall",
         "event_lift",
     ]
+
     st.dataframe(cross[cols], use_container_width=True)
 
-    lift = cross[["month", "event_lift"]].set_index("month")
-    st.line_chart(lift)
+    left, right = st.columns(2)
 
-    rates = cross[["month", "base_event_rate", "signal_event_rate"]].set_index("month")
-    st.line_chart(rates)
+    with left:
+        st.markdown("#### Monthly event lift")
+        st.line_chart(monthly_lift_frame(cross))
+
+    with right:
+        st.markdown("#### Event rates")
+        st.line_chart(monthly_rate_frame(cross))
 
     st.caption(
-        "The signal beats the monthly base event rate in all reviewed months. It is still conservative and low-recall."
+        "Signal-positive hours beat the monthly base event rate in all reviewed months. The signal is still conservative and low-recall."
+    )
+
+    st.download_button(
+        "Download cross-month table",
+        data=csv_bytes(cross),
+        file_name="cross_month_price_risk.csv",
+        mime="text/csv",
     )
 
 
 def render_month(df: pd.DataFrame, metrics: dict[str, float | int | None], month_label: str) -> None:
     st.subheader(f"{month_label} snapshot")
     render_kpis(metrics)
+
+    st.markdown("#### Price and risk timeline")
+    st.line_chart(timeline_combined(df))
 
     left, right = st.columns(2)
 
@@ -275,10 +335,19 @@ def render_month(df: pd.DataFrame, metrics: dict[str, float | int | None], month
         st.line_chart(timeline_risk(df))
 
     st.markdown("#### Confusion buckets")
-    st.bar_chart(bucket_counts(df), x="bucket", y="count")
+    buckets = bucket_counts(df)
+    st.bar_chart(buckets, x="bucket", y="count")
 
+    signals = signal_cases(df)
     st.markdown("#### Signal-positive hours")
-    st.dataframe(signal_cases(df), use_container_width=True)
+    st.dataframe(signals, use_container_width=True)
+
+    st.download_button(
+        "Download selected month evaluation",
+        data=csv_bytes(df),
+        file_name=f"{month_label.lower().replace(' ', '_')}_evaluation.csv",
+        mime="text/csv",
+    )
 
 
 def render_diagnostics(df: pd.DataFrame) -> None:
@@ -340,6 +409,8 @@ def render() -> None:
     month_label = st.sidebar.selectbox("Month", list(MONTHS.keys()), index=1)
     start, end = MONTHS[month_label]
     selected_paths = paths(start, end)
+
+    render_sidebar(selected_paths)
 
     df = load_month(start, end)
     cross = load_cross_month()
