@@ -50,11 +50,11 @@
         "-m",
         "pytest"
       ],
-      "duration_seconds": 1.184,
-      "finished_at_utc": "2026-06-07T16:52:58+00:00",
+      "duration_seconds": 1.375,
+      "finished_at_utc": "2026-06-07T16:55:36+00:00",
       "name": "tests_start",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T16:52:57+00:00",
+      "started_at_utc": "2026-06-07T16:55:35+00:00",
       "status": "PASS"
     },
     {
@@ -67,11 +67,11 @@
         "--resolution",
         "hour"
       ],
-      "duration_seconds": 0.363,
-      "finished_at_utc": "2026-06-07T16:52:58+00:00",
+      "duration_seconds": 0.35,
+      "finished_at_utc": "2026-06-07T16:55:37+00:00",
       "name": "smard_filter_discovery",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T16:52:58+00:00",
+      "started_at_utc": "2026-06-07T16:55:36+00:00",
       "status": "PASS"
     },
     {
@@ -97,11 +97,11 @@
         "4068",
         "1225"
       ],
-      "duration_seconds": 1.405,
-      "finished_at_utc": "2026-06-07T16:53:00+00:00",
+      "duration_seconds": 1.153,
+      "finished_at_utc": "2026-06-07T16:55:38+00:00",
       "name": "smard_ingestion",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T16:52:58+00:00",
+      "started_at_utc": "2026-06-07T16:55:37+00:00",
       "status": "PASS"
     },
     {
@@ -119,11 +119,11 @@
         "--phase",
         "build-staging"
       ],
-      "duration_seconds": 0.767,
-      "finished_at_utc": "2026-06-07T16:53:01+00:00",
+      "duration_seconds": 0.868,
+      "finished_at_utc": "2026-06-07T16:55:39+00:00",
       "name": "build_staging",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T16:53:00+00:00",
+      "started_at_utc": "2026-06-07T16:55:38+00:00",
       "status": "PASS"
     },
     {
@@ -138,11 +138,11 @@
         "--json-output",
         "reports/staging_hard_checks_2024-07-01_to_2024-07-31.json"
       ],
-      "duration_seconds": 0.395,
-      "finished_at_utc": "2026-06-07T16:53:01+00:00",
+      "duration_seconds": 0.401,
+      "finished_at_utc": "2026-06-07T16:55:39+00:00",
       "name": "staging_hard_checks",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T16:53:01+00:00",
+      "started_at_utc": "2026-06-07T16:55:39+00:00",
       "status": "PASS"
     },
     {
@@ -160,11 +160,11 @@
         "--phase",
         "build-features"
       ],
-      "duration_seconds": 0.563,
-      "finished_at_utc": "2026-06-07T16:53:02+00:00",
+      "duration_seconds": 0.568,
+      "finished_at_utc": "2026-06-07T16:55:39+00:00",
       "name": "build_features",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T16:53:01+00:00",
+      "started_at_utc": "2026-06-07T16:55:39+00:00",
       "status": "PASS"
     },
     {
@@ -182,11 +182,11 @@
         "--phase",
         "build-dashboard-exports"
       ],
-      "duration_seconds": 0.577,
-      "finished_at_utc": "2026-06-07T16:53:02+00:00",
+      "duration_seconds": 0.581,
+      "finished_at_utc": "2026-06-07T16:55:40+00:00",
       "name": "build_dashboard_exports",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T16:53:02+00:00",
+      "started_at_utc": "2026-06-07T16:55:39+00:00",
       "status": "PASS"
     },
     {
@@ -206,11 +206,11 @@
         "--min-history",
         "168"
       ],
-      "duration_seconds": 0.968,
-      "finished_at_utc": "2026-06-07T16:53:03+00:00",
+      "duration_seconds": 1.097,
+      "finished_at_utc": "2026-06-07T16:55:41+00:00",
       "name": "build_risk_signals",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T16:53:02+00:00",
+      "started_at_utc": "2026-06-07T16:55:40+00:00",
       "status": "PASS"
     },
     {
@@ -228,11 +228,11 @@
         "--phase",
         "build-risk-diagnostics"
       ],
-      "duration_seconds": 0.545,
-      "finished_at_utc": "2026-06-07T16:53:04+00:00",
+      "duration_seconds": 0.711,
+      "finished_at_utc": "2026-06-07T16:55:42+00:00",
       "name": "build_risk_diagnostics",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T16:53:03+00:00",
+      "started_at_utc": "2026-06-07T16:55:41+00:00",
       "status": "PASS"
     },
     {
@@ -253,11 +253,11 @@
         "--json",
         "reports/reviewer_pack_2024-07-01_to_2024-07-31.json"
       ],
-      "duration_seconds": 0.432,
-      "finished_at_utc": "2026-06-07T16:53:04+00:00",
+      "duration_seconds": 0.394,
+      "finished_at_utc": "2026-06-07T16:55:42+00:00",
       "name": "build_reviewer_pack",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T16:53:04+00:00",
+      "started_at_utc": "2026-06-07T16:55:42+00:00",
       "status": "PASS"
     },
     {
@@ -266,11 +266,11 @@
         "-m",
         "pytest"
       ],
-      "duration_seconds": 1.205,
-      "finished_at_utc": "2026-06-07T16:53:05+00:00",
+      "duration_seconds": 1.201,
+      "finished_at_utc": "2026-06-07T16:55:43+00:00",
       "name": "tests_end",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T16:53:04+00:00",
+      "started_at_utc": "2026-06-07T16:55:42+00:00",
       "status": "PASS"
     }
   ]
