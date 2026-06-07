@@ -1,0 +1,23 @@
+pipeline:
+  name: "DE-LU Power Risk Intelligence — may_2024"
+  run_label: "may_2024"
+  start: "2024-05-01"
+  end: "2024-05-31"
+  market_label: "DE-LU"
+  smard_region: "DE"
+  resolution: "hour"
+  filters:
+    - "410"
+    - "4359"
+    - "4067"
+    - "4068"
+    - "1225"
+  min_history: 168
+  signal_positive_threshold: 60.0
+  high_quantile: 0.90
+  low_quantile: 0.10
+  run_tests_first: true
+  run_tests_last: true
+  include_reviewer_pack: true
+  include_event_study: false
+  include_signal_event_evaluation: false
