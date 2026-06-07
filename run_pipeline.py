@@ -5,6 +5,7 @@ import logging
 from pathlib import Path
 
 from src.data_ingestion.smard_client import SmardClient, load_smard_settings
+from src.staging.build_hourly import build_staging_hourly
 
 
 def setup_logging() -> None:
@@ -29,10 +30,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--end", required=True, help="End date YYYY-MM-DD")
     parser.add_argument("--market-label", default="DE-LU")
     parser.add_argument("--smard-region", default="DE")
-    parser.add_argument("--phase", default="smard-ingest", choices=["smard-ingest"])
+    parser.add_argument("--phase", default="smard-ingest", choices=["smard-ingest", "build-staging"])
     parser.add_argument("--filters", nargs="+", default=["410"])
     parser.add_argument("--resolution", default="hour")
     parser.add_argument("--config", default="src/config/sources.yaml")
+    parser.add_argument("--staging-output", default=None)
+    parser.add_argument("--quality-report-output", default=None)
+    parser.add_argument("--registry", default="src/config/series_registry.yaml")
     parser.add_argument(
         "--continue-on-error",
         action="store_true",
@@ -88,6 +92,19 @@ def main() -> None:
 
     if args.phase == "smard-ingest":
         run_smard_ingestion(args)
+        return
+
+    if args.phase == "build-staging":
+        build_staging_hourly(
+            start=args.start,
+            end=args.end,
+            market_label=args.market_label,
+            smard_region=args.smard_region,
+            resolution=args.resolution,
+            output_path=args.staging_output,
+            quality_report_path=args.quality_report_output,
+            registry_path=args.registry,
+        )
         return
 
     raise ValueError(f"Unsupported phase: {args.phase}")

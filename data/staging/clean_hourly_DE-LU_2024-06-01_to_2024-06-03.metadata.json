@@ -1,0 +1,115 @@
+{
+  "end": "2024-06-03",
+  "market_label": "DE-LU",
+  "output_path": "data/staging/clean_hourly_DE-LU_2024-06-01_to_2024-06-03.csv",
+  "quality_report_path": "reports/data_quality_2024-06-01_to_2024-06-03.md",
+  "quality_result": {
+    "duplicate_timestamp_count": 0,
+    "max_timestamp_utc": "2024-06-03 21:00:00+00:00",
+    "min_timestamp_utc": "2024-05-31 22:00:00+00:00",
+    "missing_by_column": {
+      "residual_load_official_mw": 0,
+      "solar_candidate_mw": 0,
+      "total_load_mw": 0,
+      "wind_candidate_mw": 0,
+      "wind_offshore_candidate_mw": 0
+    },
+    "negative_by_column": {
+      "solar_candidate_mw": 0,
+      "total_load_mw": 0,
+      "wind_candidate_mw": 0,
+      "wind_offshore_candidate_mw": 0
+    },
+    "notes": [
+      "Some columns are based on provisional semantic status and must not be used for final feature claims without validation."
+    ],
+    "row_count": 72,
+    "status": "PASS WITH LIMITATION"
+  },
+  "resolution": "hour",
+  "series": [
+    {
+      "allowed_for_final_features": true,
+      "allowed_for_staging": true,
+      "category": "consumption",
+      "default_smard_region": "DE",
+      "display_name": "Total Load",
+      "expected_direction": "positive",
+      "filter_id": "410",
+      "internal_name": "total_load",
+      "market_label": "DE-LU",
+      "notes": "Core demand/load series used as the load foundation.",
+      "semantic_status": "endpoint_verified_semantics_locked",
+      "source": "SMARD / Bundesnetzagentur",
+      "source_region_field": "smard_region",
+      "unit": "MW"
+    },
+    {
+      "allowed_for_final_features": true,
+      "allowed_for_staging": true,
+      "category": "consumption",
+      "default_smard_region": "DE",
+      "display_name": "Residual Load",
+      "expected_direction": "positive_or_negative_possible",
+      "filter_id": "4359",
+      "internal_name": "residual_load_official",
+      "market_label": "DE-LU",
+      "notes": "Used as official residual-load reference and as a core market stress signal.",
+      "semantic_status": "endpoint_verified_semantics_locked",
+      "source": "SMARD / Bundesnetzagentur",
+      "source_region_field": "smard_region",
+      "unit": "MW"
+    },
+    {
+      "allowed_for_final_features": false,
+      "allowed_for_staging": true,
+      "category": "generation",
+      "default_smard_region": "DE",
+      "display_name": "Wind Candidate",
+      "expected_direction": "positive",
+      "filter_id": "4067",
+      "internal_name": "wind_candidate",
+      "market_label": "DE-LU",
+      "notes": "Endpoint verified. Business semantics must be confirmed before final feature claims.",
+      "semantic_status": "endpoint_verified_semantics_provisional",
+      "source": "SMARD / Bundesnetzagentur",
+      "source_region_field": "smard_region",
+      "unit": "MW"
+    },
+    {
+      "allowed_for_final_features": false,
+      "allowed_for_staging": true,
+      "category": "generation",
+      "default_smard_region": "DE",
+      "display_name": "Solar Candidate",
+      "expected_direction": "positive",
+      "filter_id": "4068",
+      "internal_name": "solar_candidate",
+      "market_label": "DE-LU",
+      "notes": "Endpoint verified. Business semantics must be confirmed before final feature claims.",
+      "semantic_status": "endpoint_verified_semantics_provisional",
+      "source": "SMARD / Bundesnetzagentur",
+      "source_region_field": "smard_region",
+      "unit": "MW"
+    },
+    {
+      "allowed_for_final_features": false,
+      "allowed_for_staging": true,
+      "category": "generation",
+      "default_smard_region": "DE",
+      "display_name": "Wind Offshore Candidate",
+      "expected_direction": "positive",
+      "filter_id": "1225",
+      "internal_name": "wind_offshore_candidate",
+      "market_label": "DE-LU",
+      "notes": "Endpoint verified. Business semantics must be confirmed before final feature claims.",
+      "semantic_status": "endpoint_verified_semantics_provisional",
+      "source": "SMARD / Bundesnetzagentur",
+      "source_region_field": "smard_region",
+      "unit": "MW"
+    }
+  ],
+  "smard_region": "DE",
+  "stage": "staging",
+  "start": "2024-06-01"
+}
