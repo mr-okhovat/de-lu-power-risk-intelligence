@@ -1,0 +1,24 @@
+{
+  "duplicate_timestamps": 0,
+  "metrics": {
+    "event_rate": 0.2513888888888889,
+    "f1_score": 0.0425531914893617,
+    "false_negative": 177,
+    "false_positive": 3,
+    "precision": 0.5714285714285714,
+    "recall": 0.022099447513812154,
+    "signal_rate": 0.009722222222222222,
+    "true_negative": 536,
+    "true_positive": 4
+  },
+  "missing_price_rows": 0,
+  "missing_risk_rows": 0,
+  "notes": [
+    "Signal-price evaluation completed without blocking data quality issues."
+  ],
+  "price_event_rows": 181,
+  "row_count": 720,
+  "signal_rows": 7,
+  "signal_threshold": 60.0,
+  "status": "PASS"
+}
