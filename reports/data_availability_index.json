@@ -1,0 +1,13 @@
+{
+  "index_csv": "dashboards/data_availability_index.csv",
+  "metrics": {
+    "analytics_ready": 4,
+    "datasets": 4,
+    "markets": 1,
+    "period_end": "2024-08-31",
+    "period_start": "2024-05-01",
+    "registered": 4,
+    "unregistered": 0
+  },
+  "version": "14A.1"
+}
