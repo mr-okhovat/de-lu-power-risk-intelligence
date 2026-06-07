@@ -1,0 +1,13 @@
+{
+  "metrics": {
+    "all_passed": true,
+    "canonical_rows": 2952,
+    "failed_datasets": 0,
+    "passed_datasets": 4,
+    "registered_datasets": 4
+  },
+  "registry_file": "src/config/dataset_adapter_registry.yaml",
+  "registry_run_json": "reports/dataset_adapter_registry_run.json",
+  "summary_csv": "dashboards/dataset_intake_summary.csv",
+  "version": "12E.1"
+}
