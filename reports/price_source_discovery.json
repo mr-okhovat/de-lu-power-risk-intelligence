@@ -1,0 +1,50 @@
+{
+  "results": [
+    {
+      "error": null,
+      "filter_id": "4169",
+      "index_url": "https://www.smard.de/app/chart_data/4169/DE-LU/index_hour.json",
+      "label": "day_ahead_price_candidate",
+      "max_value": 208.9,
+      "min_value": 54.48,
+      "non_null_points": 24,
+      "region": "DE-LU",
+      "resolution": "hour",
+      "sample_points": 24,
+      "sample_url": "https://www.smard.de/app/chart_data/4169/DE-LU/4169_DE-LU_hour_1780869600000.json",
+      "status": "PASS",
+      "timestamp_count": 402
+    },
+    {
+      "error": null,
+      "filter_id": "4169",
+      "index_url": "https://www.smard.de/app/chart_data/4169/DE/index_hour.json",
+      "label": "day_ahead_price_candidate",
+      "max_value": 208.9,
+      "min_value": 54.48,
+      "non_null_points": 24,
+      "region": "DE",
+      "resolution": "hour",
+      "sample_points": 24,
+      "sample_url": "https://www.smard.de/app/chart_data/4169/DE/4169_DE_hour_1780869600000.json",
+      "status": "PASS",
+      "timestamp_count": 402
+    }
+  ],
+  "selected": {
+    "error": null,
+    "filter_id": "4169",
+    "index_url": "https://www.smard.de/app/chart_data/4169/DE-LU/index_hour.json",
+    "label": "day_ahead_price_candidate",
+    "max_value": 208.9,
+    "min_value": 54.48,
+    "non_null_points": 24,
+    "region": "DE-LU",
+    "resolution": "hour",
+    "sample_points": 24,
+    "sample_url": "https://www.smard.de/app/chart_data/4169/DE-LU/4169_DE-LU_hour_1780869600000.json",
+    "status": "PASS",
+    "timestamp_count": 402
+  },
+  "version": "8A.1"
+}
