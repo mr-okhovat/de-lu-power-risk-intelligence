@@ -7,6 +7,7 @@ from pathlib import Path
 from src.data_ingestion.smard_client import SmardClient, load_smard_settings
 from src.staging.build_hourly import build_staging_hourly
 from src.features.market_features import build_market_features
+from src.reporting.dashboard_exports import build_dashboard_exports
 
 
 def setup_logging() -> None:
@@ -31,7 +32,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--end", required=True, help="End date YYYY-MM-DD")
     parser.add_argument("--market-label", default="DE-LU")
     parser.add_argument("--smard-region", default="DE")
-    parser.add_argument("--phase", default="smard-ingest", choices=["smard-ingest", "build-staging", "build-features"])
+    parser.add_argument("--phase", default="smard-ingest", choices=["smard-ingest", "build-staging", "build-features", "build-dashboard-exports"])
     parser.add_argument("--filters", nargs="+", default=["410"])
     parser.add_argument("--resolution", default="hour")
     parser.add_argument("--config", default="src/config/sources.yaml")
@@ -41,6 +42,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--staging-file", default=None)
     parser.add_argument("--features-output", default=None)
     parser.add_argument("--feature-report-output", default=None)
+    parser.add_argument("--market-overview-output", default=None)
+    parser.add_argument("--dictionary-output", default=None)
+    parser.add_argument("--dashboard-report-output", default=None)
+    parser.add_argument("--sql-schema-output", default=None)
     parser.add_argument(
         "--continue-on-error",
         action="store_true",
@@ -128,6 +133,36 @@ def main() -> None:
             staging_path=staging_file,
             output_path=features_output,
             report_path=feature_report_output,
+        )
+        return
+
+    if args.phase == "build-dashboard-exports":
+        feature_input = args.features_output or (
+            f"data/processed/hourly_features_{args.market_label}_{args.start}_to_{args.end}.csv"
+        )
+
+        market_overview_output = args.market_overview_output or (
+            f"dashboards/market_overview_{args.market_label}_{args.start}_to_{args.end}.csv"
+        )
+
+        dictionary_output = args.dictionary_output or (
+            f"dashboards/feature_dictionary_{args.market_label}_{args.start}_to_{args.end}.csv"
+        )
+
+        dashboard_report_output = args.dashboard_report_output or (
+            f"reports/dashboard_export_quality_{args.start}_to_{args.end}.md"
+        )
+
+        sql_schema_output = args.sql_schema_output or (
+            "sql/schema_power_market_features.sql"
+        )
+
+        build_dashboard_exports(
+            feature_input=feature_input,
+            market_overview_output=market_overview_output,
+            dictionary_output=dictionary_output,
+            report_output=dashboard_report_output,
+            sql_schema_output=sql_schema_output,
         )
         return
 
