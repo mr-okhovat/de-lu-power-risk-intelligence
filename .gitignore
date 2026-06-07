@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Secrets
+.env
+.env.*
+*.key
+*.pem
+secrets/
+credentials/
+
+# Data outputs
+data/raw/**/*.json
+data/raw/**/*.csv
+data/raw/**/*.parquet
+data/staging/**/*.csv
+data/staging/**/*.parquet
+data/processed/**/*.csv
+data/processed/**/*.parquet
+
+# Keep folder placeholders
+!data/**/.gitkeep
+
+# Logs
+logs/*.log
+logs/**/*.log
+
+# Generated reports
+reports/*.html
+reports/*.pdf
+
+# Notebooks
+.ipynb_checkpoints/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Build/cache
+dist/
+build/
+.cache/
