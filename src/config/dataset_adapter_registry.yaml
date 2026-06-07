@@ -1,0 +1,12 @@
+version: 12C.1
+datasets:
+  - id: signal_price_evaluation_2024_06
+    description: June 2024 signal-price evaluation canonicalization demo
+    input: data/processed/signal_price_evaluation_DE-LU_2024-06-01_to_2024-06-30.csv
+    adapter: src/config/dataset_adapters/signal_price_evaluation_identity.yaml
+    contract: src/config/dataset_contracts/signal_price_evaluation.yaml
+    adapted_output: data/adapted/signal_price_evaluation_DE-LU_2024-06_registry_adapted.csv
+    adapter_report: reports/adapter_registry_signal_price_evaluation_2024-06.md
+    adapter_json: reports/adapter_registry_signal_price_evaluation_2024-06.json
+    contract_report: reports/contract_registry_signal_price_evaluation_2024-06.md
+    contract_json: reports/contract_registry_signal_price_evaluation_2024-06.json
