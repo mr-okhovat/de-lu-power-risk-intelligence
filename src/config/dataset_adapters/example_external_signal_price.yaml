@@ -1,0 +1,40 @@
+name: example_external_signal_price
+version: 12B.1
+sort_by: timestamp_utc
+fields:
+  - source: time
+    target: timestamp_utc
+    dtype: datetime
+    required: true
+  - source: da_price
+    target: price_eur_per_mwh
+    dtype: numeric
+    required: true
+  - source: score
+    target: risk_score
+    dtype: numeric
+    required: true
+  - source: signal
+    target: signal_positive
+    dtype: boolean
+    required: true
+  - source: price_event
+    target: event_positive
+    dtype: boolean
+    required: true
+  - source: bucket
+    target: confusion_bucket
+    dtype: string
+    required: true
+  - source: event_labels
+    target: price_event_labels
+    dtype: string
+    required: true
+  - constant: EXTERNAL
+    target: regime_label
+    dtype: string
+    required: false
+  - constant: ADAPTED_SOURCE
+    target: reason_codes
+    dtype: string
+    required: false

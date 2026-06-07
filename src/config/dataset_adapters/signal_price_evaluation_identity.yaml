@@ -1,0 +1,40 @@
+name: signal_price_evaluation_identity
+version: 12B.1
+sort_by: timestamp_utc
+fields:
+  - source: timestamp_utc
+    target: timestamp_utc
+    dtype: datetime
+    required: true
+  - source: price_eur_per_mwh
+    target: price_eur_per_mwh
+    dtype: numeric
+    required: true
+  - source: risk_score
+    target: risk_score
+    dtype: numeric
+    required: true
+  - source: signal_positive
+    target: signal_positive
+    dtype: boolean
+    required: true
+  - source: event_positive
+    target: event_positive
+    dtype: boolean
+    required: true
+  - source: confusion_bucket
+    target: confusion_bucket
+    dtype: string
+    required: true
+  - source: price_event_labels
+    target: price_event_labels
+    dtype: string
+    required: true
+  - source: regime_label
+    target: regime_label
+    dtype: string
+    required: false
+  - source: reason_codes
+    target: reason_codes
+    dtype: string
+    required: false
