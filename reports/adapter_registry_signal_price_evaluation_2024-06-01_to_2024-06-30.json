@@ -1,0 +1,24 @@
+{
+  "adapter_name": "signal_price_evaluation_identity",
+  "adapter_version": "12B.1",
+  "conversion_errors": {},
+  "input_file": "data/processed/signal_price_evaluation_DE-LU_2024-06-01_to_2024-06-30.csv",
+  "missing_source_columns": [],
+  "notes": [
+    "Dataset adapted successfully."
+  ],
+  "output_columns": [
+    "timestamp_utc",
+    "price_eur_per_mwh",
+    "risk_score",
+    "signal_positive",
+    "event_positive",
+    "confusion_bucket",
+    "price_event_labels",
+    "regime_label",
+    "reason_codes"
+  ],
+  "output_file": "data/adapted/signal_price_evaluation_DE-LU_2024-06-01_to_2024-06-30_registry_adapted.csv",
+  "row_count": 720,
+  "status": "PASS"
+}
