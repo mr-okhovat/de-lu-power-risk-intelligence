@@ -10,6 +10,7 @@
     ],
     "high_quantile": 0.9,
     "include_event_study": false,
+    "include_reviewer_pack": true,
     "include_signal_event_evaluation": false,
     "low_quantile": 0.1,
     "market_label": "DE-LU",
@@ -24,45 +25,36 @@
     "start": "2024-06-01"
   },
   "outputs": {
-    "dashboard_dictionary": "dashboards/feature_dictionary_DE-LU_2024-06-01_to_2024-06-03.csv",
-    "dashboard_market_overview": "dashboards/market_overview_DE-LU_2024-06-01_to_2024-06-03.csv",
-    "dashboard_report": "reports/dashboard_export_quality_2024-06-01_to_2024-06-03.md",
-    "event_json": "reports/event_study_skeleton_2024-06-01_to_2024-06-03.json",
-    "event_labels": "data/processed/event_labels_DE-LU_2024-06-01_to_2024-06-03.csv",
-    "event_report": "reports/event_study_skeleton_2024-06-01_to_2024-06-03.md",
     "features": "data/processed/hourly_features_DE-LU_2024-06-01_to_2024-06-03.csv",
+    "market_export": "dashboards/market_overview_DE-LU_2024-06-01_to_2024-06-03.csv",
+    "reviewer_pack": "reports/reviewer_pack_2024-06-01_to_2024-06-03.md",
+    "reviewer_pack_json": "reports/reviewer_pack_2024-06-01_to_2024-06-03.json",
     "risk_diagnostics_json": "reports/risk_diagnostics_2024-06-01_to_2024-06-03.json",
     "risk_diagnostics_report": "reports/risk_diagnostics_2024-06-01_to_2024-06-03.md",
-    "risk_reason_code_summary": "dashboards/risk_reason_code_summary_DE-LU_2024-06-01_to_2024-06-03.csv",
+    "risk_reason_codes": "dashboards/risk_reason_code_summary_DE-LU_2024-06-01_to_2024-06-03.csv",
     "risk_regime_distribution": "dashboards/risk_regime_distribution_DE-LU_2024-06-01_to_2024-06-03.csv",
     "risk_signal_report": "reports/risk_signal_quality_2024-06-01_to_2024-06-03.md",
     "risk_signals": "data/processed/risk_signals_DE-LU_2024-06-01_to_2024-06-03.csv",
     "run_summary": "reports/pipeline_run_summary_2024-06-01_to_2024-06-03.md",
     "run_summary_json": "reports/pipeline_run_summary_2024-06-01_to_2024-06-03.json",
-    "signal_event_confusion": "dashboards/signal_event_confusion_DE-LU_2024-06-01_to_2024-06-03.csv",
-    "signal_event_evaluation": "data/processed/signal_event_evaluation_DE-LU_2024-06-01_to_2024-06-03.csv",
-    "signal_event_json": "reports/signal_event_evaluation_2024-06-01_to_2024-06-03.json",
-    "signal_event_report": "reports/signal_event_evaluation_2024-06-01_to_2024-06-03.md",
-    "sql_schema": "sql/schema_power_market_features.sql",
     "staging": "data/staging/clean_hourly_DE-LU_2024-06-01_to_2024-06-03.csv",
     "staging_hard_json": "reports/staging_hard_checks_2024-06-01_to_2024-06-03.json",
     "staging_hard_report": "reports/staging_hard_checks_2024-06-01_to_2024-06-03.md",
     "top_risk_hours": "dashboards/top_risk_hours_DE-LU_2024-06-01_to_2024-06-03.csv"
   },
   "status": "PASS",
-  "step_results": [
+  "steps": [
     {
       "command": [
         "/home/codespace/.python/current/bin/python",
         "-m",
         "pytest"
       ],
-      "description": "Run tests first.",
-      "duration_seconds": 1.225,
-      "finished_at_utc": "2026-06-07T15:15:20+00:00",
+      "duration_seconds": 1.35,
+      "finished_at_utc": "2026-06-07T16:32:56+00:00",
       "name": "tests_start",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:15:19+00:00",
+      "started_at_utc": "2026-06-07T16:32:55+00:00",
       "status": "PASS"
     },
     {
@@ -75,12 +67,11 @@
         "--resolution",
         "hour"
       ],
-      "description": "Verify configured SMARD filter endpoints.",
-      "duration_seconds": 0.478,
-      "finished_at_utc": "2026-06-07T15:15:20+00:00",
+      "duration_seconds": 0.502,
+      "finished_at_utc": "2026-06-07T16:32:57+00:00",
       "name": "smard_filter_discovery",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:15:20+00:00",
+      "started_at_utc": "2026-06-07T16:32:56+00:00",
       "status": "PASS"
     },
     {
@@ -106,12 +97,11 @@
         "4068",
         "1225"
       ],
-      "description": "Download raw SMARD data.",
-      "duration_seconds": 0.782,
-      "finished_at_utc": "2026-06-07T15:15:21+00:00",
+      "duration_seconds": 0.976,
+      "finished_at_utc": "2026-06-07T16:32:58+00:00",
       "name": "smard_ingestion",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:15:20+00:00",
+      "started_at_utc": "2026-06-07T16:32:57+00:00",
       "status": "PASS"
     },
     {
@@ -129,12 +119,11 @@
         "--phase",
         "build-staging"
       ],
-      "description": "Build clean hourly staging table.",
-      "duration_seconds": 0.554,
-      "finished_at_utc": "2026-06-07T15:15:22+00:00",
+      "duration_seconds": 0.644,
+      "finished_at_utc": "2026-06-07T16:32:58+00:00",
       "name": "build_staging",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:15:21+00:00",
+      "started_at_utc": "2026-06-07T16:32:58+00:00",
       "status": "PASS"
     },
     {
@@ -149,12 +138,11 @@
         "--json-output",
         "reports/staging_hard_checks_2024-06-01_to_2024-06-03.json"
       ],
-      "description": "Run hard validation checks.",
-      "duration_seconds": 0.386,
-      "finished_at_utc": "2026-06-07T15:15:22+00:00",
+      "duration_seconds": 0.387,
+      "finished_at_utc": "2026-06-07T16:32:59+00:00",
       "name": "staging_hard_checks",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:15:22+00:00",
+      "started_at_utc": "2026-06-07T16:32:58+00:00",
       "status": "PASS"
     },
     {
@@ -172,12 +160,11 @@
         "--phase",
         "build-features"
       ],
-      "description": "Build feature table.",
-      "duration_seconds": 0.493,
-      "finished_at_utc": "2026-06-07T15:15:23+00:00",
+      "duration_seconds": 0.549,
+      "finished_at_utc": "2026-06-07T16:32:59+00:00",
       "name": "build_features",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:15:22+00:00",
+      "started_at_utc": "2026-06-07T16:32:59+00:00",
       "status": "PASS"
     },
     {
@@ -195,12 +182,11 @@
         "--phase",
         "build-dashboard-exports"
       ],
-      "description": "Build SQL/Power BI exports.",
-      "duration_seconds": 0.49,
-      "finished_at_utc": "2026-06-07T15:15:23+00:00",
+      "duration_seconds": 0.487,
+      "finished_at_utc": "2026-06-07T16:33:00+00:00",
       "name": "build_dashboard_exports",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:15:23+00:00",
+      "started_at_utc": "2026-06-07T16:32:59+00:00",
       "status": "PASS"
     },
     {
@@ -220,12 +206,11 @@
         "--min-history",
         "24"
       ],
-      "description": "Build risk signals.",
-      "duration_seconds": 0.57,
-      "finished_at_utc": "2026-06-07T15:15:24+00:00",
+      "duration_seconds": 0.603,
+      "finished_at_utc": "2026-06-07T16:33:00+00:00",
       "name": "build_risk_signals",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:15:23+00:00",
+      "started_at_utc": "2026-06-07T16:33:00+00:00",
       "status": "PASS"
     },
     {
@@ -243,12 +228,36 @@
         "--phase",
         "build-risk-diagnostics"
       ],
-      "description": "Build risk diagnostics.",
-      "duration_seconds": 0.481,
-      "finished_at_utc": "2026-06-07T15:15:24+00:00",
+      "duration_seconds": 0.487,
+      "finished_at_utc": "2026-06-07T16:33:01+00:00",
       "name": "build_risk_diagnostics",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:15:24+00:00",
+      "started_at_utc": "2026-06-07T16:33:00+00:00",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/home/codespace/.python/current/bin/python",
+        "-m",
+        "src.reporting.reviewer_pack",
+        "--start",
+        "2024-06-01",
+        "--end",
+        "2024-06-03",
+        "--market-label",
+        "DE-LU",
+        "--smard-region",
+        "DE",
+        "--report",
+        "reports/reviewer_pack_2024-06-01_to_2024-06-03.md",
+        "--json",
+        "reports/reviewer_pack_2024-06-01_to_2024-06-03.json"
+      ],
+      "duration_seconds": 0.445,
+      "finished_at_utc": "2026-06-07T16:33:01+00:00",
+      "name": "build_reviewer_pack",
+      "return_code": 0,
+      "started_at_utc": "2026-06-07T16:33:01+00:00",
       "status": "PASS"
     },
     {
@@ -257,12 +266,11 @@
         "-m",
         "pytest"
       ],
-      "description": "Run tests last.",
-      "duration_seconds": 1.439,
-      "finished_at_utc": "2026-06-07T15:15:26+00:00",
+      "duration_seconds": 1.175,
+      "finished_at_utc": "2026-06-07T16:33:02+00:00",
       "name": "tests_end",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:15:24+00:00",
+      "started_at_utc": "2026-06-07T16:33:01+00:00",
       "status": "PASS"
     }
   ]

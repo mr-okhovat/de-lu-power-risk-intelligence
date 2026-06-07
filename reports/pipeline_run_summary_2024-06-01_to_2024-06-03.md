@@ -1,38 +1,45 @@
-# Pipeline Run Summary
+# Pipeline run summary
 
-- Pipeline: `DE-LU Power Risk Intelligence Sample Pipeline`
-- Run label: `sample_2024-06-01_to_2024-06-03`
-- Status: `PASS`
-- Start date: `2024-06-01`
-- End date: `2024-06-03`
-- Market label: `DE-LU`
-- SMARD region: `DE`
-- Event study enabled: `False`
-- Signal-event evaluation enabled: `False`
+Pipeline: DE-LU Power Risk Intelligence Sample Pipeline
+Run: sample_2024-06-01_to_2024-06-03
+Status: PASS
+Window: 2024-06-01 to 2024-06-03
+Market: DE-LU
+SMARD region: DE
 
-## Step Results
+## Steps
 
-| Step | Status | Duration seconds |
+| step | status | seconds |
 |---|---:|---:|
-| tests_start | PASS | 1.225 |
-| smard_filter_discovery | PASS | 0.478 |
-| smard_ingestion | PASS | 0.782 |
-| build_staging | PASS | 0.554 |
-| staging_hard_checks | PASS | 0.386 |
-| build_features | PASS | 0.493 |
-| build_dashboard_exports | PASS | 0.49 |
-| build_risk_signals | PASS | 0.57 |
-| build_risk_diagnostics | PASS | 0.481 |
-| tests_end | PASS | 1.439 |
+| tests_start | PASS | 1.35 |
+| smard_filter_discovery | PASS | 0.502 |
+| smard_ingestion | PASS | 0.976 |
+| build_staging | PASS | 0.644 |
+| staging_hard_checks | PASS | 0.387 |
+| build_features | PASS | 0.549 |
+| build_dashboard_exports | PASS | 0.487 |
+| build_risk_signals | PASS | 0.603 |
+| build_risk_diagnostics | PASS | 0.487 |
+| build_reviewer_pack | PASS | 0.445 |
+| tests_end | PASS | 1.175 |
 
-## Key Outputs
+## Outputs
 
-- `staging`: `data/staging/clean_hourly_DE-LU_2024-06-01_to_2024-06-03.csv`
-- `features`: `data/processed/hourly_features_DE-LU_2024-06-01_to_2024-06-03.csv`
-- `dashboard_market_overview`: `dashboards/market_overview_DE-LU_2024-06-01_to_2024-06-03.csv`
-- `risk_signals`: `data/processed/risk_signals_DE-LU_2024-06-01_to_2024-06-03.csv`
-- `risk_diagnostics_report`: `reports/risk_diagnostics_2024-06-01_to_2024-06-03.md`
+- features: `data/processed/hourly_features_DE-LU_2024-06-01_to_2024-06-03.csv` (yes)
+- market_export: `dashboards/market_overview_DE-LU_2024-06-01_to_2024-06-03.csv` (yes)
+- reviewer_pack: `reports/reviewer_pack_2024-06-01_to_2024-06-03.md` (yes)
+- reviewer_pack_json: `reports/reviewer_pack_2024-06-01_to_2024-06-03.json` (yes)
+- risk_diagnostics_json: `reports/risk_diagnostics_2024-06-01_to_2024-06-03.json` (yes)
+- risk_diagnostics_report: `reports/risk_diagnostics_2024-06-01_to_2024-06-03.md` (yes)
+- risk_reason_codes: `dashboards/risk_reason_code_summary_DE-LU_2024-06-01_to_2024-06-03.csv` (yes)
+- risk_regime_distribution: `dashboards/risk_regime_distribution_DE-LU_2024-06-01_to_2024-06-03.csv` (yes)
+- risk_signal_report: `reports/risk_signal_quality_2024-06-01_to_2024-06-03.md` (yes)
+- risk_signals: `data/processed/risk_signals_DE-LU_2024-06-01_to_2024-06-03.csv` (yes)
+- run_summary: `reports/pipeline_run_summary_2024-06-01_to_2024-06-03.md` (yes)
+- run_summary_json: `reports/pipeline_run_summary_2024-06-01_to_2024-06-03.json` (yes)
+- staging: `data/staging/clean_hourly_DE-LU_2024-06-01_to_2024-06-03.csv` (yes)
+- staging_hard_json: `reports/staging_hard_checks_2024-06-01_to_2024-06-03.json` (yes)
+- staging_hard_report: `reports/staging_hard_checks_2024-06-01_to_2024-06-03.md` (yes)
+- top_risk_hours: `dashboards/top_risk_hours_DE-LU_2024-06-01_to_2024-06-03.csv` (yes)
 
-## Methodological Boundary
-
-This automated run reproduces the currently implemented public-data analytics pipeline through risk diagnostics. It does not create a trading strategy, execution logic, or P&L claim.
+This run reproduces the implemented public-data pipeline. It does not claim trading profitability, execution capability, or P&L.

@@ -1,8 +1,4 @@
-from src.orchestration.pipeline_steps import (
-    build_pipeline_steps,
-    load_pipeline_config,
-    output_paths,
-)
+from src.orchestration.pipeline_steps import build_pipeline_steps, load_pipeline_config, output_paths
 
 
 def test_load_pipeline_config() -> None:
@@ -11,6 +7,7 @@ def test_load_pipeline_config() -> None:
     assert config.market_label == "DE-LU"
     assert config.smard_region == "DE"
     assert "410" in config.filters
+    assert config.include_reviewer_pack is True
     assert config.include_event_study is False
     assert config.include_signal_event_evaluation is False
 
@@ -21,13 +18,12 @@ def test_output_paths() -> None:
 
     assert paths["staging"].endswith("clean_hourly_DE-LU_2024-06-01_to_2024-06-03.csv")
     assert paths["risk_signals"].endswith("risk_signals_DE-LU_2024-06-01_to_2024-06-03.csv")
+    assert paths["reviewer_pack"].endswith("reviewer_pack_2024-06-01_to_2024-06-03.md")
 
 
-def test_build_pipeline_steps_contains_implemented_core_steps() -> None:
+def test_pipeline_has_current_steps() -> None:
     config = load_pipeline_config("config/pipeline_sample.yaml")
-    steps = build_pipeline_steps(config)
-
-    names = [step.name for step in steps]
+    names = [step.name for step in build_pipeline_steps(config)]
 
     assert "smard_ingestion" in names
     assert "build_staging" in names
@@ -35,13 +31,12 @@ def test_build_pipeline_steps_contains_implemented_core_steps() -> None:
     assert "build_dashboard_exports" in names
     assert "build_risk_signals" in names
     assert "build_risk_diagnostics" in names
+    assert "build_reviewer_pack" in names
 
 
-def test_build_pipeline_steps_excludes_unimplemented_event_steps_by_default() -> None:
+def test_pipeline_excludes_future_backtest_steps() -> None:
     config = load_pipeline_config("config/pipeline_sample.yaml")
-    steps = build_pipeline_steps(config)
-
-    names = [step.name for step in steps]
+    names = [step.name for step in build_pipeline_steps(config)]
 
     assert "build_event_study_skeleton" not in names
     assert "build_signal_event_evaluation" not in names
