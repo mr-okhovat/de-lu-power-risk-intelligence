@@ -9,6 +9,7 @@ from src.staging.build_hourly import build_staging_hourly
 from src.features.market_features import build_market_features
 from src.reporting.dashboard_exports import build_dashboard_exports
 from src.signals.risk_engine import build_risk_signal_table
+from src.reporting.risk_diagnostics import build_risk_diagnostics
 
 
 def setup_logging() -> None:
@@ -33,7 +34,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--end", required=True, help="End date YYYY-MM-DD")
     parser.add_argument("--market-label", default="DE-LU")
     parser.add_argument("--smard-region", default="DE")
-    parser.add_argument("--phase", default="smard-ingest", choices=["smard-ingest", "build-staging", "build-features", "build-dashboard-exports", "build-risk-signals"])
+    parser.add_argument("--phase", default="smard-ingest", choices=["smard-ingest", "build-staging", "build-features", "build-dashboard-exports", "build-risk-signals", "build-risk-diagnostics"])
     parser.add_argument("--filters", nargs="+", default=["410"])
     parser.add_argument("--resolution", default="hour")
     parser.add_argument("--config", default="src/config/sources.yaml")
@@ -50,6 +51,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--risk-output", default=None)
     parser.add_argument("--risk-report-output", default=None)
     parser.add_argument("--min-history", type=int, default=24)
+    parser.add_argument("--regime-distribution-output", default=None)
+    parser.add_argument("--reason-code-summary-output", default=None)
+    parser.add_argument("--top-risk-hours-output", default=None)
+    parser.add_argument("--risk-diagnostic-report-output", default=None)
+    parser.add_argument("--risk-diagnostic-json-output", default=None)
+    parser.add_argument("--top-n", type=int, default=20)
     parser.add_argument(
         "--continue-on-error",
         action="store_true",
@@ -188,6 +195,42 @@ def main() -> None:
             signal_output=risk_output,
             report_output=risk_report_output,
             min_history=args.min_history,
+        )
+        return
+
+    if args.phase == "build-risk-diagnostics":
+        risk_signal_input = args.risk_output or (
+            f"data/processed/risk_signals_{args.market_label}_{args.start}_to_{args.end}.csv"
+        )
+
+        regime_distribution_output = args.regime_distribution_output or (
+            f"dashboards/risk_regime_distribution_{args.market_label}_{args.start}_to_{args.end}.csv"
+        )
+
+        reason_code_summary_output = args.reason_code_summary_output or (
+            f"dashboards/risk_reason_code_summary_{args.market_label}_{args.start}_to_{args.end}.csv"
+        )
+
+        top_risk_hours_output = args.top_risk_hours_output or (
+            f"dashboards/top_risk_hours_{args.market_label}_{args.start}_to_{args.end}.csv"
+        )
+
+        risk_diagnostic_report_output = args.risk_diagnostic_report_output or (
+            f"reports/risk_diagnostics_{args.start}_to_{args.end}.md"
+        )
+
+        risk_diagnostic_json_output = args.risk_diagnostic_json_output or (
+            f"reports/risk_diagnostics_{args.start}_to_{args.end}.json"
+        )
+
+        build_risk_diagnostics(
+            risk_signal_input=risk_signal_input,
+            regime_distribution_output=regime_distribution_output,
+            reason_code_summary_output=reason_code_summary_output,
+            top_risk_hours_output=top_risk_hours_output,
+            report_output=risk_diagnostic_report_output,
+            json_output=risk_diagnostic_json_output,
+            top_n=args.top_n,
         )
         return
 
