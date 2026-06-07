@@ -7,5 +7,7 @@ def test_dashboard_screenshot_targets() -> None:
 
     assert "Overview" in names
     assert "Lead time" in names
+    assert "Dataset intake" in names
     assert "Reviewer files" in names
     assert "reports/figures/dashboard/dashboard_lead_time.png" in outputs
+    assert "reports/figures/dashboard/dashboard_dataset_intake.png" in outputs

@@ -16,6 +16,7 @@ SHOTS = [
     ("Selected month", "reports/figures/dashboard/dashboard_selected_month.png"),
     ("Diagnostics", "reports/figures/dashboard/dashboard_diagnostics.png"),
     ("Lead time", "reports/figures/dashboard/dashboard_lead_time.png"),
+    ("Dataset intake", "reports/figures/dashboard/dashboard_dataset_intake.png"),
     ("Reviewer files", "reports/figures/dashboard/dashboard_reviewer_files.png"),
 ]
 

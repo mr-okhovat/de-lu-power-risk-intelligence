@@ -131,6 +131,10 @@ Run:
 
 ![Dashboard lead time](reports/figures/dashboard/dashboard_lead_time.png)
 
+### Dataset intake view
+
+![Dashboard dataset intake](reports/figures/dashboard/dashboard_dataset_intake.png)
+
 ### Reviewer files view
 
 ![Dashboard reviewer files](reports/figures/dashboard/dashboard_reviewer_files.png)
