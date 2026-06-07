@@ -5,6 +5,9 @@ from app.streamlit_app import (
     csv_bytes,
     file_status_table,
     kpis,
+    lead_time_core_table,
+    lead_time_lift_frame,
+    lead_time_precision_recall_frame,
     month_tag,
     monthly_lift_frame,
     monthly_rate_frame,
@@ -47,6 +50,20 @@ def make_cross() -> pd.DataFrame:
         }
     )
 
+
+def make_lead_time() -> pd.DataFrame:
+    return pd.DataFrame(
+        {
+            "mode": ["exact_hour", "future_window"],
+            "horizon_hours": [0, 3],
+            "target_definition": ["event_at_t_plus_0", "any_event_next_3h"],
+            "signal_rows": [10, 10],
+            "target_event_rows": [20, 30],
+            "precision": [0.5, 0.4],
+            "recall": [0.25, 0.13],
+            "event_lift": [2.0, 1.5],
+        }
+    )
 
 def test_month_tag() -> None:
     assert month_tag("2024-06-01", "2024-06-30") == "DE-LU_2024-06-01_to_2024-06-30"
@@ -126,3 +143,11 @@ def test_csv_bytes() -> None:
 
     assert isinstance(data, bytes)
     assert b"event_lift" in data
+
+
+def test_lead_time_frames() -> None:
+    df = make_lead_time()
+
+    assert "event_lift" in lead_time_lift_frame(df).columns
+    assert {"precision", "recall"}.issubset(lead_time_precision_recall_frame(df).columns)
+    assert "target_definition" in lead_time_core_table(df).columns

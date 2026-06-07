@@ -34,6 +34,9 @@ def paths(start: str, end: str) -> dict[str, Path]:
         "price_events": Path(f"data/processed/price_events_{tag}.csv"),
         "behavior": Path(f"reports/price_risk_behavior_{rtag}.md"),
         "cross_month": Path("dashboards/cross_month_price_risk_DE-LU_2024-05_to_2024-08.csv"),
+        "lead_time_aggregate": Path("dashboards/lead_time_aggregate_DE-LU_2024-05_to_2024-08.csv"),
+        "lead_time_monthly": Path("dashboards/lead_time_monthly_DE-LU_2024-05_to_2024-08.csv"),
+        "lead_time_report": Path("reports/lead_time_evaluation_2024-05_to_2024-08.md"),
         "reviewer": Path("reports/reviewer_ready_v1.md"),
         "visual_pack": Path("reports/visual_reviewer_pack.md"),
         "readme": Path("README.md"),
@@ -71,6 +74,14 @@ def load_month(start: str, end: str) -> pd.DataFrame:
 
 def load_cross_month() -> pd.DataFrame:
     return read_csv(Path("dashboards/cross_month_price_risk_DE-LU_2024-05_to_2024-08.csv"))
+
+
+def load_lead_time_aggregate() -> pd.DataFrame:
+    return read_csv(Path("dashboards/lead_time_aggregate_DE-LU_2024-05_to_2024-08.csv"))
+
+
+def load_lead_time_monthly() -> pd.DataFrame:
+    return read_csv(Path("dashboards/lead_time_monthly_DE-LU_2024-05_to_2024-08.csv"))
 
 
 def safe_rate(a: int, b: int) -> float | None:
@@ -251,6 +262,31 @@ def csv_bytes(df: pd.DataFrame) -> bytes:
     return df.to_csv(index=False).encode("utf-8")
 
 
+def lead_time_lift_frame(df: pd.DataFrame) -> pd.DataFrame:
+    cols = ["target_definition", "event_lift"]
+    return df[cols].set_index("target_definition")
+
+
+def lead_time_precision_recall_frame(df: pd.DataFrame) -> pd.DataFrame:
+    cols = ["target_definition", "precision", "recall"]
+    return df[cols].set_index("target_definition")
+
+
+def lead_time_core_table(df: pd.DataFrame) -> pd.DataFrame:
+    cols = [
+        "mode",
+        "horizon_hours",
+        "target_definition",
+        "signal_rows",
+        "target_event_rows",
+        "precision",
+        "recall",
+        "event_lift",
+    ]
+
+    return df[cols].sort_values(["mode", "horizon_hours"]).reset_index(drop=True)
+
+
 def render_kpis(metrics: dict[str, float | int | None]) -> None:
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Rows", fmt(metrics["rows"]))
@@ -367,6 +403,42 @@ def render_diagnostics(df: pd.DataFrame) -> None:
     st.dataframe(top_cases(df), use_container_width=True)
 
 
+def render_lead_time(aggregate_df: pd.DataFrame, monthly_df: pd.DataFrame) -> None:
+    st.subheader("Lead-time evaluation")
+
+    st.write(
+        "This panel checks whether the current signal has any relationship with future price events. It is still a diagnostic test, not a trading backtest."
+    )
+
+    st.markdown("#### Aggregate lead-time table")
+    core = lead_time_core_table(aggregate_df)
+    st.dataframe(core, use_container_width=True)
+
+    left, right = st.columns(2)
+
+    with left:
+        st.markdown("#### Event lift by target")
+        st.bar_chart(lead_time_lift_frame(aggregate_df))
+
+    with right:
+        st.markdown("#### Precision and recall by target")
+        st.line_chart(lead_time_precision_recall_frame(aggregate_df))
+
+    st.markdown("#### Monthly lead-time detail")
+    st.dataframe(monthly_df, use_container_width=True)
+
+    st.download_button(
+        "Download aggregate lead-time table",
+        data=csv_bytes(aggregate_df),
+        file_name="lead_time_aggregate.csv",
+        mime="text/csv",
+    )
+
+    st.caption(
+        "Use this panel to distinguish same-hour diagnostic alignment from forward-looking early-warning behavior."
+    )
+
+
 def render_reports(selected_paths: dict[str, Path]) -> None:
     st.subheader("Reviewer files")
 
@@ -375,6 +447,8 @@ def render_reports(selected_paths: dict[str, Path]) -> None:
         {"file": "Reviewer-ready v1", "path": selected_paths["reviewer"]},
         {"file": "Visual reviewer pack", "path": selected_paths["visual_pack"]},
         {"file": "Monthly behavior report", "path": selected_paths["behavior"]},
+        {"file": "Lead-time report", "path": selected_paths["lead_time_report"]},
+        {"file": "Lead-time aggregate table", "path": selected_paths["lead_time_aggregate"]},
         {"file": "Cross-month table", "path": selected_paths["cross_month"]},
     ]
 
@@ -416,7 +490,7 @@ def render() -> None:
     cross = load_cross_month()
     metrics = kpis(df)
 
-    tabs = st.tabs(["Overview", "Selected month", "Diagnostics", "Reviewer files"])
+    tabs = st.tabs(["Overview", "Selected month", "Diagnostics", "Lead time", "Reviewer files"])
 
     with tabs[0]:
         render_overview(cross)
@@ -428,6 +502,9 @@ def render() -> None:
         render_diagnostics(df)
 
     with tabs[3]:
+        render_lead_time(load_lead_time_aggregate(), load_lead_time_monthly())
+
+    with tabs[4]:
         render_reports(selected_paths)
 
 

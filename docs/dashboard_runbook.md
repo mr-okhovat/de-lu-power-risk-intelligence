@@ -21,6 +21,7 @@ Current panels:
 - reason-code table
 - price-event label table
 - top risk cases
+- lead-time evaluation panel
 - reviewer file checklist
 - CSV download buttons
 
