@@ -1,0 +1,30 @@
+{
+  "cross_month_csv": "dashboards/cross_month_price_risk_DE-LU_2024-05_to_2024-08.csv",
+  "figures": {
+    "confusion": "reports/figures/confusion_summary.png",
+    "june_timeline": "reports/figures/june_price_risk_timeline.png",
+    "monthly_lift": "reports/figures/monthly_event_lift.png",
+    "precision_recall": "reports/figures/precision_recall.png",
+    "signal_vs_event_rate": "reports/figures/signal_vs_event_rate.png"
+  },
+  "june_evaluation_csv": "data/processed/signal_price_evaluation_DE-LU_2024-06-01_to_2024-06-30.csv",
+  "metrics": {
+    "aggregate_event_lift": 1.7697283311772316,
+    "base_event_rate": 0.26185636856368566,
+    "fn": 754,
+    "fp": 22,
+    "monthly_lift_max": 2.273086029992107,
+    "monthly_lift_min": 1.453125,
+    "months": 4,
+    "precision": 0.4634146341463415,
+    "price_event_hours": 773,
+    "recall": 0.02457956015523933,
+    "rows": 2952,
+    "signal_event_rate": 0.4634146341463415,
+    "signal_positive_hours": 41,
+    "tn": 2157,
+    "tp": 19
+  },
+  "summary_csv": "dashboards/visual_reviewer_summary.csv",
+  "version": "9A.1"
+}

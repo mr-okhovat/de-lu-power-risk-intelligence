@@ -1,0 +1,16 @@
+metric,value
+months,4.0
+rows,2952.0
+signal_positive_hours,41.0
+price_event_hours,773.0
+tp,19.0
+fp,22.0
+fn,754.0
+tn,2157.0
+precision,0.4634146341463415
+recall,0.02457956015523933
+base_event_rate,0.26185636856368566
+signal_event_rate,0.4634146341463415
+aggregate_event_lift,1.7697283311772316
+monthly_lift_min,1.453125
+monthly_lift_max,2.273086029992107
