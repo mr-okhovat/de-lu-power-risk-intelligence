@@ -1,7 +1,7 @@
 # Project checkpoint run
 
-Version: `13A.1`
-Timestamp UTC: `2026-06-07T21:40:48.013813+00:00`
+Version: `13C.1`
+Timestamp UTC: `2026-06-07T21:43:56.006981+00:00`
 Status: `PASS`
 Dry run: `True`
 Dashboard screenshots included: `False`
@@ -14,6 +14,7 @@ Dashboard screenshots included: `False`
 | dataset_registry | DRY RUN | 0 |  |
 | intake_summary | DRY RUN | 0 |  |
 | reviewer_ready_v2 | DRY RUN | 0 |  |
+| artifact_manifest | DRY RUN | 0 |  |
 
 ## Readout
 

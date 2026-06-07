@@ -1,6 +1,6 @@
 {
   "dry_run": false,
-  "include_screenshots": true,
+  "include_screenshots": false,
   "results": [
     {
       "command": [
@@ -72,23 +72,20 @@
     },
     {
       "command": [
-        "python",
-        "scripts/capture_dashboard_screenshots.py"
+        "bash",
+        "scripts/build_artifact_manifest.sh"
       ],
       "missing_outputs": [],
-      "name": "dashboard_screenshots",
+      "name": "artifact_manifest",
       "required_outputs": [
-        "reports/figures/dashboard/dashboard_overview.png",
-        "reports/figures/dashboard/dashboard_selected_month.png",
-        "reports/figures/dashboard/dashboard_diagnostics.png",
-        "reports/figures/dashboard/dashboard_lead_time.png",
-        "reports/figures/dashboard/dashboard_dataset_intake.png",
-        "reports/figures/dashboard/dashboard_reviewer_files.png"
+        "reports/project_artifact_manifest.md",
+        "reports/project_artifact_manifest.json",
+        "dashboards/project_artifact_manifest.csv"
       ],
       "return_code": 0,
       "status": "PASS"
     }
   ],
   "status": "PASS",
-  "version": "13A.1"
+  "version": "13C.1"
 }

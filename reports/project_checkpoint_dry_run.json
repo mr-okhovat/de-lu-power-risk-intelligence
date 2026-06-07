@@ -69,8 +69,23 @@
       ],
       "return_code": 0,
       "status": "DRY RUN"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/build_artifact_manifest.sh"
+      ],
+      "missing_outputs": [],
+      "name": "artifact_manifest",
+      "required_outputs": [
+        "reports/project_artifact_manifest.md",
+        "reports/project_artifact_manifest.json",
+        "dashboards/project_artifact_manifest.csv"
+      ],
+      "return_code": 0,
+      "status": "DRY RUN"
     }
   ],
   "status": "PASS",
-  "version": "13A.1"
+  "version": "13C.1"
 }

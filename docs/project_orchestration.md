@@ -16,7 +16,17 @@ Default stages:
 2. dataset registry
 3. intake summary
 4. reviewer-ready v2
+5. artifact manifest
 
-The screenshot stage is optional because it starts Streamlit and a headless browser.
+With screenshots enabled:
 
-This layer does not change analytics logic. It only controls rebuild order and checkpoint reporting.
+1. tests
+2. dataset registry
+3. intake summary
+4. reviewer-ready v2
+5. dashboard screenshots
+6. artifact manifest
+
+The manifest runs after screenshots when screenshots are enabled, so screenshot hashes reflect the refreshed files.
+
+This layer does not change analytics logic. It controls rebuild order and checkpoint reporting.

@@ -17,7 +17,7 @@ Manifest table: `dashboards/project_artifact_manifest.csv`
 |---|---|---:|---:|---:|---|
 | project | `README.md` | True | True | 5118 | `a94471cd5af0` |
 | orchestration | `scripts/run_project_checkpoint.sh` | True | True | 183 | `4df4ad624c98` |
-| orchestration | `src/core/project_orchestrator.py` | True | True | 7671 | `471518a25f20` |
+| orchestration | `src/core/project_orchestrator.py` | True | True | 8048 | `fdfc9f1bdfa0` |
 | reviewer | `reports/reviewer_ready_v2.md` | True | True | 2967 | `fea96160e7aa` |
 | reviewer | `reports/reviewer_ready_v2.json` | True | True | 3163 | `1342aa5b0f4d` |
 | reviewer | `dashboards/reviewer_ready_v2_metrics.csv` | True | True | 736 | `6d6f78fd44a1` |

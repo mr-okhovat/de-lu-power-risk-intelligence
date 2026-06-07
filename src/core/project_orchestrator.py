@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-VERSION = "13A.1"
+VERSION = "13C.1"
 
 
 @dataclass(frozen=True)
@@ -93,6 +93,18 @@ def default_stages(*, include_screenshots: bool = False) -> list[Stage]:
                 ],
             )
         )
+
+    stages.append(
+        Stage(
+            name="artifact_manifest",
+            command=["bash", "scripts/build_artifact_manifest.sh"],
+            required_outputs=[
+                "reports/project_artifact_manifest.md",
+                "reports/project_artifact_manifest.json",
+                "dashboards/project_artifact_manifest.csv",
+            ],
+        )
+    )
 
     return stages
 

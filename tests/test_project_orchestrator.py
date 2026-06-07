@@ -18,6 +18,7 @@ def test_default_stages_without_screenshots() -> None:
         "dataset_registry",
         "intake_summary",
         "reviewer_ready_v2",
+        "artifact_manifest",
     ]
 
 
@@ -25,7 +26,21 @@ def test_default_stages_with_screenshots() -> None:
     stages = default_stages(include_screenshots=True)
     names = [stage.name for stage in stages]
 
-    assert "dashboard_screenshots" in names
+    assert names == [
+        "tests",
+        "dataset_registry",
+        "intake_summary",
+        "reviewer_ready_v2",
+        "dashboard_screenshots",
+        "artifact_manifest",
+    ]
+
+
+def test_manifest_runs_after_screenshots_when_enabled() -> None:
+    stages = default_stages(include_screenshots=True)
+    names = [stage.name for stage in stages]
+
+    assert names.index("dashboard_screenshots") < names.index("artifact_manifest")
 
 
 def test_missing_outputs(tmp_path: Path) -> None:
