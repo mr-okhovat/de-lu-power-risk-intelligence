@@ -106,3 +106,32 @@ Is this feature framing directionally useful for power trading analytics, or is 
 ## Project status
 
 The current build is a reproducible analytics prototype. The next serious step is a longer historical run, followed by a careful event/backtest layer.
+
+## Local dashboard
+
+A lightweight Streamlit dashboard is available for local review.
+
+Run:
+
+    streamlit run app/streamlit_app.py
+
+Current dashboard panels:
+
+- cross-month overview
+- monthly event lift
+- base event rate versus signal-positive event rate
+- selected month KPI cards
+- price and risk timelines
+- confusion buckets
+- signal-positive hours
+- reason-code diagnostics
+- price-event label diagnostics
+- reviewer file checklist
+
+The dashboard reads existing CSV/report outputs. It does not rebuild ingestion and does not change the model.
+
+See:
+
+    docs/dashboard_runbook.md
+    docs/dashboard_screenshot_guide.md
+
