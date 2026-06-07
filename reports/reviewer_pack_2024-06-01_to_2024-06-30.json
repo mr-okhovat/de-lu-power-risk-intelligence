@@ -1,0 +1,60 @@
+{
+  "checks": {
+    "data_quality": true,
+    "feature_quality": true,
+    "features": true,
+    "market_export": true,
+    "pipeline_summary": false,
+    "reason_codes": true,
+    "regime_distribution": true,
+    "risk_diagnostics": true,
+    "risk_quality": true,
+    "risk_signals": true,
+    "sql_schema": true,
+    "staging": true,
+    "staging_checks": true,
+    "top_risk_hours": true
+  },
+  "end": "2024-06-30",
+  "files": {
+    "data_quality": "reports/data_quality_2024-06-01_to_2024-06-30.md",
+    "feature_quality": "reports/feature_quality_2024-06-01_to_2024-06-30.md",
+    "features": "data/processed/hourly_features_DE-LU_2024-06-01_to_2024-06-30.csv",
+    "market_export": "dashboards/market_overview_DE-LU_2024-06-01_to_2024-06-30.csv",
+    "pipeline_summary": "reports/pipeline_run_summary_2024-06-01_to_2024-06-30.md",
+    "reason_codes": "dashboards/risk_reason_code_summary_DE-LU_2024-06-01_to_2024-06-30.csv",
+    "regime_distribution": "dashboards/risk_regime_distribution_DE-LU_2024-06-01_to_2024-06-30.csv",
+    "risk_diagnostics": "reports/risk_diagnostics_2024-06-01_to_2024-06-30.md",
+    "risk_quality": "reports/risk_signal_quality_2024-06-01_to_2024-06-30.md",
+    "risk_signals": "data/processed/risk_signals_DE-LU_2024-06-01_to_2024-06-30.csv",
+    "sql_schema": "sql/schema_power_market_features.sql",
+    "staging": "data/staging/clean_hourly_DE-LU_2024-06-01_to_2024-06-30.csv",
+    "staging_checks": "reports/staging_hard_checks_2024-06-01_to_2024-06-30.md",
+    "top_risk_hours": "dashboards/top_risk_hours_DE-LU_2024-06-01_to_2024-06-30.csv"
+  },
+  "market": "DE-LU",
+  "missing_required": [
+    "pipeline_summary"
+  ],
+  "region": "DE",
+  "report_statuses": {
+    "data_quality": "PASS",
+    "feature_quality": "PASS",
+    "pipeline_summary": "missing",
+    "risk_diagnostics": "PASS",
+    "risk_quality": "PASS",
+    "staging_checks": "PASS"
+  },
+  "row_counts": {
+    "features": 720,
+    "market_export": 720,
+    "reason_codes": 6,
+    "regime_distribution": 4,
+    "risk_signals": 720,
+    "staging": 720,
+    "top_risk_hours": 20
+  },
+  "start": "2024-06-01",
+  "status": "CHECK NEEDED",
+  "version": "6B.1"
+}

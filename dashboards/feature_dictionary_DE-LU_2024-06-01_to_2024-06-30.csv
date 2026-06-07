@@ -1,0 +1,23 @@
+column_name,unit_or_type,description,dashboard_schema_version
+timestamp_utc,datetime_utc,Canonical UTC timestamp.,3B.1
+timestamp_local,datetime_local,Europe/Berlin local market timestamp.,3B.1
+market_label,text,Analytical market label used by the project.,3B.1
+smard_region,text,SMARD endpoint region used for source retrieval.,3B.1
+total_load_mw,MW,Total load from SMARD.,3B.1
+residual_load_official_mw,MW,Official residual load from SMARD.,3B.1
+wind_onshore_validated_mw,MW,Validated wind onshore residual-load component.,3B.1
+wind_offshore_validated_mw,MW,Validated wind offshore residual-load component.,3B.1
+solar_validated_mw,MW,Validated solar residual-load component.,3B.1
+wind_total_mw,MW,Wind onshore plus wind offshore.,3B.1
+renewable_generation_mw,MW,Wind total plus solar.,3B.1
+renewable_share,ratio,Renewable generation divided by total load.,3B.1
+wind_share,ratio,Wind total divided by total load.,3B.1
+solar_share,ratio,Solar generation divided by total load.,3B.1
+load_ramp_mw,MW/h,Current total load minus previous hour total load.,3B.1
+residual_load_ramp_mw,MW/h,Current residual load minus previous hour residual load.,3B.1
+renewable_generation_ramp_mw,MW/h,Current renewable generation minus previous hour renewable generation.,3B.1
+local_date,date,Europe/Berlin local date.,3B.1
+local_hour,hour,Europe/Berlin local hour.,3B.1
+local_weekday,text,Europe/Berlin local weekday name.,3B.1
+is_weekend,boolean,True if local timestamp falls on Saturday or Sunday.,3B.1
+feature_schema_version,text,Feature schema version.,3B.1

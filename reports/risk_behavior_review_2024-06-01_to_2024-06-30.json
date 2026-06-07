@@ -1,0 +1,17 @@
+{
+  "extreme_rows": 1,
+  "high_risk_rows": 7,
+  "max_risk_score": 85.0,
+  "mean_risk_score": 8.23611111111111,
+  "median_risk_score": 0.0,
+  "outputs": {
+    "hourly": "dashboards/risk_behavior_hourly_DE-LU_2024-06-01_to_2024-06-30.csv",
+    "reasons": "dashboards/risk_behavior_reasons_DE-LU_2024-06-01_to_2024-06-30.csv",
+    "regime": "dashboards/risk_behavior_regime_DE-LU_2024-06-01_to_2024-06-30.csv",
+    "report": "reports/risk_behavior_review_2024-06-01_to_2024-06-30.md",
+    "top": "dashboards/risk_behavior_top_hours_DE-LU_2024-06-01_to_2024-06-30.csv",
+    "weekday": "dashboards/risk_behavior_weekday_DE-LU_2024-06-01_to_2024-06-30.csv"
+  },
+  "rows": 720,
+  "version": "7B.1"
+}
