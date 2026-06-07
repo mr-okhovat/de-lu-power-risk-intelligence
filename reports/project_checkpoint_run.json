@@ -1,6 +1,6 @@
 {
   "dry_run": false,
-  "include_screenshots": true,
+  "include_screenshots": false,
   "results": [
     {
       "command": [
@@ -60,6 +60,21 @@
     },
     {
       "command": [
+        "bash",
+        "scripts/build_run_catalog.sh"
+      ],
+      "missing_outputs": [],
+      "name": "run_catalog",
+      "required_outputs": [
+        "reports/market_month_run_catalog.md",
+        "reports/market_month_run_catalog.json",
+        "dashboards/market_month_run_catalog.csv"
+      ],
+      "return_code": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
         "python",
         "-m",
         "src.reporting.reviewer_ready_v2",
@@ -87,24 +102,6 @@
     },
     {
       "command": [
-        "python",
-        "scripts/capture_dashboard_screenshots.py"
-      ],
-      "missing_outputs": [],
-      "name": "dashboard_screenshots",
-      "required_outputs": [
-        "reports/figures/dashboard/dashboard_overview.png",
-        "reports/figures/dashboard/dashboard_selected_month.png",
-        "reports/figures/dashboard/dashboard_diagnostics.png",
-        "reports/figures/dashboard/dashboard_lead_time.png",
-        "reports/figures/dashboard/dashboard_dataset_intake.png",
-        "reports/figures/dashboard/dashboard_reviewer_files.png"
-      ],
-      "return_code": 0,
-      "status": "PASS"
-    },
-    {
-      "command": [
         "bash",
         "scripts/build_artifact_manifest.sh"
       ],
@@ -120,5 +117,5 @@
     }
   ],
   "status": "PASS",
-  "version": "14B.1"
+  "version": "15B.1"
 }

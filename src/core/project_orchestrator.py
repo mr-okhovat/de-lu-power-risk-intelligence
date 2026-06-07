@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-VERSION = "14B.1"
+VERSION = "15B.1"
 
 
 @dataclass(frozen=True)
@@ -59,6 +59,15 @@ def default_stages(*, include_screenshots: bool = False) -> list[Stage]:
                 "reports/data_availability_index.md",
                 "reports/data_availability_index.json",
                 "dashboards/data_availability_index.csv",
+            ],
+        ),
+        Stage(
+            name="run_catalog",
+            command=["bash", "scripts/build_run_catalog.sh"],
+            required_outputs=[
+                "reports/market_month_run_catalog.md",
+                "reports/market_month_run_catalog.json",
+                "dashboards/market_month_run_catalog.csv",
             ],
         ),
         Stage(

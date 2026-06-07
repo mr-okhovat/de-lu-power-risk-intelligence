@@ -1,10 +1,10 @@
 # Project checkpoint run
 
-Version: `14B.1`
-Timestamp UTC: `2026-06-07T21:54:17.432400+00:00`
+Version: `15B.1`
+Timestamp UTC: `2026-06-07T23:20:09.714485+00:00`
 Status: `PASS`
 Dry run: `False`
-Dashboard screenshots included: `True`
+Dashboard screenshots included: `False`
 
 ## Stages
 
@@ -14,8 +14,8 @@ Dashboard screenshots included: `True`
 | dataset_registry | PASS | 0 |  |
 | intake_summary | PASS | 0 |  |
 | data_availability_index | PASS | 0 |  |
+| run_catalog | PASS | 0 |  |
 | reviewer_ready_v2 | PASS | 0 |  |
-| dashboard_screenshots | PASS | 0 |  |
 | artifact_manifest | PASS | 0 |  |
 
 ## Readout
