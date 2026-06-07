@@ -107,6 +107,30 @@ Is this feature framing directionally useful for power trading analytics, or is 
 
 The current build is a reproducible analytics prototype. The next serious step is a longer historical run, followed by a careful event/backtest layer.
 
+## Dashboard screenshots
+
+The project also includes a lightweight local Streamlit dashboard for reviewing the current analytics outputs.
+
+Run:
+
+    streamlit run app/streamlit_app.py
+
+### Dashboard overview
+
+![Dashboard overview](reports/figures/dashboard/dashboard_overview.png)
+
+### Selected month view
+
+![Dashboard selected month](reports/figures/dashboard/dashboard_selected_month.png)
+
+### Diagnostics view
+
+![Dashboard diagnostics](reports/figures/dashboard/dashboard_diagnostics.png)
+
+### Reviewer files view
+
+![Dashboard reviewer files](reports/figures/dashboard/dashboard_reviewer_files.png)
+
 ## Local dashboard
 
 A lightweight Streamlit dashboard is available for local review.
