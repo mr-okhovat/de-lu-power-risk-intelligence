@@ -163,3 +163,24 @@ See:
     docs/dashboard_runbook.md
     docs/dashboard_screenshot_guide.md
 
+
+## Reviewer-ready v2
+
+The current reviewer checkpoint includes both same-hour signal-price evaluation and lead-time diagnostics.
+
+Key points:
+
+- Same-hour aggregate event lift: 1.770
+- Aggregate precision: 0.463
+- Aggregate recall: 0.025
+- Same-hour lift is useful as a diagnostic readout.
+- Lead-time behavior is now explicitly checked before making any early-warning claim.
+
+Lead-time readout:
+
+Lead-time check shows some forward-window event concentration, especially within the next 3 hours. This is still not forecast skill and needs longer-window validation.
+
+Main file:
+
+    reports/reviewer_ready_v2.md
+
