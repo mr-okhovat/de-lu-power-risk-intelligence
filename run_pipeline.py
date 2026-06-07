@@ -8,6 +8,7 @@ from src.data_ingestion.smard_client import SmardClient, load_smard_settings
 from src.staging.build_hourly import build_staging_hourly
 from src.features.market_features import build_market_features
 from src.reporting.dashboard_exports import build_dashboard_exports
+from src.signals.risk_engine import build_risk_signal_table
 
 
 def setup_logging() -> None:
@@ -32,7 +33,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--end", required=True, help="End date YYYY-MM-DD")
     parser.add_argument("--market-label", default="DE-LU")
     parser.add_argument("--smard-region", default="DE")
-    parser.add_argument("--phase", default="smard-ingest", choices=["smard-ingest", "build-staging", "build-features", "build-dashboard-exports"])
+    parser.add_argument("--phase", default="smard-ingest", choices=["smard-ingest", "build-staging", "build-features", "build-dashboard-exports", "build-risk-signals"])
     parser.add_argument("--filters", nargs="+", default=["410"])
     parser.add_argument("--resolution", default="hour")
     parser.add_argument("--config", default="src/config/sources.yaml")
@@ -46,6 +47,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--dictionary-output", default=None)
     parser.add_argument("--dashboard-report-output", default=None)
     parser.add_argument("--sql-schema-output", default=None)
+    parser.add_argument("--risk-output", default=None)
+    parser.add_argument("--risk-report-output", default=None)
+    parser.add_argument("--min-history", type=int, default=24)
     parser.add_argument(
         "--continue-on-error",
         action="store_true",
@@ -163,6 +167,27 @@ def main() -> None:
             dictionary_output=dictionary_output,
             report_output=dashboard_report_output,
             sql_schema_output=sql_schema_output,
+        )
+        return
+
+    if args.phase == "build-risk-signals":
+        feature_input = args.features_output or (
+            f"data/processed/hourly_features_{args.market_label}_{args.start}_to_{args.end}.csv"
+        )
+
+        risk_output = args.risk_output or (
+            f"data/processed/risk_signals_{args.market_label}_{args.start}_to_{args.end}.csv"
+        )
+
+        risk_report_output = args.risk_report_output or (
+            f"reports/risk_signal_quality_{args.start}_to_{args.end}.md"
+        )
+
+        build_risk_signal_table(
+            feature_input=feature_input,
+            signal_output=risk_output,
+            report_output=risk_report_output,
+            min_history=args.min_history,
         )
         return
 
