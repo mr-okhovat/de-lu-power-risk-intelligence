@@ -17,6 +17,7 @@ def test_default_stages_without_screenshots() -> None:
         "tests",
         "dataset_registry",
         "intake_summary",
+        "data_availability_index",
         "reviewer_ready_v2",
         "artifact_manifest",
     ]
@@ -30,10 +31,18 @@ def test_default_stages_with_screenshots() -> None:
         "tests",
         "dataset_registry",
         "intake_summary",
+        "data_availability_index",
         "reviewer_ready_v2",
         "dashboard_screenshots",
         "artifact_manifest",
     ]
+
+
+def test_availability_runs_after_intake() -> None:
+    stages = default_stages(include_screenshots=False)
+    names = [stage.name for stage in stages]
+
+    assert names.index("intake_summary") < names.index("data_availability_index")
 
 
 def test_manifest_runs_after_screenshots_when_enabled() -> None:

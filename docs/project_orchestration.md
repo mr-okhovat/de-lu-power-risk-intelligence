@@ -15,18 +15,18 @@ Default stages:
 1. tests
 2. dataset registry
 3. intake summary
-4. reviewer-ready v2
-5. artifact manifest
+4. data availability index
+5. reviewer-ready v2
+6. artifact manifest
 
 With screenshots enabled:
 
 1. tests
 2. dataset registry
 3. intake summary
-4. reviewer-ready v2
-5. dashboard screenshots
-6. artifact manifest
+4. data availability index
+5. reviewer-ready v2
+6. dashboard screenshots
+7. artifact manifest
 
 The manifest runs after screenshots when screenshots are enabled, so screenshot hashes reflect the refreshed files.
-
-This layer does not change analytics logic. It controls rebuild order and checkpoint reporting.

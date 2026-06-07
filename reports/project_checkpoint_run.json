@@ -45,6 +45,21 @@
     },
     {
       "command": [
+        "bash",
+        "scripts/build_data_availability_index.sh"
+      ],
+      "missing_outputs": [],
+      "name": "data_availability_index",
+      "required_outputs": [
+        "reports/data_availability_index.md",
+        "reports/data_availability_index.json",
+        "dashboards/data_availability_index.csv"
+      ],
+      "return_code": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
         "python",
         "-m",
         "src.reporting.reviewer_ready_v2",
@@ -87,5 +102,5 @@
     }
   ],
   "status": "PASS",
-  "version": "13C.1"
+  "version": "14B.1"
 }

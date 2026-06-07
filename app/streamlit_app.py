@@ -44,6 +44,8 @@ def paths(start: str, end: str) -> dict[str, Path]:
         "project_checkpoint_json": Path("reports/project_checkpoint_run.json"),
         "artifact_manifest": Path("dashboards/project_artifact_manifest.csv"),
         "artifact_manifest_report": Path("reports/project_artifact_manifest.md"),
+        "data_availability_index": Path("dashboards/data_availability_index.csv"),
+        "data_availability_report": Path("reports/data_availability_index.md"),
         "reviewer": Path("reports/reviewer_ready_v1.md"),
         "visual_pack": Path("reports/visual_reviewer_pack.md"),
         "readme": Path("README.md"),
@@ -97,6 +99,10 @@ def load_intake_summary() -> pd.DataFrame:
 
 def load_artifact_manifest() -> pd.DataFrame:
     return read_csv(Path("dashboards/project_artifact_manifest.csv"))
+
+
+def load_data_availability_index() -> pd.DataFrame:
+    return read_csv(Path("dashboards/data_availability_index.csv"))
 
 
 def load_checkpoint_payload() -> dict:
@@ -284,6 +290,84 @@ def monthly_rate_frame(cross: pd.DataFrame) -> pd.DataFrame:
 
 def csv_bytes(df: pd.DataFrame) -> bytes:
     return df.to_csv(index=False).encode("utf-8")
+
+
+def as_bool_series(series: pd.Series) -> pd.Series:
+    if series.dtype == bool:
+        return series
+
+    return series.astype(str).str.lower().isin(["true", "1", "yes"])
+
+
+def data_availability_metrics(df: pd.DataFrame) -> dict[str, int | bool | str]:
+    if df.empty:
+        return {
+            "datasets": 0,
+            "registered": 0,
+            "analytics_ready": 0,
+            "unregistered": 0,
+            "markets": 0,
+            "period": "",
+        }
+
+    registered = as_bool_series(df["registered"]) if "registered" in df.columns else pd.Series(False, index=df.index)
+    ready = as_bool_series(df["analytics_ready"]) if "analytics_ready" in df.columns else pd.Series(False, index=df.index)
+
+    starts = df["start"].replace("", pd.NA).dropna() if "start" in df.columns else pd.Series(dtype="object")
+    ends = df["end"].replace("", pd.NA).dropna() if "end" in df.columns else pd.Series(dtype="object")
+
+    period = ""
+    if not starts.empty and not ends.empty:
+        period = f"{starts.min()} to {ends.max()}"
+
+    return {
+        "datasets": int(len(df)),
+        "registered": int(registered.sum()),
+        "analytics_ready": int(ready.sum()),
+        "unregistered": int((~registered).sum()),
+        "markets": int(df["market"].replace("", pd.NA).dropna().nunique()) if "market" in df.columns else 0,
+        "period": period,
+    }
+
+
+def data_availability_status_counts(df: pd.DataFrame) -> pd.DataFrame:
+    if "analytics_ready" not in df.columns:
+        return pd.DataFrame({"status": [], "count": []})
+
+    ready = as_bool_series(df["analytics_ready"])
+    work = pd.DataFrame(
+        {
+            "status": ready.map({True: "analytics_ready", False: "not_ready"}),
+        }
+    )
+
+    return (
+        work["status"]
+        .value_counts()
+        .rename_axis("status")
+        .reset_index(name="count")
+        .sort_values("status")
+        .reset_index(drop=True)
+    )
+
+
+def data_availability_core_table(df: pd.DataFrame) -> pd.DataFrame:
+    cols = [
+        "dataset_id",
+        "market",
+        "start",
+        "end",
+        "registered",
+        "analytics_ready",
+        "intake_status",
+        "source_rows",
+        "adapted_rows",
+        "source_file",
+        "adapted_file",
+    ]
+
+    available = [col for col in cols if col in df.columns]
+    return df[available].reset_index(drop=True)
 
 
 def checkpoint_stage_table(payload: dict) -> pd.DataFrame:
@@ -595,6 +679,52 @@ def render_lead_time(aggregate_df: pd.DataFrame, monthly_df: pd.DataFrame) -> No
     )
 
 
+def render_data_availability(index_df: pd.DataFrame) -> None:
+    st.subheader("Data availability")
+
+    st.write(
+        "This panel shows which datasets are present, registered, adapted, contract-checked and analytics-ready."
+    )
+
+    metric = data_availability_metrics(index_df)
+
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Datasets", fmt(metric["datasets"]))
+    c2.metric("Registered", fmt(metric["registered"]))
+    c3.metric("Analytics-ready", fmt(metric["analytics_ready"]))
+    c4.metric("Markets", fmt(metric["markets"]))
+
+    if metric["unregistered"] == 0 and metric["datasets"] == metric["analytics_ready"]:
+        st.success("All indexed datasets are registered and analytics-ready.")
+    elif metric["unregistered"] > 0:
+        st.warning("Some discovered datasets are not registered.")
+    else:
+        st.warning("Some registered datasets are not analytics-ready yet.")
+
+    if metric["period"]:
+        st.caption(f"Indexed period: {metric['period']}")
+
+    left, right = st.columns(2)
+
+    with left:
+        st.markdown("#### Availability status")
+        st.bar_chart(data_availability_status_counts(index_df), x="status", y="count")
+
+    with right:
+        st.markdown("#### Control rule")
+        st.write("A dataset should be used by analytics only after it is registered, adapted and contract-validated.")
+
+    st.markdown("#### Data availability index")
+    st.dataframe(data_availability_core_table(index_df), use_container_width=True)
+
+    st.download_button(
+        "Download data availability index",
+        data=csv_bytes(index_df),
+        file_name="data_availability_index.csv",
+        mime="text/csv",
+    )
+
+
 def render_project_health(manifest_df: pd.DataFrame, checkpoint_payload: dict) -> None:
     st.subheader("Project health")
 
@@ -648,6 +778,8 @@ def render_reports(selected_paths: dict[str, Path]) -> None:
         {"file": "Dataset intake summary", "path": selected_paths["intake_summary"]},
         {"file": "Project checkpoint report", "path": selected_paths["project_checkpoint_report"]},
         {"file": "Artifact manifest report", "path": selected_paths["artifact_manifest_report"]},
+        {"file": "Data availability report", "path": selected_paths["data_availability_report"]},
+        {"file": "Data availability index", "path": selected_paths["data_availability_index"]},
         {"file": "Cross-month table", "path": selected_paths["cross_month"]},
     ]
 
@@ -689,7 +821,7 @@ def render() -> None:
     cross = load_cross_month()
     metrics = kpis(df)
 
-    tabs = st.tabs(["Overview", "Selected month", "Diagnostics", "Lead time", "Dataset intake", "Project health", "Reviewer files"])
+    tabs = st.tabs(["Overview", "Selected month", "Diagnostics", "Lead time", "Dataset intake", "Data availability", "Project health", "Reviewer files"])
 
     with tabs[0]:
         render_overview(cross)
@@ -707,9 +839,12 @@ def render() -> None:
         render_intake(load_intake_summary())
 
     with tabs[5]:
-        render_project_health(load_artifact_manifest(), load_checkpoint_payload())
+        render_data_availability(load_data_availability_index())
 
     with tabs[6]:
+        render_project_health(load_artifact_manifest(), load_checkpoint_payload())
+
+    with tabs[7]:
         render_reports(selected_paths)
 
 
