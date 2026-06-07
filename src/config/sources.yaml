@@ -1,0 +1,16 @@
+smard:
+  name: "SMARD / Bundesnetzagentur"
+  base_url: "https://www.smard.de/app"
+  default_smard_region: "DE"
+  default_market_label: "DE-LU"
+  default_resolution: "hour"
+  timeout_seconds: 60
+  retries: 3
+  retry_sleep_seconds: 2
+  attribution: "Bundesnetzagentur | SMARD.de"
+  license_note: "CC BY 4.0 for downloadable SMARD market data where applicable."
+  filters:
+    "410":
+      name: "Total Load"
+      unit: "MW"
+      category: "consumption"
