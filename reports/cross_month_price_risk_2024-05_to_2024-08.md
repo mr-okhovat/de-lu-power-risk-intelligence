@@ -20,6 +20,6 @@ Signal-positive hours beat the base event rate in every month, but the strength 
 
 Do not tune thresholds yet.
 
-The current signal is conservative and repeatedly shows event lift above the base price-event rate. The next useful step is a reviewer-ready package with clear caveats, then a longer data window or forecast-error layer.
+The current signal is conservative and repeatedly shows event lift above the base price-event rate. The next step is a reviewer-ready package with clear caveats, not a heavier model.
 
 This is still not a trading backtest. It does not claim forecast skill, tradability or P&L.

@@ -43,7 +43,9 @@ def safe_div(a: int, b: int) -> float | None:
 
 
 def f1(precision: float | None, recall: float | None) -> float | None:
-    if precision is None or recall is None or precision + recall == 0:
+    if precision is None or recall is None:
+        return None
+    if precision + recall == 0:
         return None
     return float(2 * precision * recall / (precision + recall))
 
@@ -95,15 +97,16 @@ def month_summary(label: str, start: str, end: str, market: str) -> dict[str, ob
 
 
 def build_summary(market: str) -> pd.DataFrame:
-    rows = [month_summary(label, start, end, market) for label, start, end in MONTHS]
-    return pd.DataFrame(rows)
+    return pd.DataFrame(
+        [month_summary(label, start, end, market) for label, start, end in MONTHS]
+    )
 
 
 def readout(summary: pd.DataFrame) -> str:
     lifts = summary["event_lift"].dropna()
 
     if lifts.empty:
-        return "No lift could be calculated. The signal is not producing usable high-risk samples."
+        return "No lift could be calculated."
 
     if (lifts > 1).all():
         if lifts.min() >= 1.5:
@@ -143,7 +146,7 @@ def make_report(summary: pd.DataFrame, output_csv: str) -> str:
         "",
         "Do not tune thresholds yet.",
         "",
-        "The current signal is conservative and repeatedly shows event lift above the base price-event rate. The next useful step is a reviewer-ready package with clear caveats, then a longer data window or forecast-error layer.",
+        "The current signal is conservative and repeatedly shows event lift above the base price-event rate. The next step is a reviewer-ready package with clear caveats, not a heavier model.",
         "",
         "This is still not a trading backtest. It does not claim forecast skill, tradability or P&L.",
         "",
