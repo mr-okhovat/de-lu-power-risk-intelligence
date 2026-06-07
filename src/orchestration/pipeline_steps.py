@@ -24,6 +24,8 @@ class PipelineConfig:
     low_quantile: float
     run_tests_first: bool
     run_tests_last: bool
+    include_event_study: bool
+    include_signal_event_evaluation: bool
 
 
 @dataclass(frozen=True)
@@ -34,12 +36,7 @@ class PipelineStep:
 
 
 def load_pipeline_config(path: str | Path) -> PipelineConfig:
-    config_path = Path(path)
-
-    if not config_path.exists():
-        raise FileNotFoundError(f"Pipeline config not found: {config_path}")
-
-    payload: dict[str, Any] = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    payload: dict[str, Any] = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
     raw = payload["pipeline"]
 
     return PipelineConfig(
@@ -57,6 +54,8 @@ def load_pipeline_config(path: str | Path) -> PipelineConfig:
         low_quantile=float(raw["low_quantile"]),
         run_tests_first=bool(raw.get("run_tests_first", True)),
         run_tests_last=bool(raw.get("run_tests_last", True)),
+        include_event_study=bool(raw.get("include_event_study", False)),
+        include_signal_event_evaluation=bool(raw.get("include_signal_event_evaluation", False)),
     )
 
 
@@ -74,6 +73,7 @@ def output_paths(config: PipelineConfig) -> dict[str, str]:
         "dashboard_report": f"reports/dashboard_export_quality_{report_suffix}.md",
         "sql_schema": "sql/schema_power_market_features.sql",
         "risk_signals": f"data/processed/risk_signals_{suffix}.csv",
+        "risk_signal_report": f"reports/risk_signal_quality_{report_suffix}.md",
         "risk_diagnostics_report": f"reports/risk_diagnostics_{report_suffix}.md",
         "risk_diagnostics_json": f"reports/risk_diagnostics_{report_suffix}.json",
         "risk_regime_distribution": f"dashboards/risk_regime_distribution_{suffix}.csv",
@@ -107,154 +107,52 @@ def build_pipeline_steps(config: PipelineConfig) -> list[PipelineStep]:
     steps: list[PipelineStep] = []
 
     if config.run_tests_first:
-        steps.append(
-            PipelineStep(
-                name="tests_start",
-                command=[py, "-m", "pytest"],
-                description="Run test suite before data pipeline execution.",
-            )
-        )
+        steps.append(PipelineStep("tests_start", [py, "-m", "pytest"], "Run tests first."))
 
-    steps.extend(
-        [
-            PipelineStep(
-                name="smard_filter_discovery",
-                command=[
-                    py,
-                    "-m",
-                    "src.data_ingestion.smard_filter_discovery",
-                    "--smard-region",
-                    config.smard_region,
-                    "--resolution",
-                    config.resolution,
-                ],
-                description="Verify configured SMARD filter endpoints.",
-            ),
-            PipelineStep(
-                name="smard_ingestion",
-                command=[
-                    py,
-                    "run_pipeline.py",
-                    *base_pipeline_args(config),
-                    "--phase",
-                    "smard-ingest",
-                    "--resolution",
-                    config.resolution,
-                    "--filters",
-                    *config.filters,
-                ],
-                description="Download raw SMARD JSON data and metadata.",
-            ),
-            PipelineStep(
-                name="build_staging",
-                command=[
-                    py,
-                    "run_pipeline.py",
-                    *base_pipeline_args(config),
-                    "--phase",
-                    "build-staging",
-                ],
-                description="Build clean hourly staging table.",
-            ),
-            PipelineStep(
-                name="staging_hard_checks",
-                command=[
-                    py,
-                    "-m",
-                    "src.data_quality.staging_hard_checks",
-                    "--staging-file",
-                    paths["staging"],
-                    "--report-output",
-                    paths["staging_hard_report"],
-                    "--json-output",
-                    paths["staging_hard_json"],
-                ],
-                description="Run hard validation checks on staging data.",
-            ),
-            PipelineStep(
-                name="build_features",
-                command=[
-                    py,
-                    "run_pipeline.py",
-                    *base_pipeline_args(config),
-                    "--phase",
-                    "build-features",
-                ],
-                description="Build market feature table.",
-            ),
-            PipelineStep(
-                name="build_dashboard_exports",
-                command=[
-                    py,
-                    "run_pipeline.py",
-                    *base_pipeline_args(config),
-                    "--phase",
-                    "build-dashboard-exports",
-                ],
-                description="Build SQL/Power BI-ready exports.",
-            ),
-            PipelineStep(
-                name="build_risk_signals",
-                command=[
-                    py,
-                    "run_pipeline.py",
-                    *base_pipeline_args(config),
-                    "--phase",
-                    "build-risk-signals",
-                    "--min-history",
-                    str(config.min_history),
-                ],
-                description="Build rule-based risk signal table.",
-            ),
-            PipelineStep(
-                name="build_risk_diagnostics",
-                command=[
-                    py,
-                    "run_pipeline.py",
-                    *base_pipeline_args(config),
-                    "--phase",
-                    "build-risk-diagnostics",
-                ],
-                description="Build risk signal diagnostic outputs.",
-            ),
-            PipelineStep(
-                name="build_event_study_skeleton",
-                command=[
-                    py,
-                    "run_pipeline.py",
-                    *base_pipeline_args(config),
-                    "--phase",
-                    "build-event-study-skeleton",
-                    "--high-quantile",
-                    str(config.high_quantile),
-                    "--low-quantile",
-                    str(config.low_quantile),
-                ],
-                description="Build ex-post event labels.",
-            ),
-            PipelineStep(
-                name="build_signal_event_evaluation",
-                command=[
-                    py,
-                    "run_pipeline.py",
-                    *base_pipeline_args(config),
-                    "--phase",
-                    "build-signal-event-evaluation",
-                    "--signal-positive-threshold",
-                    str(config.signal_positive_threshold),
-                ],
-                description="Compare risk signals with event labels.",
-            ),
-        ]
-    )
+    steps.extend([
+        PipelineStep(
+            "smard_filter_discovery",
+            [py, "-m", "src.data_ingestion.smard_filter_discovery", "--smard-region", config.smard_region, "--resolution", config.resolution],
+            "Verify configured SMARD filter endpoints.",
+        ),
+        PipelineStep(
+            "smard_ingestion",
+            [py, "run_pipeline.py", *base_pipeline_args(config), "--phase", "smard-ingest", "--resolution", config.resolution, "--filters", *config.filters],
+            "Download raw SMARD data.",
+        ),
+        PipelineStep(
+            "build_staging",
+            [py, "run_pipeline.py", *base_pipeline_args(config), "--phase", "build-staging"],
+            "Build clean hourly staging table.",
+        ),
+        PipelineStep(
+            "staging_hard_checks",
+            [py, "-m", "src.data_quality.staging_hard_checks", "--staging-file", paths["staging"], "--report-output", paths["staging_hard_report"], "--json-output", paths["staging_hard_json"]],
+            "Run hard validation checks.",
+        ),
+        PipelineStep(
+            "build_features",
+            [py, "run_pipeline.py", *base_pipeline_args(config), "--phase", "build-features"],
+            "Build feature table.",
+        ),
+        PipelineStep(
+            "build_dashboard_exports",
+            [py, "run_pipeline.py", *base_pipeline_args(config), "--phase", "build-dashboard-exports"],
+            "Build SQL/Power BI exports.",
+        ),
+        PipelineStep(
+            "build_risk_signals",
+            [py, "run_pipeline.py", *base_pipeline_args(config), "--phase", "build-risk-signals", "--min-history", str(config.min_history)],
+            "Build risk signals.",
+        ),
+        PipelineStep(
+            "build_risk_diagnostics",
+            [py, "run_pipeline.py", *base_pipeline_args(config), "--phase", "build-risk-diagnostics"],
+            "Build risk diagnostics.",
+        ),
+    ])
 
     if config.run_tests_last:
-        steps.append(
-            PipelineStep(
-                name="tests_end",
-                command=[py, "-m", "pytest"],
-                description="Run test suite after full pipeline execution.",
-            )
-        )
+        steps.append(PipelineStep("tests_end", [py, "-m", "pytest"], "Run tests last."))
 
     return steps

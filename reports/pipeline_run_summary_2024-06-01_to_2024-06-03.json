@@ -9,6 +9,8 @@
       "1225"
     ],
     "high_quantile": 0.9,
+    "include_event_study": false,
+    "include_signal_event_evaluation": false,
     "low_quantile": 0.1,
     "market_label": "DE-LU",
     "min_history": 24,
@@ -21,7 +23,6 @@
     "smard_region": "DE",
     "start": "2024-06-01"
   },
-  "dry_run": false,
   "outputs": {
     "dashboard_dictionary": "dashboards/feature_dictionary_DE-LU_2024-06-01_to_2024-06-03.csv",
     "dashboard_market_overview": "dashboards/market_overview_DE-LU_2024-06-01_to_2024-06-03.csv",
@@ -34,6 +35,7 @@
     "risk_diagnostics_report": "reports/risk_diagnostics_2024-06-01_to_2024-06-03.md",
     "risk_reason_code_summary": "dashboards/risk_reason_code_summary_DE-LU_2024-06-01_to_2024-06-03.csv",
     "risk_regime_distribution": "dashboards/risk_regime_distribution_DE-LU_2024-06-01_to_2024-06-03.csv",
+    "risk_signal_report": "reports/risk_signal_quality_2024-06-01_to_2024-06-03.md",
     "risk_signals": "data/processed/risk_signals_DE-LU_2024-06-01_to_2024-06-03.csv",
     "run_summary": "reports/pipeline_run_summary_2024-06-01_to_2024-06-03.md",
     "run_summary_json": "reports/pipeline_run_summary_2024-06-01_to_2024-06-03.json",
@@ -47,7 +49,7 @@
     "staging_hard_report": "reports/staging_hard_checks_2024-06-01_to_2024-06-03.md",
     "top_risk_hours": "dashboards/top_risk_hours_DE-LU_2024-06-01_to_2024-06-03.csv"
   },
-  "status": "FAIL",
+  "status": "PASS",
   "step_results": [
     {
       "command": [
@@ -55,12 +57,12 @@
         "-m",
         "pytest"
       ],
-      "description": "Run test suite before data pipeline execution.",
-      "duration_seconds": 1.128,
-      "finished_at_utc": "2026-06-07T15:07:42+00:00",
+      "description": "Run tests first.",
+      "duration_seconds": 1.225,
+      "finished_at_utc": "2026-06-07T15:15:20+00:00",
       "name": "tests_start",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:07:41+00:00",
+      "started_at_utc": "2026-06-07T15:15:19+00:00",
       "status": "PASS"
     },
     {
@@ -74,11 +76,11 @@
         "hour"
       ],
       "description": "Verify configured SMARD filter endpoints.",
-      "duration_seconds": 0.384,
-      "finished_at_utc": "2026-06-07T15:07:42+00:00",
+      "duration_seconds": 0.478,
+      "finished_at_utc": "2026-06-07T15:15:20+00:00",
       "name": "smard_filter_discovery",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:07:42+00:00",
+      "started_at_utc": "2026-06-07T15:15:20+00:00",
       "status": "PASS"
     },
     {
@@ -104,12 +106,12 @@
         "4068",
         "1225"
       ],
-      "description": "Download raw SMARD JSON data and metadata.",
-      "duration_seconds": 0.863,
-      "finished_at_utc": "2026-06-07T15:07:43+00:00",
+      "description": "Download raw SMARD data.",
+      "duration_seconds": 0.782,
+      "finished_at_utc": "2026-06-07T15:15:21+00:00",
       "name": "smard_ingestion",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:07:42+00:00",
+      "started_at_utc": "2026-06-07T15:15:20+00:00",
       "status": "PASS"
     },
     {
@@ -128,11 +130,11 @@
         "build-staging"
       ],
       "description": "Build clean hourly staging table.",
-      "duration_seconds": 0.536,
-      "finished_at_utc": "2026-06-07T15:07:44+00:00",
+      "duration_seconds": 0.554,
+      "finished_at_utc": "2026-06-07T15:15:22+00:00",
       "name": "build_staging",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:07:43+00:00",
+      "started_at_utc": "2026-06-07T15:15:21+00:00",
       "status": "PASS"
     },
     {
@@ -147,12 +149,12 @@
         "--json-output",
         "reports/staging_hard_checks_2024-06-01_to_2024-06-03.json"
       ],
-      "description": "Run hard validation checks on staging data.",
-      "duration_seconds": 0.387,
-      "finished_at_utc": "2026-06-07T15:07:44+00:00",
+      "description": "Run hard validation checks.",
+      "duration_seconds": 0.386,
+      "finished_at_utc": "2026-06-07T15:15:22+00:00",
       "name": "staging_hard_checks",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:07:44+00:00",
+      "started_at_utc": "2026-06-07T15:15:22+00:00",
       "status": "PASS"
     },
     {
@@ -170,12 +172,12 @@
         "--phase",
         "build-features"
       ],
-      "description": "Build market feature table.",
-      "duration_seconds": 0.472,
-      "finished_at_utc": "2026-06-07T15:07:44+00:00",
+      "description": "Build feature table.",
+      "duration_seconds": 0.493,
+      "finished_at_utc": "2026-06-07T15:15:23+00:00",
       "name": "build_features",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:07:44+00:00",
+      "started_at_utc": "2026-06-07T15:15:22+00:00",
       "status": "PASS"
     },
     {
@@ -193,12 +195,12 @@
         "--phase",
         "build-dashboard-exports"
       ],
-      "description": "Build SQL/Power BI-ready exports.",
-      "duration_seconds": 0.494,
-      "finished_at_utc": "2026-06-07T15:07:45+00:00",
+      "description": "Build SQL/Power BI exports.",
+      "duration_seconds": 0.49,
+      "finished_at_utc": "2026-06-07T15:15:23+00:00",
       "name": "build_dashboard_exports",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:07:44+00:00",
+      "started_at_utc": "2026-06-07T15:15:23+00:00",
       "status": "PASS"
     },
     {
@@ -218,12 +220,12 @@
         "--min-history",
         "24"
       ],
-      "description": "Build rule-based risk signal table.",
-      "duration_seconds": 0.596,
-      "finished_at_utc": "2026-06-07T15:07:46+00:00",
+      "description": "Build risk signals.",
+      "duration_seconds": 0.57,
+      "finished_at_utc": "2026-06-07T15:15:24+00:00",
       "name": "build_risk_signals",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:07:45+00:00",
+      "started_at_utc": "2026-06-07T15:15:23+00:00",
       "status": "PASS"
     },
     {
@@ -241,40 +243,27 @@
         "--phase",
         "build-risk-diagnostics"
       ],
-      "description": "Build risk signal diagnostic outputs.",
-      "duration_seconds": 0.606,
-      "finished_at_utc": "2026-06-07T15:07:46+00:00",
+      "description": "Build risk diagnostics.",
+      "duration_seconds": 0.481,
+      "finished_at_utc": "2026-06-07T15:15:24+00:00",
       "name": "build_risk_diagnostics",
       "return_code": 0,
-      "started_at_utc": "2026-06-07T15:07:46+00:00",
+      "started_at_utc": "2026-06-07T15:15:24+00:00",
       "status": "PASS"
     },
     {
       "command": [
         "/home/codespace/.python/current/bin/python",
-        "run_pipeline.py",
-        "--start",
-        "2024-06-01",
-        "--end",
-        "2024-06-03",
-        "--market-label",
-        "DE-LU",
-        "--smard-region",
-        "DE",
-        "--phase",
-        "build-event-study-skeleton",
-        "--high-quantile",
-        "0.9",
-        "--low-quantile",
-        "0.1"
+        "-m",
+        "pytest"
       ],
-      "description": "Build ex-post event labels.",
-      "duration_seconds": 0.474,
-      "finished_at_utc": "2026-06-07T15:07:47+00:00",
-      "name": "build_event_study_skeleton",
-      "return_code": 2,
-      "started_at_utc": "2026-06-07T15:07:46+00:00",
-      "status": "FAIL"
+      "description": "Run tests last.",
+      "duration_seconds": 1.439,
+      "finished_at_utc": "2026-06-07T15:15:26+00:00",
+      "name": "tests_end",
+      "return_code": 0,
+      "started_at_utc": "2026-06-07T15:15:24+00:00",
+      "status": "PASS"
     }
   ]
 }

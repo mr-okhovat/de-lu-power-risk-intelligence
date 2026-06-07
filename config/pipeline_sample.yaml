@@ -18,3 +18,5 @@ pipeline:
   low_quantile: 0.10
   run_tests_first: true
   run_tests_last: true
+  include_event_study: false
+  include_signal_event_evaluation: false
