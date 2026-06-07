@@ -127,6 +127,10 @@ Run:
 
 ![Dashboard diagnostics](reports/figures/dashboard/dashboard_diagnostics.png)
 
+### Lead-time view
+
+![Dashboard lead time](reports/figures/dashboard/dashboard_lead_time.png)
+
 ### Reviewer files view
 
 ![Dashboard reviewer files](reports/figures/dashboard/dashboard_reviewer_files.png)

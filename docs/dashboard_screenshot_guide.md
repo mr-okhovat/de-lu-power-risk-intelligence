@@ -27,32 +27,20 @@ Capture these views:
    - price-event label table
    - top risk cases
 
-4. Reviewer files tab
+4. Lead time tab
+   - aggregate lead-time table
+   - event lift by target
+   - precision/recall by target
+
+5. Reviewer files tab
    - file checklist showing the main reviewer reports
 
 ## Suggested filenames
 
-Save screenshots locally as:
-
-    reports/figures/dashboard_overview.png
-    reports/figures/dashboard_selected_month.png
-    reports/figures/dashboard_diagnostics.png
-    reports/figures/dashboard_reviewer_files.png
+    reports/figures/dashboard/dashboard_overview.png
+    reports/figures/dashboard/dashboard_selected_month.png
+    reports/figures/dashboard/dashboard_diagnostics.png
+    reports/figures/dashboard/dashboard_lead_time.png
+    reports/figures/dashboard/dashboard_reviewer_files.png
 
 Only commit screenshots if they are clean, readable and do not include private browser/account information.
-
-## Current positioning
-
-The dashboard is a local analyst prototype.
-
-Do not describe it as:
-
-- a production web app
-- a trading system
-- a forecasting tool
-- a P&L backtest
-- a desk-grade system
-
-Acceptable wording:
-
-A lightweight local dashboard for reviewing the current DE-LU public-data price-risk analytics outputs.

@@ -11,16 +11,16 @@ from playwright.sync_api import sync_playwright
 
 APP_PATH = "app/streamlit_app.py"
 
-
 SHOTS = [
     ("Overview", "reports/figures/dashboard/dashboard_overview.png"),
     ("Selected month", "reports/figures/dashboard/dashboard_selected_month.png"),
     ("Diagnostics", "reports/figures/dashboard/dashboard_diagnostics.png"),
+    ("Lead time", "reports/figures/dashboard/dashboard_lead_time.png"),
     ("Reviewer files", "reports/figures/dashboard/dashboard_reviewer_files.png"),
 ]
 
 
-def wait_for_app(url: str, timeout_seconds: int = 45) -> None:
+def wait_for_app(url: str, timeout_seconds: int = 60) -> None:
     start = time.time()
 
     while time.time() - start < timeout_seconds:
@@ -58,7 +58,7 @@ def capture(url: str) -> None:
 
         for tab_name, output in SHOTS:
             page.get_by_role("tab", name=tab_name).click()
-            page.wait_for_timeout(1200)
+            page.wait_for_timeout(1500)
 
             path = Path(output)
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -74,7 +74,6 @@ def main() -> None:
     args = parser.parse_args()
 
     url = f"http://localhost:{args.port}"
-
     proc = start_streamlit(args.port)
 
     try:

@@ -7,6 +7,7 @@ The dashboard screenshots show the current local analyst app.
 - reports/figures/dashboard/dashboard_overview.png
 - reports/figures/dashboard/dashboard_selected_month.png
 - reports/figures/dashboard/dashboard_diagnostics.png
+- reports/figures/dashboard/dashboard_lead_time.png
 - reports/figures/dashboard/dashboard_reviewer_files.png
 
 ## Positioning
