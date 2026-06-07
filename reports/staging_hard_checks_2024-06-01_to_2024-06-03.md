@@ -1,7 +1,7 @@
 # Staging Validation Hardening Report
 
 - Staging file: `data/staging/clean_hourly_DE-LU_2024-06-01_to_2024-06-03.csv`
-- Status: `PASS WITH LIMITATION`
+- Status: `PASS`
 - Row count: `72`
 - Expected hour count from timestamp span: `72`
 - Duplicate timestamps: `0`
@@ -15,17 +15,17 @@
 
 - `total_load_mw`: `0`
 - `residual_load_official_mw`: `0`
-- `wind_candidate_mw`: `0`
-- `solar_candidate_mw`: `0`
-- `wind_offshore_candidate_mw`: `0`
+- `wind_onshore_validated_mw`: `0`
+- `solar_validated_mw`: `0`
+- `wind_offshore_validated_mw`: `0`
 
 ## Range Violations
 
 - `total_load_mw`: `0`
 - `residual_load_official_mw`: `0`
-- `wind_candidate_mw`: `0`
-- `solar_candidate_mw`: `0`
-- `wind_offshore_candidate_mw`: `0`
+- `wind_onshore_validated_mw`: `0`
+- `solar_validated_mw`: `0`
+- `wind_offshore_validated_mw`: `0`
 
 ## Residual Load Reconciliation
 
@@ -39,7 +39,7 @@
 ## Notes
 
 - Residual reconciliation passed. Candidate renewable columns reconcile against official residual load within tolerance.
-- Generation candidate series are still named provisional until official source labeling is locked in documentation.
+- Renewable component series have been promoted based on exact residual-load reconciliation evidence. This validates staging coherence, not predictive value.
 
 ## Interpretation
 

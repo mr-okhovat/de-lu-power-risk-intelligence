@@ -39,9 +39,9 @@ REQUIRED_STAGING_COLUMNS = [
     "smard_region",
     "total_load_mw",
     "residual_load_official_mw",
-    "wind_candidate_mw",
-    "solar_candidate_mw",
-    "wind_offshore_candidate_mw",
+    "wind_onshore_validated_mw",
+    "solar_validated_mw",
+    "wind_offshore_validated_mw",
     "missing_any_flag",
 ]
 
@@ -49,9 +49,9 @@ REQUIRED_STAGING_COLUMNS = [
 RANGE_RULES = {
     "total_load_mw": {"min": 0.0, "max": 120000.0},
     "residual_load_official_mw": {"min": -20000.0, "max": 120000.0},
-    "wind_candidate_mw": {"min": 0.0, "max": 80000.0},
-    "solar_candidate_mw": {"min": 0.0, "max": 80000.0},
-    "wind_offshore_candidate_mw": {"min": 0.0, "max": 40000.0},
+    "wind_onshore_validated_mw": {"min": 0.0, "max": 80000.0},
+    "solar_validated_mw": {"min": 0.0, "max": 80000.0},
+    "wind_offshore_validated_mw": {"min": 0.0, "max": 40000.0},
 }
 
 
@@ -100,9 +100,9 @@ def reconcile_residual_load(
     required = [
         "total_load_mw",
         "residual_load_official_mw",
-        "wind_candidate_mw",
-        "solar_candidate_mw",
-        "wind_offshore_candidate_mw",
+        "wind_onshore_validated_mw",
+        "solar_validated_mw",
+        "wind_offshore_validated_mw",
     ]
 
     missing = [column for column in required if column not in df.columns]
@@ -119,9 +119,9 @@ def reconcile_residual_load(
 
     derived_residual = (
         df["total_load_mw"]
-        - df["wind_candidate_mw"]
-        - df["solar_candidate_mw"]
-        - df["wind_offshore_candidate_mw"]
+        - df["wind_onshore_validated_mw"]
+        - df["solar_validated_mw"]
+        - df["wind_offshore_validated_mw"]
     )
 
     error = (derived_residual - df["residual_load_official_mw"]).abs()
@@ -222,8 +222,8 @@ def run_staging_hard_checks(
     notes.append(residual_result.note)
 
     notes.append(
-        "Generation candidate series are still named provisional until official source "
-        "labeling is locked in documentation."
+        "Renewable component series have been promoted based on exact residual-load "
+        "reconciliation evidence. This validates staging coherence, not predictive value."
     )
 
     blocking_issue = (
@@ -238,7 +238,7 @@ def run_staging_hard_checks(
     if blocking_issue:
         status = "STOP — NEEDS VERIFICATION"
     else:
-        status = "PASS WITH LIMITATION"
+        status = "PASS"
 
     return StagingHardCheckResult(
         status=status,

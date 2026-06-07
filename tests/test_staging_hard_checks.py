@@ -16,9 +16,9 @@ def make_valid_staging_frame() -> pd.DataFrame:
             "smard_region": ["DE", "DE", "DE"],
             "total_load_mw": [100.0, 110.0, 120.0],
             "residual_load_official_mw": [70.0, 75.0, 80.0],
-            "wind_candidate_mw": [20.0, 25.0, 30.0],
-            "solar_candidate_mw": [5.0, 5.0, 5.0],
-            "wind_offshore_candidate_mw": [5.0, 5.0, 5.0],
+            "wind_onshore_validated_mw": [20.0, 25.0, 30.0],
+            "solar_validated_mw": [5.0, 5.0, 5.0],
+            "wind_offshore_validated_mw": [5.0, 5.0, 5.0],
             "missing_any_flag": [False, False, False],
         }
     )
@@ -64,7 +64,7 @@ def test_run_staging_hard_checks_pass_with_limitation(tmp_path) -> None:
 
     result = run_staging_hard_checks(staging_file)
 
-    assert result.status == "PASS WITH LIMITATION"
+    assert result.status == "PASS"
     assert result.row_count == 3
     assert result.duplicate_timestamp_count == 0
     assert result.hourly_continuity_breaks == 0

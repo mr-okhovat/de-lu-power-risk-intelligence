@@ -1,8 +1,6 @@
 import json
 from pathlib import Path
 
-import pandas as pd
-
 from src.staging.build_hourly import (
     build_expected_hourly_index,
     extract_series_points,
@@ -66,6 +64,7 @@ def test_load_smard_series_from_raw(tmp_path: Path) -> None:
         unit="MW",
         category="consumption",
         semantic_status="endpoint_verified_semantics_locked",
+        validation_status="source_endpoint_and_staging_validated",
         allowed_for_staging=True,
         allowed_for_final_features=True,
         expected_direction="positive",

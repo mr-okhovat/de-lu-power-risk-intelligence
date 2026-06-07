@@ -96,7 +96,7 @@ def validate_series_registry(series: list[SeriesDefinition]) -> None:
             if item.validation_status == "not_yet_validated":
                 raise ValueError(
                     f"Series {item.filter_id} cannot be allowed for final features "
-                    f"unless validation_status is not_yet_validated."
+                    f"unless validation_status is validated."
                 )
 
 
