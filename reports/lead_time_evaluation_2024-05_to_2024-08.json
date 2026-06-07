@@ -1,0 +1,7 @@
+{
+  "aggregate_csv": "dashboards/lead_time_aggregate_DE-LU_2024-05_to_2024-08.csv",
+  "market": "DE-LU",
+  "monthly_csv": "dashboards/lead_time_monthly_DE-LU_2024-05_to_2024-08.csv",
+  "readout": "The signal keeps some forward-looking event concentration in the next 3 hours, but this still needs longer-window validation.",
+  "version": "11A.1"
+}
