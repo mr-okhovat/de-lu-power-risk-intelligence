@@ -82,6 +82,10 @@ def render_summary(config: PipelineConfig, results: list[dict[str, object]], sta
     ]
 
     for name, path in sorted(paths.items()):
+        if name in {"run_summary", "run_summary_json"}:
+            lines.append(f"- {name}: `{path}` (written by this run)")
+            continue
+
         exists = "yes" if Path(path).exists() else "no"
         lines.append(f"- {name}: `{path}` ({exists})")
 
