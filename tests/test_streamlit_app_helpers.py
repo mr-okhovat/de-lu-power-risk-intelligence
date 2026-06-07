@@ -4,6 +4,9 @@ from app.streamlit_app import (
     bucket_counts,
     csv_bytes,
     file_status_table,
+    intake_core_table,
+    intake_metrics,
+    intake_status_counts,
     kpis,
     lead_time_core_table,
     lead_time_lift_frame,
@@ -50,6 +53,17 @@ def make_cross() -> pd.DataFrame:
         }
     )
 
+
+def make_intake() -> pd.DataFrame:
+    return pd.DataFrame(
+        {
+            "dataset_id": ["a", "b"],
+            "status": ["PASS", "CHECK NEEDED"],
+            "row_count": [10, 5],
+            "adapted_output": ["a.csv", "b.csv"],
+            "contract_report": ["a.md", "b.md"],
+        }
+    )
 
 def make_lead_time() -> pd.DataFrame:
     return pd.DataFrame(
@@ -151,3 +165,16 @@ def test_lead_time_frames() -> None:
     assert "event_lift" in lead_time_lift_frame(df).columns
     assert {"precision", "recall"}.issubset(lead_time_precision_recall_frame(df).columns)
     assert "target_definition" in lead_time_core_table(df).columns
+
+
+def test_intake_helpers() -> None:
+    df = make_intake()
+
+    metric = intake_metrics(df)
+    assert metric["datasets"] == 2
+    assert metric["passed"] == 1
+    assert metric["failed"] == 1
+    assert metric["canonical_rows"] == 10
+
+    assert "status" in intake_status_counts(df).columns
+    assert "dataset_id" in intake_core_table(df).columns

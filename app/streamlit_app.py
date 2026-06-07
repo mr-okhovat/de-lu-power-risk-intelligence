@@ -37,6 +37,8 @@ def paths(start: str, end: str) -> dict[str, Path]:
         "lead_time_aggregate": Path("dashboards/lead_time_aggregate_DE-LU_2024-05_to_2024-08.csv"),
         "lead_time_monthly": Path("dashboards/lead_time_monthly_DE-LU_2024-05_to_2024-08.csv"),
         "lead_time_report": Path("reports/lead_time_evaluation_2024-05_to_2024-08.md"),
+        "intake_summary": Path("dashboards/dataset_intake_summary.csv"),
+        "intake_report": Path("reports/dataset_intake_summary.md"),
         "reviewer": Path("reports/reviewer_ready_v1.md"),
         "visual_pack": Path("reports/visual_reviewer_pack.md"),
         "readme": Path("README.md"),
@@ -82,6 +84,10 @@ def load_lead_time_aggregate() -> pd.DataFrame:
 
 def load_lead_time_monthly() -> pd.DataFrame:
     return read_csv(Path("dashboards/lead_time_monthly_DE-LU_2024-05_to_2024-08.csv"))
+
+
+def load_intake_summary() -> pd.DataFrame:
+    return read_csv(Path("dashboards/dataset_intake_summary.csv"))
 
 
 def safe_rate(a: int, b: int) -> float | None:
@@ -262,6 +268,45 @@ def csv_bytes(df: pd.DataFrame) -> bytes:
     return df.to_csv(index=False).encode("utf-8")
 
 
+def intake_status_counts(df: pd.DataFrame) -> pd.DataFrame:
+    return (
+        df["status"]
+        .value_counts()
+        .rename_axis("status")
+        .reset_index(name="count")
+        .sort_values("status")
+        .reset_index(drop=True)
+    )
+
+
+def intake_core_table(df: pd.DataFrame) -> pd.DataFrame:
+    cols = [
+        "dataset_id",
+        "status",
+        "row_count",
+        "adapted_output",
+        "contract_report",
+    ]
+
+    available = [col for col in cols if col in df.columns]
+    return df[available].reset_index(drop=True)
+
+
+def intake_metrics(df: pd.DataFrame) -> dict[str, int | bool]:
+    total = int(len(df))
+    passed = int((df["status"] == "PASS").sum()) if "status" in df.columns else 0
+    failed = total - passed
+    rows = int(df.loc[df["status"] == "PASS", "row_count"].sum()) if {"status", "row_count"}.issubset(df.columns) else 0
+
+    return {
+        "datasets": total,
+        "passed": passed,
+        "failed": failed,
+        "canonical_rows": rows,
+        "all_passed": failed == 0 and total > 0,
+    }
+
+
 def lead_time_lift_frame(df: pd.DataFrame) -> pd.DataFrame:
     cols = ["target_definition", "event_lift"]
     return df[cols].set_index("target_definition")
@@ -403,6 +448,47 @@ def render_diagnostics(df: pd.DataFrame) -> None:
     st.dataframe(top_cases(df), use_container_width=True)
 
 
+def render_intake(intake_df: pd.DataFrame) -> None:
+    st.subheader("Dataset intake")
+
+    st.write(
+        "This panel shows which registered datasets passed adapter mapping and contract validation before entering analytics."
+    )
+
+    metric = intake_metrics(intake_df)
+
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Registered datasets", fmt(metric["datasets"]))
+    c2.metric("Passed", fmt(metric["passed"]))
+    c3.metric("Failed", fmt(metric["failed"]))
+    c4.metric("Canonical rows", fmt(metric["canonical_rows"]))
+
+    if metric["all_passed"]:
+        st.success("All registered datasets passed adapter and contract validation.")
+    else:
+        st.warning("One or more registered datasets need attention before analytics use.")
+
+    left, right = st.columns(2)
+
+    with left:
+        st.markdown("#### Intake status")
+        st.bar_chart(intake_status_counts(intake_df), x="status", y="count")
+
+    with right:
+        st.markdown("#### Intake rule")
+        st.write("External or regenerated datasets should enter through adapter mapping first, then contract validation.")
+
+    st.markdown("#### Registered datasets")
+    st.dataframe(intake_core_table(intake_df), use_container_width=True)
+
+    st.download_button(
+        "Download intake summary",
+        data=csv_bytes(intake_df),
+        file_name="dataset_intake_summary.csv",
+        mime="text/csv",
+    )
+
+
 def render_lead_time(aggregate_df: pd.DataFrame, monthly_df: pd.DataFrame) -> None:
     st.subheader("Lead-time evaluation")
 
@@ -449,6 +535,8 @@ def render_reports(selected_paths: dict[str, Path]) -> None:
         {"file": "Monthly behavior report", "path": selected_paths["behavior"]},
         {"file": "Lead-time report", "path": selected_paths["lead_time_report"]},
         {"file": "Lead-time aggregate table", "path": selected_paths["lead_time_aggregate"]},
+        {"file": "Dataset intake report", "path": selected_paths["intake_report"]},
+        {"file": "Dataset intake summary", "path": selected_paths["intake_summary"]},
         {"file": "Cross-month table", "path": selected_paths["cross_month"]},
     ]
 
@@ -490,7 +578,7 @@ def render() -> None:
     cross = load_cross_month()
     metrics = kpis(df)
 
-    tabs = st.tabs(["Overview", "Selected month", "Diagnostics", "Lead time", "Reviewer files"])
+    tabs = st.tabs(["Overview", "Selected month", "Diagnostics", "Lead time", "Dataset intake", "Reviewer files"])
 
     with tabs[0]:
         render_overview(cross)
@@ -505,6 +593,9 @@ def render() -> None:
         render_lead_time(load_lead_time_aggregate(), load_lead_time_monthly())
 
     with tabs[4]:
+        render_intake(load_intake_summary())
+
+    with tabs[5]:
         render_reports(selected_paths)
 
 

@@ -22,6 +22,7 @@ Current panels:
 - price-event label table
 - top risk cases
 - lead-time evaluation panel
+- dataset intake panel
 - reviewer file checklist
 - CSV download buttons
 
