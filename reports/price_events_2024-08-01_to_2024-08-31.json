@@ -1,0 +1,19 @@
+{
+  "duplicate_timestamps": 0,
+  "event_rows": 192,
+  "event_share": 0.25806451612903225,
+  "high_price_rows": 75,
+  "high_price_threshold": 128.73100000000002,
+  "low_price_rows": 75,
+  "low_price_threshold": 0.2509999999999995,
+  "missing_prices": 0,
+  "negative_price_rows": 68,
+  "notes": [
+    "Price event labels built successfully."
+  ],
+  "ramp_abs_threshold": 38.22600000000008,
+  "ramp_down_rows": 32,
+  "ramp_up_rows": 43,
+  "row_count": 744,
+  "status": "PASS"
+}

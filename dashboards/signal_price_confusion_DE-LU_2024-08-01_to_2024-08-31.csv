@@ -1,0 +1,5 @@
+bucket,signal_positive,price_event,count
+TP,True,True,3
+FP,True,False,5
+FN,False,True,189
+TN,False,False,547

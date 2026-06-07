@@ -1,0 +1,24 @@
+{
+  "duplicate_timestamps": 0,
+  "metrics": {
+    "event_rate": 0.2647849462365591,
+    "f1_score": 0.07407407407407407,
+    "false_negative": 189,
+    "false_positive": 11,
+    "precision": 0.42105263157894735,
+    "recall": 0.04060913705583756,
+    "signal_rate": 0.025537634408602152,
+    "true_negative": 536,
+    "true_positive": 8
+  },
+  "missing_price_rows": 0,
+  "missing_risk_rows": 0,
+  "notes": [
+    "More high-risk hours occurred without price events than with price events. This may be acceptable for a fundamentals stress proxy, but it needs review."
+  ],
+  "price_event_rows": 197,
+  "row_count": 744,
+  "signal_rows": 19,
+  "signal_threshold": 60.0,
+  "status": "PASS"
+}

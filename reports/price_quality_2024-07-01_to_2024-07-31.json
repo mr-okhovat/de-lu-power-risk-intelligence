@@ -1,0 +1,16 @@
+{
+  "duplicate_timestamps": 0,
+  "expected_rows": 744,
+  "max_price": 257.35,
+  "mean_price": 67.69702956989246,
+  "min_price": -73.96,
+  "missing_prices": 0,
+  "missing_rows": 0,
+  "notes": [
+    "Price table passed hourly completeness and value checks."
+  ],
+  "row_count": 744,
+  "source_filter_id": "4169",
+  "source_region": "DE-LU",
+  "status": "PASS"
+}

@@ -1,0 +1,20 @@
+{
+  "input_file": "data/processed/signal_price_evaluation_DE-LU_2024-08-01_to_2024-08-31.csv",
+  "lift": {
+    "base_event_rate": 0.25806451612903225,
+    "event_lift_when_signal_positive": 1.453125,
+    "price_event_rows": 192,
+    "rows": 744,
+    "signal_event_rate": 0.375,
+    "signal_rows": 8
+  },
+  "outputs": {
+    "bucket": "dashboards/price_risk_bucket_profile_DE-LU_2024-08-01_to_2024-08-31.csv",
+    "quantiles": "dashboards/price_risk_quantiles_DE-LU_2024-08-01_to_2024-08-31.csv",
+    "reason": "dashboards/price_risk_reason_profile_DE-LU_2024-08-01_to_2024-08-31.csv",
+    "regime": "dashboards/price_risk_regime_profile_DE-LU_2024-08-01_to_2024-08-31.csv",
+    "report": "reports/price_risk_behavior_2024-08-01_to_2024-08-31.md",
+    "top": "dashboards/price_risk_top_cases_DE-LU_2024-08-01_to_2024-08-31.csv"
+  },
+  "version": "8F.1"
+}

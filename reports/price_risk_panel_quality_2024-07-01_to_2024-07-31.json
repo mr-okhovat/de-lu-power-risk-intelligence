@@ -1,0 +1,18 @@
+{
+  "duplicate_timestamps": 0,
+  "feature_rows": 744,
+  "high_risk_rows": 19,
+  "max_price": 257.35,
+  "max_risk_score": 85.0,
+  "mean_price": 67.69702956989246,
+  "min_price": -73.96,
+  "missing_price_rows": 0,
+  "missing_risk_rows": 0,
+  "notes": [
+    "Panel join passed. Features, prices and risk signals align hourly."
+  ],
+  "price_rows": 744,
+  "risk_rows": 744,
+  "row_count": 744,
+  "status": "PASS"
+}
