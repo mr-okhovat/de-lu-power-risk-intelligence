@@ -1,0 +1,70 @@
+name: lead_time_aggregate
+version: 12A.1
+primary_key:
+  - mode
+  - horizon_hours
+  - target_definition
+fields:
+  - name: mode
+    dtype: string
+    required: true
+    nullable: false
+    allowed_values:
+      - exact_hour
+      - future_window
+  - name: horizon_hours
+    dtype: numeric
+    required: true
+    nullable: false
+    min_value: 0
+  - name: target_definition
+    dtype: string
+    required: true
+    nullable: false
+  - name: signal_rows
+    dtype: numeric
+    required: true
+    nullable: false
+    min_value: 0
+  - name: target_event_rows
+    dtype: numeric
+    required: true
+    nullable: false
+    min_value: 0
+  - name: tp
+    dtype: numeric
+    required: true
+    nullable: false
+    min_value: 0
+  - name: fp
+    dtype: numeric
+    required: true
+    nullable: false
+    min_value: 0
+  - name: fn
+    dtype: numeric
+    required: true
+    nullable: false
+    min_value: 0
+  - name: tn
+    dtype: numeric
+    required: true
+    nullable: false
+    min_value: 0
+  - name: precision
+    dtype: numeric
+    required: true
+    nullable: true
+    min_value: 0
+    max_value: 1
+  - name: recall
+    dtype: numeric
+    required: true
+    nullable: true
+    min_value: 0
+    max_value: 1
+  - name: event_lift
+    dtype: numeric
+    required: true
+    nullable: true
+    min_value: 0

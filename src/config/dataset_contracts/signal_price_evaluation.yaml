@@ -1,0 +1,40 @@
+name: signal_price_evaluation
+version: 12A.1
+primary_key:
+  - timestamp_utc
+fields:
+  - name: timestamp_utc
+    dtype: datetime
+    required: true
+    nullable: false
+  - name: price_eur_per_mwh
+    dtype: numeric
+    required: true
+    nullable: false
+  - name: risk_score
+    dtype: numeric
+    required: true
+    nullable: false
+    min_value: 0
+    max_value: 100
+  - name: signal_positive
+    dtype: boolean
+    required: true
+    nullable: false
+  - name: event_positive
+    dtype: boolean
+    required: true
+    nullable: false
+  - name: confusion_bucket
+    dtype: string
+    required: true
+    nullable: false
+    allowed_values:
+      - TP
+      - FP
+      - FN
+      - TN
+  - name: price_event_labels
+    dtype: string
+    required: true
+    nullable: false

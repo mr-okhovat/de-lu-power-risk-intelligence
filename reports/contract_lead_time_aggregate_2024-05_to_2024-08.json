@@ -1,0 +1,16 @@
+{
+  "allowed_value_violations": {},
+  "contract_name": "lead_time_aggregate",
+  "contract_version": "12A.1",
+  "dtype_violations": {},
+  "duplicate_key_rows": 0,
+  "input_file": "dashboards/lead_time_aggregate_DE-LU_2024-05_to_2024-08.csv",
+  "missing_required_columns": [],
+  "notes": [
+    "Dataset passed the contract checks."
+  ],
+  "null_violations": {},
+  "range_violations": {},
+  "row_count": 9,
+  "status": "PASS"
+}

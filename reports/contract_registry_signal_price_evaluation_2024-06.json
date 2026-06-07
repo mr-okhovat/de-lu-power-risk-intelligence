@@ -1,0 +1,16 @@
+{
+  "allowed_value_violations": {},
+  "contract_name": "signal_price_evaluation",
+  "contract_version": "12A.1",
+  "dtype_violations": {},
+  "duplicate_key_rows": 0,
+  "input_file": "data/adapted/signal_price_evaluation_DE-LU_2024-06_registry_adapted.csv",
+  "missing_required_columns": [],
+  "notes": [
+    "Dataset passed the contract checks."
+  ],
+  "null_violations": {},
+  "range_violations": {},
+  "row_count": 720,
+  "status": "PASS"
+}
