@@ -1,0 +1,75 @@
+series:
+  - filter_id: "410"
+    internal_name: "total_load"
+    display_name: "Total Load"
+    source: "SMARD / Bundesnetzagentur"
+    source_region_field: "smard_region"
+    default_smard_region: "DE"
+    market_label: "DE-LU"
+    unit: "MW"
+    category: "consumption"
+    semantic_status: "endpoint_verified_semantics_locked"
+    allowed_for_staging: true
+    allowed_for_final_features: true
+    expected_direction: "positive"
+    notes: "Core demand/load series used as the load foundation."
+
+  - filter_id: "4359"
+    internal_name: "residual_load_official"
+    display_name: "Residual Load"
+    source: "SMARD / Bundesnetzagentur"
+    source_region_field: "smard_region"
+    default_smard_region: "DE"
+    market_label: "DE-LU"
+    unit: "MW"
+    category: "consumption"
+    semantic_status: "endpoint_verified_semantics_locked"
+    allowed_for_staging: true
+    allowed_for_final_features: true
+    expected_direction: "positive_or_negative_possible"
+    notes: "Used as official residual-load reference and as a core market stress signal."
+
+  - filter_id: "4067"
+    internal_name: "wind_candidate"
+    display_name: "Wind Candidate"
+    source: "SMARD / Bundesnetzagentur"
+    source_region_field: "smard_region"
+    default_smard_region: "DE"
+    market_label: "DE-LU"
+    unit: "MW"
+    category: "generation"
+    semantic_status: "endpoint_verified_semantics_provisional"
+    allowed_for_staging: true
+    allowed_for_final_features: false
+    expected_direction: "positive"
+    notes: "Endpoint verified. Business semantics must be confirmed before final feature claims."
+
+  - filter_id: "4068"
+    internal_name: "solar_candidate"
+    display_name: "Solar Candidate"
+    source: "SMARD / Bundesnetzagentur"
+    source_region_field: "smard_region"
+    default_smard_region: "DE"
+    market_label: "DE-LU"
+    unit: "MW"
+    category: "generation"
+    semantic_status: "endpoint_verified_semantics_provisional"
+    allowed_for_staging: true
+    allowed_for_final_features: false
+    expected_direction: "positive"
+    notes: "Endpoint verified. Business semantics must be confirmed before final feature claims."
+
+  - filter_id: "1225"
+    internal_name: "wind_offshore_candidate"
+    display_name: "Wind Offshore Candidate"
+    source: "SMARD / Bundesnetzagentur"
+    source_region_field: "smard_region"
+    default_smard_region: "DE"
+    market_label: "DE-LU"
+    unit: "MW"
+    category: "generation"
+    semantic_status: "endpoint_verified_semantics_provisional"
+    allowed_for_staging: true
+    allowed_for_final_features: false
+    expected_direction: "positive"
+    notes: "Endpoint verified. Business semantics must be confirmed before final feature claims."
