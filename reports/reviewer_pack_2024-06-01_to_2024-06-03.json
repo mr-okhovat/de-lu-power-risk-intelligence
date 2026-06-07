@@ -1,0 +1,58 @@
+{
+  "checks": {
+    "data_quality": true,
+    "feature_quality": true,
+    "features": true,
+    "market_export": true,
+    "pipeline_summary": true,
+    "reason_codes": true,
+    "regime_distribution": true,
+    "risk_diagnostics": true,
+    "risk_quality": true,
+    "risk_signals": true,
+    "sql_schema": true,
+    "staging": true,
+    "staging_checks": true,
+    "top_risk_hours": true
+  },
+  "end": "2024-06-03",
+  "files": {
+    "data_quality": "reports/data_quality_2024-06-01_to_2024-06-03.md",
+    "feature_quality": "reports/feature_quality_2024-06-01_to_2024-06-03.md",
+    "features": "data/processed/hourly_features_DE-LU_2024-06-01_to_2024-06-03.csv",
+    "market_export": "dashboards/market_overview_DE-LU_2024-06-01_to_2024-06-03.csv",
+    "pipeline_summary": "reports/pipeline_run_summary_2024-06-01_to_2024-06-03.md",
+    "reason_codes": "dashboards/risk_reason_code_summary_DE-LU_2024-06-01_to_2024-06-03.csv",
+    "regime_distribution": "dashboards/risk_regime_distribution_DE-LU_2024-06-01_to_2024-06-03.csv",
+    "risk_diagnostics": "reports/risk_diagnostics_2024-06-01_to_2024-06-03.md",
+    "risk_quality": "reports/risk_signal_quality_2024-06-01_to_2024-06-03.md",
+    "risk_signals": "data/processed/risk_signals_DE-LU_2024-06-01_to_2024-06-03.csv",
+    "sql_schema": "sql/schema_power_market_features.sql",
+    "staging": "data/staging/clean_hourly_DE-LU_2024-06-01_to_2024-06-03.csv",
+    "staging_checks": "reports/staging_hard_checks_2024-06-01_to_2024-06-03.md",
+    "top_risk_hours": "dashboards/top_risk_hours_DE-LU_2024-06-01_to_2024-06-03.csv"
+  },
+  "market": "DE-LU",
+  "missing_required": [],
+  "region": "DE",
+  "report_statuses": {
+    "data_quality": "PASS",
+    "feature_quality": "PASS",
+    "pipeline_summary": "PASS",
+    "risk_diagnostics": "PASS",
+    "risk_quality": "PASS",
+    "staging_checks": "PASS"
+  },
+  "row_counts": {
+    "features": 72,
+    "market_export": 72,
+    "reason_codes": 6,
+    "regime_distribution": 4,
+    "risk_signals": 72,
+    "staging": 72,
+    "top_risk_hours": 20
+  },
+  "start": "2024-06-01",
+  "status": "PASS",
+  "version": "6B.1"
+}
