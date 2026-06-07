@@ -1,6 +1,17 @@
 import pandas as pd
 
-from app.streamlit_app import kpis, month_tag, paths, prepare_timeline, top_cases
+from app.streamlit_app import (
+    bucket_counts,
+    kpis,
+    month_tag,
+    paths,
+    price_event_summary,
+    reason_summary,
+    signal_cases,
+    timeline_price,
+    timeline_risk,
+    top_cases,
+)
 
 
 def make_eval() -> pd.DataFrame:
@@ -40,11 +51,36 @@ def test_kpis() -> None:
     assert out["precision"] == 0.5
 
 
-def test_prepare_timeline() -> None:
-    out = prepare_timeline(make_eval())
+def test_timeline_frames() -> None:
+    df = make_eval()
 
-    assert "price_eur_per_mwh" in out.columns
-    assert "risk_score" in out.columns
+    assert "price_eur_per_mwh" in timeline_price(df).columns
+    assert "risk_score" in timeline_risk(df).columns
+
+
+def test_bucket_counts() -> None:
+    out = bucket_counts(make_eval())
+
+    assert set(out["bucket"]) == {"TN", "TP", "FP", "FN"}
+
+
+def test_reason_summary() -> None:
+    out = reason_summary(make_eval())
+
+    assert "A" in set(out["reason_code"])
+    assert "B" in set(out["reason_code"])
+
+
+def test_price_event_summary() -> None:
+    out = price_event_summary(make_eval())
+
+    assert "HIGH_PRICE_LEVEL" in set(out["price_event_label"])
+
+
+def test_signal_cases() -> None:
+    out = signal_cases(make_eval())
+
+    assert len(out) == 2
 
 
 def test_top_cases() -> None:
