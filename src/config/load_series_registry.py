@@ -14,6 +14,12 @@ VALID_SEMANTIC_STATUSES = {
     "deprecated",
 }
 
+VALID_VALIDATION_STATUSES = {
+    "source_endpoint_and_staging_validated",
+    "validated_by_residual_load_reconciliation",
+    "not_yet_validated",
+}
+
 
 @dataclass(frozen=True)
 class SeriesDefinition:
@@ -27,6 +33,7 @@ class SeriesDefinition:
     unit: str
     category: str
     semantic_status: str
+    validation_status: str
     allowed_for_staging: bool
     allowed_for_final_features: bool
     expected_direction: str
@@ -71,14 +78,26 @@ def validate_series_registry(series: list[SeriesDefinition]) -> None:
                 f"Invalid semantic_status for {item.filter_id}: {item.semantic_status}"
             )
 
+        if item.validation_status not in VALID_VALIDATION_STATUSES:
+            raise ValueError(
+                f"Invalid validation_status for {item.filter_id}: {item.validation_status}"
+            )
+
         if not item.unit:
             raise ValueError(f"Missing unit for {item.filter_id}")
 
-        if item.allowed_for_final_features and item.semantic_status != "endpoint_verified_semantics_locked":
-            raise ValueError(
-                f"Series {item.filter_id} cannot be allowed for final features "
-                f"unless semantic_status is endpoint_verified_semantics_locked."
-            )
+        if item.allowed_for_final_features:
+            if item.semantic_status != "endpoint_verified_semantics_locked":
+                raise ValueError(
+                    f"Series {item.filter_id} cannot be allowed for final features "
+                    f"unless semantic_status is endpoint_verified_semantics_locked."
+                )
+
+            if item.validation_status == "not_yet_validated":
+                raise ValueError(
+                    f"Series {item.filter_id} cannot be allowed for final features "
+                    f"unless validation_status is not_yet_validated."
+                )
 
 
 def get_staging_series(series: list[SeriesDefinition]) -> list[SeriesDefinition]:

@@ -20,8 +20,10 @@ Each phase must produce:
 | Phase 0 | Project Control and Design Lock | PASS |
 | Phase 1A | SMARD Foundation Ingestion | PASS |
 | Phase 1B | SMARD Filter Discovery and Safe Multi-Filter Ingestion | PASS |
-| Phase 1C | Source Semantics Lock and Project Control | IN PROGRESS |
-| Phase 2A | Clean Hourly Staging Table | NOT STARTED |
+| Phase 1C | Source Semantics Lock and Project Control | PASS |
+| Phase 2A | Clean Hourly Staging Table | PASS WITH LIMITATION |
+| Phase 2B | Staging Validation Hardening | PASS WITH LIMITATION |
+| Phase 2C | Promote Renewable Semantics with Evidence | IN PROGRESS |
 
 ## Phase Gate Definitions
 
@@ -42,7 +44,7 @@ The project must not proceed until the issue is resolved.
 | Risk | Severity | Control |
 |---|---:|---|
 | Generic AI-generated project appearance | High | Maintain real data, tests, source registry, audit docs |
-| Mislabeling SMARD series | High | Use semantic status and series registry |
+| Mislabeling SMARD series | High | Use semantic status, validation status, and reconciliation evidence |
 | Raw data bloat in GitHub | Medium | Keep generated raw data ignored |
 | Premature dashboarding | Medium | Build dashboard layer only after staging/features |
 | Weak reviewer credibility | High | Maintain methodology, limitations, reproducibility |
@@ -50,11 +52,10 @@ The project must not proceed until the issue is resolved.
 
 ## Next Required Gate
 
-Before Phase 2A, the project must have:
+Before Phase 3A, the project must have:
 
-- source semantics document
-- architecture decisions
-- project control document
-- reviewer notes
-- series registry
-- registry tests
+- tested series registry
+- validated staging table
+- residual-load reconciliation evidence
+- source semantics documentation
+- clean repo status

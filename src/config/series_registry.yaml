@@ -9,6 +9,7 @@ series:
     unit: "MW"
     category: "consumption"
     semantic_status: "endpoint_verified_semantics_locked"
+    validation_status: "source_endpoint_and_staging_validated"
     allowed_for_staging: true
     allowed_for_final_features: true
     expected_direction: "positive"
@@ -24,52 +25,56 @@ series:
     unit: "MW"
     category: "consumption"
     semantic_status: "endpoint_verified_semantics_locked"
+    validation_status: "source_endpoint_and_staging_validated"
     allowed_for_staging: true
     allowed_for_final_features: true
     expected_direction: "positive_or_negative_possible"
-    notes: "Used as official residual-load reference and as a core market stress signal."
+    notes: "Official residual-load reference and core market stress signal."
 
   - filter_id: "4067"
-    internal_name: "wind_candidate"
-    display_name: "Wind Candidate"
+    internal_name: "wind_onshore_validated"
+    display_name: "Wind Onshore Validated Component"
     source: "SMARD / Bundesnetzagentur"
     source_region_field: "smard_region"
     default_smard_region: "DE"
     market_label: "DE-LU"
     unit: "MW"
     category: "generation"
-    semantic_status: "endpoint_verified_semantics_provisional"
+    semantic_status: "endpoint_verified_semantics_locked"
+    validation_status: "validated_by_residual_load_reconciliation"
     allowed_for_staging: true
-    allowed_for_final_features: false
+    allowed_for_final_features: true
     expected_direction: "positive"
-    notes: "Endpoint verified. Business semantics must be confirmed before final feature claims."
+    notes: "Endpoint verified and numerically validated as a residual-load component through exact reconciliation in Phase 2B."
 
   - filter_id: "4068"
-    internal_name: "solar_candidate"
-    display_name: "Solar Candidate"
+    internal_name: "solar_validated"
+    display_name: "Solar Validated Component"
     source: "SMARD / Bundesnetzagentur"
     source_region_field: "smard_region"
     default_smard_region: "DE"
     market_label: "DE-LU"
     unit: "MW"
     category: "generation"
-    semantic_status: "endpoint_verified_semantics_provisional"
+    semantic_status: "endpoint_verified_semantics_locked"
+    validation_status: "validated_by_residual_load_reconciliation"
     allowed_for_staging: true
-    allowed_for_final_features: false
+    allowed_for_final_features: true
     expected_direction: "positive"
-    notes: "Endpoint verified. Business semantics must be confirmed before final feature claims."
+    notes: "Endpoint verified and numerically validated as a residual-load component through exact reconciliation in Phase 2B."
 
   - filter_id: "1225"
-    internal_name: "wind_offshore_candidate"
-    display_name: "Wind Offshore Candidate"
+    internal_name: "wind_offshore_validated"
+    display_name: "Wind Offshore Validated Component"
     source: "SMARD / Bundesnetzagentur"
     source_region_field: "smard_region"
     default_smard_region: "DE"
     market_label: "DE-LU"
     unit: "MW"
     category: "generation"
-    semantic_status: "endpoint_verified_semantics_provisional"
+    semantic_status: "endpoint_verified_semantics_locked"
+    validation_status: "validated_by_residual_load_reconciliation"
     allowed_for_staging: true
-    allowed_for_final_features: false
+    allowed_for_final_features: true
     expected_direction: "positive"
-    notes: "Endpoint verified. Business semantics must be confirmed before final feature claims."
+    notes: "Endpoint verified and numerically validated as a residual-load component through exact reconciliation in Phase 2B."

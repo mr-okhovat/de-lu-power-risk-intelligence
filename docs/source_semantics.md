@@ -6,38 +6,54 @@ This document locks the current interpretation status of each SMARD series used 
 
 A working endpoint is not enough. A series can only be used for analytics when its technical availability and business meaning are both controlled.
 
-## Current Principle
-
-Each configured series has one of the following semantic statuses:
+## Semantic Status Levels
 
 - `endpoint_verified_semantics_locked`
 - `endpoint_verified_semantics_provisional`
 - `not_verified`
 - `deprecated`
 
-A series marked as `endpoint_verified_semantics_provisional` can be downloaded and stored, but it must not be used for final claims without a limitation note.
+## Validation Status Levels
+
+- `source_endpoint_and_staging_validated`
+- `validated_by_residual_load_reconciliation`
+- `not_yet_validated`
 
 ## Current SMARD Series
 
-| Filter ID | Internal Name | Unit | Category | Status | Use in Project |
-|---|---|---:|---|---|---|
-| 410 | Total Load | MW | consumption | endpoint_verified_semantics_locked | Core load signal |
-| 4359 | Residual Load | MW | consumption | endpoint_verified_semantics_locked | Validation reference and core stress signal |
-| 4067 | Wind Candidate | MW | generation | endpoint_verified_semantics_provisional | Candidate renewable component |
-| 4068 | Solar Candidate | MW | generation | endpoint_verified_semantics_provisional | Candidate renewable component |
-| 1225 | Wind Offshore Candidate | MW | generation | endpoint_verified_semantics_provisional | Candidate renewable component |
+| Filter ID | Internal Name | Unit | Category | Semantic Status | Validation Status | Use in Project |
+|---|---|---:|---|---|---|---|
+| 410 | total_load | MW | consumption | endpoint_verified_semantics_locked | source_endpoint_and_staging_validated | Core load signal |
+| 4359 | residual_load_official | MW | consumption | endpoint_verified_semantics_locked | source_endpoint_and_staging_validated | Official residual-load reference |
+| 4067 | wind_onshore_validated | MW | generation | endpoint_verified_semantics_locked | validated_by_residual_load_reconciliation | Renewable component for staging and features |
+| 4068 | solar_validated | MW | generation | endpoint_verified_semantics_locked | validated_by_residual_load_reconciliation | Renewable component for staging and features |
+| 1225 | wind_offshore_validated | MW | generation | endpoint_verified_semantics_locked | validated_by_residual_load_reconciliation | Renewable component for staging and features |
 
-## Why Some Series Are Provisional
+## Validation Evidence
 
-Phase 1B verified that the endpoints exist and return chunk timestamps. That proves technical availability. It does not fully prove business semantics.
+Phase 2B produced a hard-check report with:
 
-Before final feature engineering, provisional series must be checked against:
+- 72 staging rows.
+- 72 expected hourly timestamps.
+- 0 duplicate timestamps.
+- 0 hourly continuity breaks.
+- 0 missing values in required value columns.
+- 0 range violations.
+- residual-load reconciliation passed.
+- max absolute residual reconciliation error: 0.0 MW.
+- mean absolute residual reconciliation error: 0.0 MW.
 
-1. SMARD UI labels.
-2. Download metadata where available.
-3. Plausible value ranges.
-4. Cross-checks against residual load.
-5. Documentation notes in this repository.
+The reconciliation equation was:
+
+```text
+derived_residual_load = total_load - wind_onshore_validated - solar_validated - wind_offshore_validated
+```
+
+This was compared against:
+
+```text
+residual_load_official
+```
 
 ## DE vs DE-LU Label
 
@@ -52,19 +68,12 @@ This is intentional.
 
 `market_label` refers to the analytical market/bidding-zone label used by this project.
 
-Any report must clearly state this distinction to avoid overstating what the source directly provides.
+Reports must clearly state this distinction.
 
-## Analytics Rule
+## Interpretation Control
 
-Do not build final market features from provisional series unless the report includes an explicit limitation.
+The renewable component series are now allowed for final features because they reconcile exactly against the official residual-load series for the tested window.
 
-## Reviewer Note
+This does not mean the project claims predictive power yet.
 
-A professional reviewer should be able to trace each feature back to:
-
-1. Source.
-2. Filter ID.
-3. Unit.
-4. Semantic status.
-5. Raw file.
-6. Transformation logic.
+It only means the staging layer is coherent enough for feature engineering.
