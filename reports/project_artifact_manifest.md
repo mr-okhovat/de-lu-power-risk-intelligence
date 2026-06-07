@@ -33,8 +33,8 @@ Manifest table: `dashboards/project_artifact_manifest.csv`
 | lead_time | `dashboards/lead_time_aggregate_DE-LU_2024-05_to_2024-08.csv` | True | True | 1869 | `f99fd55b36a9` |
 | visual | `reports/visual_reviewer_pack.md` | True | True | 1124 | `7281ae44fc53` |
 | dashboard | `app/streamlit_app.py` | True | True | 26786 | `5c3ad9038f25` |
-| dashboard | `reports/figures/dashboard/dashboard_overview.png` | True | True | 56134 | `8b37e3f35c5f` |
-| dashboard | `reports/figures/dashboard/dashboard_selected_month.png` | True | True | 133302 | `0d8ff8205db4` |
+| dashboard | `reports/figures/dashboard/dashboard_overview.png` | True | True | 56464 | `586c6b9409f1` |
+| dashboard | `reports/figures/dashboard/dashboard_selected_month.png` | True | True | 44952 | `372b1bb1fd81` |
 | dashboard | `reports/figures/dashboard/dashboard_diagnostics.png` | True | True | 111953 | `db00f6550174` |
 | dashboard | `reports/figures/dashboard/dashboard_lead_time.png` | True | True | 98981 | `c942a5a3714d` |
 | dashboard | `reports/figures/dashboard/dashboard_dataset_intake.png` | True | True | 73256 | `a4173fef8229` |

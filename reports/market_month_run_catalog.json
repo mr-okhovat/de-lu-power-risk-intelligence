@@ -1,0 +1,14 @@
+{
+  "catalog_csv": "dashboards/market_month_run_catalog.csv",
+  "metrics": {
+    "check_needed_runs": 0,
+    "markets": 1,
+    "mean_next_3h_window_lift": 1.5362701791242814,
+    "mean_same_hour_lift": 1.8526697832649146,
+    "period_end": "2024-08-31",
+    "period_start": "2024-05-01",
+    "ready_runs": 4,
+    "runs": 4
+  },
+  "version": "15A.1"
+}

@@ -1,6 +1,6 @@
 {
   "dry_run": false,
-  "include_screenshots": false,
+  "include_screenshots": true,
   "results": [
     {
       "command": [
@@ -81,6 +81,24 @@
         "reports/reviewer_ready_v2.md",
         "reports/reviewer_ready_v2.json",
         "dashboards/reviewer_ready_v2_metrics.csv"
+      ],
+      "return_code": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/capture_dashboard_screenshots.py"
+      ],
+      "missing_outputs": [],
+      "name": "dashboard_screenshots",
+      "required_outputs": [
+        "reports/figures/dashboard/dashboard_overview.png",
+        "reports/figures/dashboard/dashboard_selected_month.png",
+        "reports/figures/dashboard/dashboard_diagnostics.png",
+        "reports/figures/dashboard/dashboard_lead_time.png",
+        "reports/figures/dashboard/dashboard_dataset_intake.png",
+        "reports/figures/dashboard/dashboard_reviewer_files.png"
       ],
       "return_code": 0,
       "status": "PASS"
