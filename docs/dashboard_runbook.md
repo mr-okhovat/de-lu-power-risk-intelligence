@@ -23,6 +23,7 @@ Current panels:
 - top risk cases
 - lead-time evaluation panel
 - dataset intake panel
+- project health panel
 - reviewer file checklist
 - CSV download buttons
 

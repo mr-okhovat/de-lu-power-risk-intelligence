@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
 
 import pandas as pd
 import streamlit as st
@@ -39,6 +40,10 @@ def paths(start: str, end: str) -> dict[str, Path]:
         "lead_time_report": Path("reports/lead_time_evaluation_2024-05_to_2024-08.md"),
         "intake_summary": Path("dashboards/dataset_intake_summary.csv"),
         "intake_report": Path("reports/dataset_intake_summary.md"),
+        "project_checkpoint_report": Path("reports/project_checkpoint_run.md"),
+        "project_checkpoint_json": Path("reports/project_checkpoint_run.json"),
+        "artifact_manifest": Path("dashboards/project_artifact_manifest.csv"),
+        "artifact_manifest_report": Path("reports/project_artifact_manifest.md"),
         "reviewer": Path("reports/reviewer_ready_v1.md"),
         "visual_pack": Path("reports/visual_reviewer_pack.md"),
         "readme": Path("README.md"),
@@ -88,6 +93,19 @@ def load_lead_time_monthly() -> pd.DataFrame:
 
 def load_intake_summary() -> pd.DataFrame:
     return read_csv(Path("dashboards/dataset_intake_summary.csv"))
+
+
+def load_artifact_manifest() -> pd.DataFrame:
+    return read_csv(Path("dashboards/project_artifact_manifest.csv"))
+
+
+def load_checkpoint_payload() -> dict:
+    path = Path("reports/project_checkpoint_run.json")
+
+    if not path.exists():
+        raise FileNotFoundError(f"Missing file: {path}")
+
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def safe_rate(a: int, b: int) -> float | None:
@@ -266,6 +284,58 @@ def monthly_rate_frame(cross: pd.DataFrame) -> pd.DataFrame:
 
 def csv_bytes(df: pd.DataFrame) -> bytes:
     return df.to_csv(index=False).encode("utf-8")
+
+
+def checkpoint_stage_table(payload: dict) -> pd.DataFrame:
+    rows = []
+
+    for item in payload.get("results", []):
+        rows.append(
+            {
+                "stage": item.get("name"),
+                "status": item.get("status"),
+                "return_code": item.get("return_code"),
+                "missing_outputs": ", ".join(item.get("missing_outputs", [])),
+            }
+        )
+
+    return pd.DataFrame(rows)
+
+
+def checkpoint_metrics(payload: dict) -> dict[str, int | str | bool]:
+    rows = payload.get("results", [])
+    failed = [item for item in rows if item.get("status") != "PASS"]
+
+    return {
+        "status": payload.get("status", "UNKNOWN"),
+        "stages": len(rows),
+        "failed_stages": len(failed),
+        "include_screenshots": bool(payload.get("include_screenshots", False)),
+    }
+
+
+def artifact_manifest_metrics(df: pd.DataFrame) -> dict[str, int | bool]:
+    required = df[df["required"] == True] if "required" in df.columns else pd.DataFrame()
+    missing = required[required["exists"] == False] if "exists" in df.columns else required
+
+    return {
+        "artifacts": int(len(df)),
+        "required": int(len(required)),
+        "missing_required": int(len(missing)),
+        "all_required_present": int(len(missing)) == 0,
+    }
+
+
+def artifact_manifest_core_table(df: pd.DataFrame) -> pd.DataFrame:
+    cols = ["category", "path", "required", "exists", "size_bytes", "sha256"]
+    available = [col for col in cols if col in df.columns]
+
+    out = df[available].copy()
+
+    if "sha256" in out.columns:
+        out["sha256"] = out["sha256"].astype(str).str.slice(0, 12)
+
+    return out.reset_index(drop=True)
 
 
 def intake_status_counts(df: pd.DataFrame) -> pd.DataFrame:
@@ -525,6 +595,45 @@ def render_lead_time(aggregate_df: pd.DataFrame, monthly_df: pd.DataFrame) -> No
     )
 
 
+def render_project_health(manifest_df: pd.DataFrame, checkpoint_payload: dict) -> None:
+    st.subheader("Project health")
+
+    st.write(
+        "This panel shows whether the current checkpoint outputs exist and whether the rebuild stages passed."
+    )
+
+    checkpoint = checkpoint_metrics(checkpoint_payload)
+    manifest = artifact_manifest_metrics(manifest_df)
+
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Checkpoint status", str(checkpoint["status"]))
+    c2.metric("Stages", fmt(checkpoint["stages"]))
+    c3.metric("Failed stages", fmt(checkpoint["failed_stages"]))
+    c4.metric("Missing required artifacts", fmt(manifest["missing_required"]))
+
+    if checkpoint["status"] == "PASS" and manifest["all_required_present"]:
+        st.success("Checkpoint and artifact manifest are healthy.")
+    else:
+        st.warning("One or more checkpoint or artifact checks need attention.")
+
+    left, right = st.columns(2)
+
+    with left:
+        st.markdown("#### Checkpoint stages")
+        st.dataframe(checkpoint_stage_table(checkpoint_payload), use_container_width=True)
+
+    with right:
+        st.markdown("#### Artifact manifest")
+        st.dataframe(artifact_manifest_core_table(manifest_df), use_container_width=True)
+
+    st.download_button(
+        "Download artifact manifest",
+        data=csv_bytes(manifest_df),
+        file_name="project_artifact_manifest.csv",
+        mime="text/csv",
+    )
+
+
 def render_reports(selected_paths: dict[str, Path]) -> None:
     st.subheader("Reviewer files")
 
@@ -537,6 +646,8 @@ def render_reports(selected_paths: dict[str, Path]) -> None:
         {"file": "Lead-time aggregate table", "path": selected_paths["lead_time_aggregate"]},
         {"file": "Dataset intake report", "path": selected_paths["intake_report"]},
         {"file": "Dataset intake summary", "path": selected_paths["intake_summary"]},
+        {"file": "Project checkpoint report", "path": selected_paths["project_checkpoint_report"]},
+        {"file": "Artifact manifest report", "path": selected_paths["artifact_manifest_report"]},
         {"file": "Cross-month table", "path": selected_paths["cross_month"]},
     ]
 
@@ -578,7 +689,7 @@ def render() -> None:
     cross = load_cross_month()
     metrics = kpis(df)
 
-    tabs = st.tabs(["Overview", "Selected month", "Diagnostics", "Lead time", "Dataset intake", "Reviewer files"])
+    tabs = st.tabs(["Overview", "Selected month", "Diagnostics", "Lead time", "Dataset intake", "Project health", "Reviewer files"])
 
     with tabs[0]:
         render_overview(cross)
@@ -596,6 +707,9 @@ def render() -> None:
         render_intake(load_intake_summary())
 
     with tabs[5]:
+        render_project_health(load_artifact_manifest(), load_checkpoint_payload())
+
+    with tabs[6]:
         render_reports(selected_paths)
 
 
