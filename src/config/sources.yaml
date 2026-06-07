@@ -14,3 +14,19 @@ smard:
       name: "Total Load"
       unit: "MW"
       category: "consumption"
+    "4359":
+      name: "Residual Load"
+      unit: "MW"
+      category: "consumption"
+    "4067":
+      name: "Wind Candidate"
+      unit: "MW"
+      category: "generation"
+    "4068":
+      name: "Solar Candidate"
+      unit: "MW"
+      category: "generation"
+    "1225":
+      name: "Wind Offshore Candidate"
+      unit: "MW"
+      category: "generation"
