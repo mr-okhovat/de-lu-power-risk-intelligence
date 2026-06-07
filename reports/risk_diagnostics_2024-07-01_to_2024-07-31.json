@@ -1,0 +1,30 @@
+{
+  "duplicate_timestamp_count": 0,
+  "extreme_count": 2,
+  "high_risk_count": 19,
+  "max_risk_score": 85.0,
+  "mean_risk_score": 10.779569892473118,
+  "median_risk_score": 0.0,
+  "min_risk_score": 0.0,
+  "no_rule_triggered_count": 491,
+  "notes": [
+    "Risk diagnostics passed Phase 4B checks."
+  ],
+  "required_columns_missing": [],
+  "row_count": 744,
+  "status": "PASS",
+  "unique_reason_codes": [
+    "HIGH_LOAD_RAMP",
+    "HIGH_RENEWABLE_GENERATION_RAMP",
+    "HIGH_RESIDUAL_LOAD",
+    "HIGH_RESIDUAL_LOAD_RAMP",
+    "LOW_RENEWABLE_SHARE",
+    "NO_RULE_TRIGGERED"
+  ],
+  "unique_regimes": [
+    "EXTREME",
+    "NORMAL",
+    "STRESSED",
+    "WATCH"
+  ]
+}

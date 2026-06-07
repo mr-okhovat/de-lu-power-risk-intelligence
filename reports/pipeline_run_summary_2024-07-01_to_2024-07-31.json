@@ -1,0 +1,277 @@
+{
+  "config": {
+    "end": "2024-07-31",
+    "filters": [
+      "410",
+      "4359",
+      "4067",
+      "4068",
+      "1225"
+    ],
+    "high_quantile": 0.9,
+    "include_event_study": false,
+    "include_reviewer_pack": true,
+    "include_signal_event_evaluation": false,
+    "low_quantile": 0.1,
+    "market_label": "DE-LU",
+    "min_history": 168,
+    "name": "DE-LU Power Risk Intelligence \u2014 july_2024",
+    "resolution": "hour",
+    "run_label": "july_2024",
+    "run_tests_first": true,
+    "run_tests_last": true,
+    "signal_positive_threshold": 60.0,
+    "smard_region": "DE",
+    "start": "2024-07-01"
+  },
+  "outputs": {
+    "features": "data/processed/hourly_features_DE-LU_2024-07-01_to_2024-07-31.csv",
+    "market_export": "dashboards/market_overview_DE-LU_2024-07-01_to_2024-07-31.csv",
+    "reviewer_pack": "reports/reviewer_pack_2024-07-01_to_2024-07-31.md",
+    "reviewer_pack_json": "reports/reviewer_pack_2024-07-01_to_2024-07-31.json",
+    "risk_diagnostics_json": "reports/risk_diagnostics_2024-07-01_to_2024-07-31.json",
+    "risk_diagnostics_report": "reports/risk_diagnostics_2024-07-01_to_2024-07-31.md",
+    "risk_reason_codes": "dashboards/risk_reason_code_summary_DE-LU_2024-07-01_to_2024-07-31.csv",
+    "risk_regime_distribution": "dashboards/risk_regime_distribution_DE-LU_2024-07-01_to_2024-07-31.csv",
+    "risk_signal_report": "reports/risk_signal_quality_2024-07-01_to_2024-07-31.md",
+    "risk_signals": "data/processed/risk_signals_DE-LU_2024-07-01_to_2024-07-31.csv",
+    "run_summary": "reports/pipeline_run_summary_2024-07-01_to_2024-07-31.md",
+    "run_summary_json": "reports/pipeline_run_summary_2024-07-01_to_2024-07-31.json",
+    "staging": "data/staging/clean_hourly_DE-LU_2024-07-01_to_2024-07-31.csv",
+    "staging_hard_json": "reports/staging_hard_checks_2024-07-01_to_2024-07-31.json",
+    "staging_hard_report": "reports/staging_hard_checks_2024-07-01_to_2024-07-31.md",
+    "top_risk_hours": "dashboards/top_risk_hours_DE-LU_2024-07-01_to_2024-07-31.csv"
+  },
+  "status": "PASS",
+  "steps": [
+    {
+      "command": [
+        "/home/codespace/.python/current/bin/python",
+        "-m",
+        "pytest"
+      ],
+      "duration_seconds": 1.184,
+      "finished_at_utc": "2026-06-07T16:52:58+00:00",
+      "name": "tests_start",
+      "return_code": 0,
+      "started_at_utc": "2026-06-07T16:52:57+00:00",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/home/codespace/.python/current/bin/python",
+        "-m",
+        "src.data_ingestion.smard_filter_discovery",
+        "--smard-region",
+        "DE",
+        "--resolution",
+        "hour"
+      ],
+      "duration_seconds": 0.363,
+      "finished_at_utc": "2026-06-07T16:52:58+00:00",
+      "name": "smard_filter_discovery",
+      "return_code": 0,
+      "started_at_utc": "2026-06-07T16:52:58+00:00",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/home/codespace/.python/current/bin/python",
+        "run_pipeline.py",
+        "--start",
+        "2024-07-01",
+        "--end",
+        "2024-07-31",
+        "--market-label",
+        "DE-LU",
+        "--smard-region",
+        "DE",
+        "--phase",
+        "smard-ingest",
+        "--resolution",
+        "hour",
+        "--filters",
+        "410",
+        "4359",
+        "4067",
+        "4068",
+        "1225"
+      ],
+      "duration_seconds": 1.405,
+      "finished_at_utc": "2026-06-07T16:53:00+00:00",
+      "name": "smard_ingestion",
+      "return_code": 0,
+      "started_at_utc": "2026-06-07T16:52:58+00:00",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/home/codespace/.python/current/bin/python",
+        "run_pipeline.py",
+        "--start",
+        "2024-07-01",
+        "--end",
+        "2024-07-31",
+        "--market-label",
+        "DE-LU",
+        "--smard-region",
+        "DE",
+        "--phase",
+        "build-staging"
+      ],
+      "duration_seconds": 0.767,
+      "finished_at_utc": "2026-06-07T16:53:01+00:00",
+      "name": "build_staging",
+      "return_code": 0,
+      "started_at_utc": "2026-06-07T16:53:00+00:00",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/home/codespace/.python/current/bin/python",
+        "-m",
+        "src.data_quality.staging_hard_checks",
+        "--staging-file",
+        "data/staging/clean_hourly_DE-LU_2024-07-01_to_2024-07-31.csv",
+        "--report-output",
+        "reports/staging_hard_checks_2024-07-01_to_2024-07-31.md",
+        "--json-output",
+        "reports/staging_hard_checks_2024-07-01_to_2024-07-31.json"
+      ],
+      "duration_seconds": 0.395,
+      "finished_at_utc": "2026-06-07T16:53:01+00:00",
+      "name": "staging_hard_checks",
+      "return_code": 0,
+      "started_at_utc": "2026-06-07T16:53:01+00:00",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/home/codespace/.python/current/bin/python",
+        "run_pipeline.py",
+        "--start",
+        "2024-07-01",
+        "--end",
+        "2024-07-31",
+        "--market-label",
+        "DE-LU",
+        "--smard-region",
+        "DE",
+        "--phase",
+        "build-features"
+      ],
+      "duration_seconds": 0.563,
+      "finished_at_utc": "2026-06-07T16:53:02+00:00",
+      "name": "build_features",
+      "return_code": 0,
+      "started_at_utc": "2026-06-07T16:53:01+00:00",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/home/codespace/.python/current/bin/python",
+        "run_pipeline.py",
+        "--start",
+        "2024-07-01",
+        "--end",
+        "2024-07-31",
+        "--market-label",
+        "DE-LU",
+        "--smard-region",
+        "DE",
+        "--phase",
+        "build-dashboard-exports"
+      ],
+      "duration_seconds": 0.577,
+      "finished_at_utc": "2026-06-07T16:53:02+00:00",
+      "name": "build_dashboard_exports",
+      "return_code": 0,
+      "started_at_utc": "2026-06-07T16:53:02+00:00",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/home/codespace/.python/current/bin/python",
+        "run_pipeline.py",
+        "--start",
+        "2024-07-01",
+        "--end",
+        "2024-07-31",
+        "--market-label",
+        "DE-LU",
+        "--smard-region",
+        "DE",
+        "--phase",
+        "build-risk-signals",
+        "--min-history",
+        "168"
+      ],
+      "duration_seconds": 0.968,
+      "finished_at_utc": "2026-06-07T16:53:03+00:00",
+      "name": "build_risk_signals",
+      "return_code": 0,
+      "started_at_utc": "2026-06-07T16:53:02+00:00",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/home/codespace/.python/current/bin/python",
+        "run_pipeline.py",
+        "--start",
+        "2024-07-01",
+        "--end",
+        "2024-07-31",
+        "--market-label",
+        "DE-LU",
+        "--smard-region",
+        "DE",
+        "--phase",
+        "build-risk-diagnostics"
+      ],
+      "duration_seconds": 0.545,
+      "finished_at_utc": "2026-06-07T16:53:04+00:00",
+      "name": "build_risk_diagnostics",
+      "return_code": 0,
+      "started_at_utc": "2026-06-07T16:53:03+00:00",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/home/codespace/.python/current/bin/python",
+        "-m",
+        "src.reporting.reviewer_pack",
+        "--start",
+        "2024-07-01",
+        "--end",
+        "2024-07-31",
+        "--market-label",
+        "DE-LU",
+        "--smard-region",
+        "DE",
+        "--report",
+        "reports/reviewer_pack_2024-07-01_to_2024-07-31.md",
+        "--json",
+        "reports/reviewer_pack_2024-07-01_to_2024-07-31.json"
+      ],
+      "duration_seconds": 0.432,
+      "finished_at_utc": "2026-06-07T16:53:04+00:00",
+      "name": "build_reviewer_pack",
+      "return_code": 0,
+      "started_at_utc": "2026-06-07T16:53:04+00:00",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/home/codespace/.python/current/bin/python",
+        "-m",
+        "pytest"
+      ],
+      "duration_seconds": 1.205,
+      "finished_at_utc": "2026-06-07T16:53:05+00:00",
+      "name": "tests_end",
+      "return_code": 0,
+      "started_at_utc": "2026-06-07T16:53:04+00:00",
+      "status": "PASS"
+    }
+  ]
+}

@@ -166,7 +166,6 @@ def build_pack(start: str, end: str, market: str, region: str, report: str, json
         "market_export",
         "risk_signals",
         "risk_diagnostics",
-        "pipeline_summary",
         "sql_schema",
     ]
 

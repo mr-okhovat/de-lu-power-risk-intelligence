@@ -1,0 +1,242 @@
+=== PYTEST ===
+============================= test session starts ==============================
+platform linux -- Python 3.12.1, pytest-9.0.3, pluggy-1.6.0
+rootdir: /workspaces/de-lu-power-risk-intelligence
+plugins: anyio-4.12.1
+collected 55 items
+
+tests/test_build_hourly.py ....                                          [  7%]
+tests/test_dashboard_exports.py ...                                      [ 12%]
+tests/test_market_features.py ....                                       [ 20%]
+tests/test_pipeline_steps.py ....                                        [ 27%]
+tests/test_reviewer_pack.py ...                                          [ 32%]
+tests/test_risk_behavior_review.py ...                                   [ 38%]
+tests/test_risk_diagnostics.py .....                                     [ 47%]
+tests/test_risk_engine.py ....                                           [ 54%]
+tests/test_series_registry.py ........                                   [ 69%]
+tests/test_smard_client.py .......                                       [ 81%]
+tests/test_smard_filter_discovery.py ..                                  [ 85%]
+tests/test_staging_hard_checks.py .....                                  [ 94%]
+tests/test_staging_validators.py ...                                     [100%]
+
+============================== 55 passed in 0.70s ==============================
+
+=== MAY SUMMARY ===
+# Pipeline run summary
+
+Pipeline: DE-LU Power Risk Intelligence — may_2024
+Run: may_2024
+Status: PASS
+Window: 2024-05-01 to 2024-05-31
+Market: DE-LU
+SMARD region: DE
+
+## Steps
+
+| step | status | seconds |
+|---|---:|---:|
+| tests_start | PASS | 1.27 |
+| smard_filter_discovery | PASS | 0.337 |
+| smard_ingestion | PASS | 1.232 |
+| build_staging | PASS | 0.785 |
+| staging_hard_checks | PASS | 0.38 |
+| build_features | PASS | 0.558 |
+| build_dashboard_exports | PASS | 0.539 |
+| build_risk_signals | PASS | 1.076 |
+| build_risk_diagnostics | PASS | 0.509 |
+| build_reviewer_pack | PASS | 0.476 |
+| tests_end | PASS | 1.27 |
+
+## Outputs
+
+- features: `data/processed/hourly_features_DE-LU_2024-05-01_to_2024-05-31.csv` (yes)
+- market_export: `dashboards/market_overview_DE-LU_2024-05-01_to_2024-05-31.csv` (yes)
+- reviewer_pack: `reports/reviewer_pack_2024-05-01_to_2024-05-31.md` (yes)
+- reviewer_pack_json: `reports/reviewer_pack_2024-05-01_to_2024-05-31.json` (yes)
+- risk_diagnostics_json: `reports/risk_diagnostics_2024-05-01_to_2024-05-31.json` (yes)
+- risk_diagnostics_report: `reports/risk_diagnostics_2024-05-01_to_2024-05-31.md` (yes)
+- risk_reason_codes: `dashboards/risk_reason_code_summary_DE-LU_2024-05-01_to_2024-05-31.csv` (yes)
+- risk_regime_distribution: `dashboards/risk_regime_distribution_DE-LU_2024-05-01_to_2024-05-31.csv` (yes)
+- risk_signal_report: `reports/risk_signal_quality_2024-05-01_to_2024-05-31.md` (yes)
+- risk_signals: `data/processed/risk_signals_DE-LU_2024-05-01_to_2024-05-31.csv` (yes)
+- run_summary: `reports/pipeline_run_summary_2024-05-01_to_2024-05-31.md` (yes)
+- run_summary_json: `reports/pipeline_run_summary_2024-05-01_to_2024-05-31.json` (yes)
+- staging: `data/staging/clean_hourly_DE-LU_2024-05-01_to_2024-05-31.csv` (yes)
+- staging_hard_json: `reports/staging_hard_checks_2024-05-01_to_2024-05-31.json` (yes)
+- staging_hard_report: `reports/staging_hard_checks_2024-05-01_to_2024-05-31.md` (yes)
+- top_risk_hours: `dashboards/top_risk_hours_DE-LU_2024-05-01_to_2024-05-31.csv` (yes)
+
+This run reproduces the implemented public-data pipeline. It does not claim trading profitability, execution capability, or P&L.
+
+=== JULY SUMMARY ===
+# Pipeline run summary
+
+Pipeline: DE-LU Power Risk Intelligence — july_2024
+Run: july_2024
+Status: PASS
+Window: 2024-07-01 to 2024-07-31
+Market: DE-LU
+SMARD region: DE
+
+## Steps
+
+| step | status | seconds |
+|---|---:|---:|
+| tests_start | PASS | 1.184 |
+| smard_filter_discovery | PASS | 0.363 |
+| smard_ingestion | PASS | 1.405 |
+| build_staging | PASS | 0.767 |
+| staging_hard_checks | PASS | 0.395 |
+| build_features | PASS | 0.563 |
+| build_dashboard_exports | PASS | 0.577 |
+| build_risk_signals | PASS | 0.968 |
+| build_risk_diagnostics | PASS | 0.545 |
+| build_reviewer_pack | PASS | 0.432 |
+| tests_end | PASS | 1.205 |
+
+## Outputs
+
+- features: `data/processed/hourly_features_DE-LU_2024-07-01_to_2024-07-31.csv` (yes)
+- market_export: `dashboards/market_overview_DE-LU_2024-07-01_to_2024-07-31.csv` (yes)
+- reviewer_pack: `reports/reviewer_pack_2024-07-01_to_2024-07-31.md` (yes)
+- reviewer_pack_json: `reports/reviewer_pack_2024-07-01_to_2024-07-31.json` (yes)
+- risk_diagnostics_json: `reports/risk_diagnostics_2024-07-01_to_2024-07-31.json` (yes)
+- risk_diagnostics_report: `reports/risk_diagnostics_2024-07-01_to_2024-07-31.md` (yes)
+- risk_reason_codes: `dashboards/risk_reason_code_summary_DE-LU_2024-07-01_to_2024-07-31.csv` (yes)
+- risk_regime_distribution: `dashboards/risk_regime_distribution_DE-LU_2024-07-01_to_2024-07-31.csv` (yes)
+- risk_signal_report: `reports/risk_signal_quality_2024-07-01_to_2024-07-31.md` (yes)
+- risk_signals: `data/processed/risk_signals_DE-LU_2024-07-01_to_2024-07-31.csv` (yes)
+- run_summary: `reports/pipeline_run_summary_2024-07-01_to_2024-07-31.md` (no)
+- run_summary_json: `reports/pipeline_run_summary_2024-07-01_to_2024-07-31.json` (no)
+- staging: `data/staging/clean_hourly_DE-LU_2024-07-01_to_2024-07-31.csv` (yes)
+- staging_hard_json: `reports/staging_hard_checks_2024-07-01_to_2024-07-31.json` (yes)
+- staging_hard_report: `reports/staging_hard_checks_2024-07-01_to_2024-07-31.md` (yes)
+- top_risk_hours: `dashboards/top_risk_hours_DE-LU_2024-07-01_to_2024-07-31.csv` (yes)
+
+This run reproduces the implemented public-data pipeline. It does not claim trading profitability, execution capability, or P&L.
+
+=== AUGUST SUMMARY ===
+# Pipeline run summary
+
+Pipeline: DE-LU Power Risk Intelligence — august_2024
+Run: august_2024
+Status: PASS
+Window: 2024-08-01 to 2024-08-31
+Market: DE-LU
+SMARD region: DE
+
+## Steps
+
+| step | status | seconds |
+|---|---:|---:|
+| tests_start | PASS | 1.422 |
+| smard_filter_discovery | PASS | 0.344 |
+| smard_ingestion | PASS | 1.3 |
+| build_staging | PASS | 0.791 |
+| staging_hard_checks | PASS | 0.394 |
+| build_features | PASS | 0.584 |
+| build_dashboard_exports | PASS | 0.493 |
+| build_risk_signals | PASS | 0.959 |
+| build_risk_diagnostics | PASS | 0.54 |
+| build_reviewer_pack | PASS | 0.408 |
+| tests_end | PASS | 1.423 |
+
+## Outputs
+
+- features: `data/processed/hourly_features_DE-LU_2024-08-01_to_2024-08-31.csv` (yes)
+- market_export: `dashboards/market_overview_DE-LU_2024-08-01_to_2024-08-31.csv` (yes)
+- reviewer_pack: `reports/reviewer_pack_2024-08-01_to_2024-08-31.md` (yes)
+- reviewer_pack_json: `reports/reviewer_pack_2024-08-01_to_2024-08-31.json` (yes)
+- risk_diagnostics_json: `reports/risk_diagnostics_2024-08-01_to_2024-08-31.json` (yes)
+- risk_diagnostics_report: `reports/risk_diagnostics_2024-08-01_to_2024-08-31.md` (yes)
+- risk_reason_codes: `dashboards/risk_reason_code_summary_DE-LU_2024-08-01_to_2024-08-31.csv` (yes)
+- risk_regime_distribution: `dashboards/risk_regime_distribution_DE-LU_2024-08-01_to_2024-08-31.csv` (yes)
+- risk_signal_report: `reports/risk_signal_quality_2024-08-01_to_2024-08-31.md` (yes)
+- risk_signals: `data/processed/risk_signals_DE-LU_2024-08-01_to_2024-08-31.csv` (yes)
+- run_summary: `reports/pipeline_run_summary_2024-08-01_to_2024-08-31.md` (no)
+- run_summary_json: `reports/pipeline_run_summary_2024-08-01_to_2024-08-31.json` (no)
+- staging: `data/staging/clean_hourly_DE-LU_2024-08-01_to_2024-08-31.csv` (yes)
+- staging_hard_json: `reports/staging_hard_checks_2024-08-01_to_2024-08-31.json` (yes)
+- staging_hard_report: `reports/staging_hard_checks_2024-08-01_to_2024-08-31.md` (yes)
+- top_risk_hours: `dashboards/top_risk_hours_DE-LU_2024-08-01_to_2024-08-31.csv` (yes)
+
+This run reproduces the implemented public-data pipeline. It does not claim trading profitability, execution capability, or P&L.
+
+=== GIT STATUS ===
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   src/reporting/reviewer_pack.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	dashboards/feature_dictionary_DE-LU_2024-05-01_to_2024-05-31.csv
+	dashboards/feature_dictionary_DE-LU_2024-07-01_to_2024-07-31.csv
+	dashboards/feature_dictionary_DE-LU_2024-08-01_to_2024-08-31.csv
+	dashboards/market_overview_DE-LU_2024-05-01_to_2024-05-31.csv
+	dashboards/market_overview_DE-LU_2024-05-01_to_2024-05-31.metadata.json
+	dashboards/market_overview_DE-LU_2024-07-01_to_2024-07-31.csv
+	dashboards/market_overview_DE-LU_2024-07-01_to_2024-07-31.metadata.json
+	dashboards/market_overview_DE-LU_2024-08-01_to_2024-08-31.csv
+	dashboards/market_overview_DE-LU_2024-08-01_to_2024-08-31.metadata.json
+	dashboards/risk_reason_code_summary_DE-LU_2024-05-01_to_2024-05-31.csv
+	dashboards/risk_reason_code_summary_DE-LU_2024-07-01_to_2024-07-31.csv
+	dashboards/risk_reason_code_summary_DE-LU_2024-08-01_to_2024-08-31.csv
+	dashboards/risk_regime_distribution_DE-LU_2024-05-01_to_2024-05-31.csv
+	dashboards/risk_regime_distribution_DE-LU_2024-07-01_to_2024-07-31.csv
+	dashboards/risk_regime_distribution_DE-LU_2024-08-01_to_2024-08-31.csv
+	dashboards/top_risk_hours_DE-LU_2024-05-01_to_2024-05-31.csv
+	dashboards/top_risk_hours_DE-LU_2024-07-01_to_2024-07-31.csv
+	dashboards/top_risk_hours_DE-LU_2024-08-01_to_2024-08-31.csv
+	data/processed/hourly_features_DE-LU_2024-05-01_to_2024-05-31.metadata.json
+	data/processed/hourly_features_DE-LU_2024-07-01_to_2024-07-31.metadata.json
+	data/processed/hourly_features_DE-LU_2024-08-01_to_2024-08-31.metadata.json
+	data/processed/risk_signals_DE-LU_2024-05-01_to_2024-05-31.metadata.json
+	data/processed/risk_signals_DE-LU_2024-07-01_to_2024-07-31.metadata.json
+	data/processed/risk_signals_DE-LU_2024-08-01_to_2024-08-31.metadata.json
+	data/staging/clean_hourly_DE-LU_2024-05-01_to_2024-05-31.metadata.json
+	data/staging/clean_hourly_DE-LU_2024-07-01_to_2024-07-31.metadata.json
+	data/staging/clean_hourly_DE-LU_2024-08-01_to_2024-08-31.metadata.json
+	reports/dashboard_export_quality_2024-05-01_to_2024-05-31.md
+	reports/dashboard_export_quality_2024-07-01_to_2024-07-31.md
+	reports/dashboard_export_quality_2024-08-01_to_2024-08-31.md
+	reports/data_quality_2024-05-01_to_2024-05-31.md
+	reports/data_quality_2024-07-01_to_2024-07-31.md
+	reports/data_quality_2024-08-01_to_2024-08-31.md
+	reports/feature_quality_2024-05-01_to_2024-05-31.md
+	reports/feature_quality_2024-07-01_to_2024-07-31.md
+	reports/feature_quality_2024-08-01_to_2024-08-31.md
+	reports/gate_output_multi_month.txt
+	reports/phase_7d_hotfix_reviewer_pack_scope.md
+	reports/pipeline_run_summary_2024-05-01_to_2024-05-31.json
+	reports/pipeline_run_summary_2024-05-01_to_2024-05-31.md
+	reports/pipeline_run_summary_2024-07-01_to_2024-07-31.json
+	reports/pipeline_run_summary_2024-07-01_to_2024-07-31.md
+	reports/pipeline_run_summary_2024-08-01_to_2024-08-31.json
+	reports/pipeline_run_summary_2024-08-01_to_2024-08-31.md
+	reports/reviewer_pack_2024-05-01_to_2024-05-31.json
+	reports/reviewer_pack_2024-05-01_to_2024-05-31.md
+	reports/reviewer_pack_2024-07-01_to_2024-07-31.json
+	reports/reviewer_pack_2024-07-01_to_2024-07-31.md
+	reports/reviewer_pack_2024-08-01_to_2024-08-31.json
+	reports/reviewer_pack_2024-08-01_to_2024-08-31.md
+	reports/risk_diagnostics_2024-05-01_to_2024-05-31.json
+	reports/risk_diagnostics_2024-05-01_to_2024-05-31.md
+	reports/risk_diagnostics_2024-07-01_to_2024-07-31.json
+	reports/risk_diagnostics_2024-07-01_to_2024-07-31.md
+	reports/risk_diagnostics_2024-08-01_to_2024-08-31.json
+	reports/risk_diagnostics_2024-08-01_to_2024-08-31.md
+	reports/risk_signal_quality_2024-05-01_to_2024-05-31.md
+	reports/risk_signal_quality_2024-07-01_to_2024-07-31.md
+	reports/risk_signal_quality_2024-08-01_to_2024-08-31.md
+	reports/staging_hard_checks_2024-05-01_to_2024-05-31.json
+	reports/staging_hard_checks_2024-05-01_to_2024-05-31.md
+	reports/staging_hard_checks_2024-07-01_to_2024-07-31.json
+	reports/staging_hard_checks_2024-07-01_to_2024-07-31.md
+	reports/staging_hard_checks_2024-08-01_to_2024-08-31.json
+	reports/staging_hard_checks_2024-08-01_to_2024-08-31.md
+
+no changes added to commit (use "git add" and/or "git commit -a")

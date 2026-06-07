@@ -1,0 +1,72 @@
+{
+  "feature_columns": [
+    "timestamp_utc",
+    "timestamp_local",
+    "market_label",
+    "smard_region",
+    "total_load_mw",
+    "residual_load_official_mw",
+    "wind_onshore_validated_mw",
+    "solar_validated_mw",
+    "wind_offshore_validated_mw",
+    "missing_any_flag",
+    "wind_total_mw",
+    "renewable_generation_mw",
+    "residual_load_calculated_mw",
+    "residual_gap_mw",
+    "residual_gap_abs_mw",
+    "renewable_share",
+    "wind_share",
+    "solar_share",
+    "load_ramp_mw",
+    "residual_load_ramp_mw",
+    "renewable_generation_ramp_mw",
+    "local_date",
+    "local_hour",
+    "local_weekday",
+    "is_weekend",
+    "feature_schema_version"
+  ],
+  "feature_output": "data/processed/hourly_features_DE-LU_2024-05-01_to_2024-05-31.csv",
+  "feature_schema_version": "3A.1",
+  "notes": [
+    "No price features are included in Phase 3A.",
+    "No risk scores are created in Phase 3A.",
+    "No backtest is created in Phase 3A."
+  ],
+  "quality_report": "reports/feature_quality_2024-05-01_to_2024-05-31.md",
+  "quality_result": {
+    "core_missing_by_column": {
+      "renewable_generation_mw": 0,
+      "renewable_share": 0,
+      "residual_gap_abs_mw": 0,
+      "residual_gap_mw": 0,
+      "residual_load_calculated_mw": 0,
+      "solar_share": 0,
+      "wind_share": 0,
+      "wind_total_mw": 0
+    },
+    "max_abs_residual_gap_mw": 0.0,
+    "mean_abs_residual_gap_mw": 0.0,
+    "notes": [
+      "Feature table passed all Phase 3A checks."
+    ],
+    "ramp_missing_by_column": {
+      "load_ramp_mw": 1,
+      "renewable_generation_ramp_mw": 1,
+      "residual_load_ramp_mw": 1
+    },
+    "required_columns_missing": [],
+    "residual_gap_pass": true,
+    "residual_gap_tolerance_mw": 1.0,
+    "row_count": 744,
+    "share_range_violations": {
+      "renewable_share": 0,
+      "solar_share": 0,
+      "wind_share": 0
+    },
+    "status": "PASS"
+  },
+  "stage": "features",
+  "staging_input": "data/staging/clean_hourly_DE-LU_2024-05-01_to_2024-05-31.csv"
+}
