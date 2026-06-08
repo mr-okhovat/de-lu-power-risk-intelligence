@@ -5,10 +5,11 @@
 For a fast technical review, start with:
 
 1. `reports/reviewer_quick_path.md`
-2. `reports/reviewer_ready_v2.md`
-3. `reports/market_month_run_catalog.md`
-4. `reports/active_run_selection.md`
-5. Streamlit dashboard: `streamlit run app/streamlit_app.py`
+2. `reports/senior_reviewer_note.md`
+3. `reports/reviewer_ready_v2.md`
+4. `reports/market_month_run_catalog.md`
+5. `reports/active_run_selection.md`
+6. Streamlit dashboard: `streamlit run app/streamlit_app.py`
 
 The project should be read as a reproducible public-data DE-LU power-market risk-intelligence prototype. It is not presented as live trading infrastructure or as a proven alpha model.
 

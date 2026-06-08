@@ -52,6 +52,7 @@ def paths(start: str, end: str) -> dict[str, Path]:
         "active_selection_report": Path("reports/active_run_selection.md"),
         "reviewer": Path("reports/reviewer_ready_v1.md"),
         "reviewer_quick_path": Path("reports/reviewer_quick_path.md"),
+        "senior_reviewer_note": Path("reports/senior_reviewer_note.md"),
         "visual_pack": Path("reports/visual_reviewer_pack.md"),
         "readme": Path("README.md"),
     }
@@ -953,6 +954,7 @@ def render_reports(selected_paths: dict[str, Path]) -> None:
     rows = [
         {"file": "README", "path": selected_paths["readme"]},
         {"file": "Reviewer quick path", "path": selected_paths["reviewer_quick_path"]},
+        {"file": "Senior reviewer note", "path": selected_paths["senior_reviewer_note"]},
         {"file": "Reviewer-ready v1", "path": selected_paths["reviewer"]},
         {"file": "Visual reviewer pack", "path": selected_paths["visual_pack"]},
         {"file": "Monthly behavior report", "path": selected_paths["behavior"]},
