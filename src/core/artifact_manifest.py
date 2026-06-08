@@ -17,6 +17,7 @@ ARTIFACTS = [
     ("orchestration", "scripts/run_project_checkpoint.sh", True),
     ("orchestration", "src/core/project_orchestrator.py", True),
     ("reviewer", "reports/reviewer_ready_v2.md", True),
+    ("reviewer", "reports/reviewer_quick_path.md", True),
     ("reviewer", "reports/reviewer_ready_v2.json", True),
     ("reviewer", "dashboards/reviewer_ready_v2_metrics.csv", True),
     ("intake", "reports/dataset_adapter_registry_run.md", True),

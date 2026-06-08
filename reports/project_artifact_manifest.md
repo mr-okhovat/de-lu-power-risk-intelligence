@@ -5,9 +5,9 @@ Manifest table: `dashboards/project_artifact_manifest.csv`
 
 ## Status
 
-- Artifacts tracked: `36`
-- Required artifacts: `36`
-- Existing artifacts: `36`
+- Artifacts tracked: `37`
+- Required artifacts: `37`
+- Existing artifacts: `37`
 - Missing required artifacts: `0`
 - All required present: `True`
 
@@ -15,10 +15,11 @@ Manifest table: `dashboards/project_artifact_manifest.csv`
 
 | category | path | required | exists | size bytes | sha256 |
 |---|---|---:|---:|---:|---|
-| project | `README.md` | True | True | 5118 | `a94471cd5af0` |
+| project | `README.md` | True | True | 5580 | `c2505be0424c` |
 | orchestration | `scripts/run_project_checkpoint.sh` | True | True | 183 | `4df4ad624c98` |
 | orchestration | `src/core/project_orchestrator.py` | True | True | 9082 | `4485af337a93` |
 | reviewer | `reports/reviewer_ready_v2.md` | True | True | 2967 | `fea96160e7aa` |
+| reviewer | `reports/reviewer_quick_path.md` | True | True | 1811 | `22455a5e9448` |
 | reviewer | `reports/reviewer_ready_v2.json` | True | True | 3163 | `1342aa5b0f4d` |
 | reviewer | `dashboards/reviewer_ready_v2_metrics.csv` | True | True | 736 | `6d6f78fd44a1` |
 | intake | `reports/dataset_adapter_registry_run.md` | True | True | 554 | `72ab954cac7b` |
@@ -38,7 +39,7 @@ Manifest table: `dashboards/project_artifact_manifest.csv`
 | lead_time | `reports/lead_time_evaluation_2024-05_to_2024-08.md` | True | True | 1887 | `f0d1a87226e4` |
 | lead_time | `dashboards/lead_time_aggregate_DE-LU_2024-05_to_2024-08.csv` | True | True | 1869 | `f99fd55b36a9` |
 | visual | `reports/visual_reviewer_pack.md` | True | True | 1124 | `7281ae44fc53` |
-| dashboard | `app/streamlit_app.py` | True | True | 32804 | `51d81210b90f` |
+| dashboard | `app/streamlit_app.py` | True | True | 32963 | `fa01f2766848` |
 | dashboard | `reports/figures/dashboard/dashboard_overview.png` | True | True | 79293 | `2b12de8a6cec` |
 | dashboard | `reports/figures/dashboard/dashboard_selected_month.png` | True | True | 131862 | `ba11b276745b` |
 | dashboard | `reports/figures/dashboard/dashboard_diagnostics.png` | True | True | 112366 | `54e6d94906a7` |

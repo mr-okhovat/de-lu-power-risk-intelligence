@@ -1,5 +1,18 @@
 # DE-LU Power Risk Intelligence
 
+## Reviewer quick path
+
+For a fast technical review, start with:
+
+1. `reports/reviewer_quick_path.md`
+2. `reports/reviewer_ready_v2.md`
+3. `reports/market_month_run_catalog.md`
+4. `reports/active_run_selection.md`
+5. Streamlit dashboard: `streamlit run app/streamlit_app.py`
+
+The project should be read as a reproducible public-data DE-LU power-market risk-intelligence prototype. It is not presented as live trading infrastructure or as a proven alpha model.
+
+
 A small public-data pipeline for German/Luxembourg power-market risk analytics.
 
 The project ingests SMARD data, builds a clean hourly market table, derives load, renewable and residual-load features, exports dashboard-ready files, and creates a first rule-based stress signal.
