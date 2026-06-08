@@ -75,6 +75,21 @@
     },
     {
       "command": [
+        "bash",
+        "scripts/build_active_run_selection.sh"
+      ],
+      "missing_outputs": [],
+      "name": "active_selection",
+      "required_outputs": [
+        "reports/active_run_selection.md",
+        "reports/active_run_selection.json",
+        "dashboards/active_run_selection.csv"
+      ],
+      "return_code": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
         "python",
         "-m",
         "src.reporting.reviewer_ready_v2",

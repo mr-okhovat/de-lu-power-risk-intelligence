@@ -5,9 +5,9 @@ Manifest table: `dashboards/project_artifact_manifest.csv`
 
 ## Status
 
-- Artifacts tracked: `33`
-- Required artifacts: `33`
-- Existing artifacts: `33`
+- Artifacts tracked: `36`
+- Required artifacts: `36`
+- Existing artifacts: `36`
 - Missing required artifacts: `0`
 - All required present: `True`
 
@@ -17,7 +17,7 @@ Manifest table: `dashboards/project_artifact_manifest.csv`
 |---|---|---:|---:|---:|---|
 | project | `README.md` | True | True | 5118 | `a94471cd5af0` |
 | orchestration | `scripts/run_project_checkpoint.sh` | True | True | 183 | `4df4ad624c98` |
-| orchestration | `src/core/project_orchestrator.py` | True | True | 8743 | `bdd79769c4a6` |
+| orchestration | `src/core/project_orchestrator.py` | True | True | 9082 | `4485af337a93` |
 | reviewer | `reports/reviewer_ready_v2.md` | True | True | 2967 | `fea96160e7aa` |
 | reviewer | `reports/reviewer_ready_v2.json` | True | True | 3163 | `1342aa5b0f4d` |
 | reviewer | `dashboards/reviewer_ready_v2_metrics.csv` | True | True | 736 | `6d6f78fd44a1` |
@@ -32,10 +32,13 @@ Manifest table: `dashboards/project_artifact_manifest.csv`
 | run_catalog | `reports/market_month_run_catalog.md` | True | True | 1033 | `f9f116aa9484` |
 | run_catalog | `reports/market_month_run_catalog.json` | True | True | 350 | `d14cf3b9d3ed` |
 | run_catalog | `dashboards/market_month_run_catalog.csv` | True | True | 3416 | `5f00bbadc570` |
+| active_selection | `reports/active_run_selection.md` | True | True | 987 | `31810b2d87db` |
+| active_selection | `reports/active_run_selection.json` | True | True | 468 | `25d558cc3e8e` |
+| active_selection | `dashboards/active_run_selection.csv` | True | True | 1063 | `d962930328b8` |
 | lead_time | `reports/lead_time_evaluation_2024-05_to_2024-08.md` | True | True | 1887 | `f0d1a87226e4` |
 | lead_time | `dashboards/lead_time_aggregate_DE-LU_2024-05_to_2024-08.csv` | True | True | 1869 | `f99fd55b36a9` |
 | visual | `reports/visual_reviewer_pack.md` | True | True | 1124 | `7281ae44fc53` |
-| dashboard | `app/streamlit_app.py` | True | True | 30402 | `e82a0dbca518` |
+| dashboard | `app/streamlit_app.py` | True | True | 32804 | `51d81210b90f` |
 | dashboard | `reports/figures/dashboard/dashboard_overview.png` | True | True | 79293 | `2b12de8a6cec` |
 | dashboard | `reports/figures/dashboard/dashboard_selected_month.png` | True | True | 131862 | `ba11b276745b` |
 | dashboard | `reports/figures/dashboard/dashboard_diagnostics.png` | True | True | 112366 | `54e6d94906a7` |

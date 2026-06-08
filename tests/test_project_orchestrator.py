@@ -19,6 +19,7 @@ def test_default_stages_without_screenshots() -> None:
         "intake_summary",
         "data_availability_index",
         "run_catalog",
+            "active_selection",
         "reviewer_ready_v2",
         "artifact_manifest",
     ]
@@ -34,6 +35,7 @@ def test_default_stages_with_screenshots() -> None:
         "intake_summary",
         "data_availability_index",
         "run_catalog",
+            "active_selection",
         "reviewer_ready_v2",
         "dashboard_screenshots",
         "artifact_manifest",

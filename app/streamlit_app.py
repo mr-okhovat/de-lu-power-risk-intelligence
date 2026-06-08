@@ -48,6 +48,8 @@ def paths(start: str, end: str) -> dict[str, Path]:
         "data_availability_report": Path("reports/data_availability_index.md"),
         "run_catalog": Path("dashboards/market_month_run_catalog.csv"),
         "run_catalog_report": Path("reports/market_month_run_catalog.md"),
+        "active_selection": Path("dashboards/active_run_selection.csv"),
+        "active_selection_report": Path("reports/active_run_selection.md"),
         "reviewer": Path("reports/reviewer_ready_v1.md"),
         "visual_pack": Path("reports/visual_reviewer_pack.md"),
         "readme": Path("README.md"),
@@ -109,6 +111,10 @@ def load_data_availability_index() -> pd.DataFrame:
 
 def load_run_catalog() -> pd.DataFrame:
     return read_csv(Path("dashboards/market_month_run_catalog.csv"))
+
+
+def load_active_selection() -> pd.DataFrame:
+    return read_csv(Path("dashboards/active_run_selection.csv"))
 
 
 def load_checkpoint_payload() -> dict:
@@ -800,6 +806,69 @@ def render_data_availability(index_df: pd.DataFrame) -> None:
     )
 
 
+
+def active_selection_metrics(df: pd.DataFrame) -> dict[str, object]:
+    if df.empty:
+        return {
+            "selected_runs": 0,
+            "markets": 0,
+            "period": "n/a",
+            "mean_same_hour_lift": None,
+            "mean_next_3h_lift": None,
+        }
+
+    same_hour = pd.to_numeric(df.get("same_hour_event_lift"), errors="coerce").mean()
+    next_3h = pd.to_numeric(df.get("window_next_3h_event_lift"), errors="coerce").mean()
+
+    return {
+        "selected_runs": int(len(df)),
+        "markets": int(df["market"].nunique()) if "market" in df.columns else 0,
+        "period": f"{df['start'].min()} to {df['end'].max()}" if {"start", "end"}.issubset(df.columns) else "n/a",
+        "mean_same_hour_lift": same_hour,
+        "mean_next_3h_lift": next_3h,
+    }
+
+
+def active_selection_core_table(df: pd.DataFrame) -> pd.DataFrame:
+    cols = [
+        "run_id",
+        "market",
+        "start",
+        "end",
+        "run_status",
+        "source_rows",
+        "same_hour_event_lift",
+        "window_next_3h_event_lift",
+    ]
+    available = [col for col in cols if col in df.columns]
+    return df[available].copy()
+
+
+def render_active_selection(selection_df: pd.DataFrame) -> None:
+    st.subheader("Active run selection")
+
+    if selection_df.empty:
+        st.warning("No active run selection file is available.")
+        return
+
+    metric = active_selection_metrics(selection_df)
+
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Selected runs", metric["selected_runs"])
+    col2.metric("Markets", metric["markets"])
+    col3.metric("Same-hour lift", f"{metric['mean_same_hour_lift']:.3f}")
+    col4.metric("Next-3h lift", f"{metric['mean_next_3h_lift']:.3f}")
+
+    st.caption(f"Active period: {metric['period']}")
+    st.dataframe(active_selection_core_table(selection_df), use_container_width=True)
+
+    st.download_button(
+        "Download active selection CSV",
+        data=selection_df.to_csv(index=False),
+        file_name="active_run_selection.csv",
+        mime="text/csv",
+    )
+
 def render_run_catalog(catalog_df: pd.DataFrame) -> None:
     st.subheader("Run catalog")
 
@@ -934,7 +1003,7 @@ def render() -> None:
     cross = load_cross_month()
     metrics = kpis(df)
 
-    tabs = st.tabs(["Overview", "Selected month", "Diagnostics", "Lead time", "Dataset intake", "Data availability", "Run catalog", "Project health", "Reviewer files"])
+    tabs = st.tabs(["Overview", "Selected month", "Diagnostics", "Lead time", "Dataset intake", "Data availability", "Run catalog", "Active selection", "Project health", "Reviewer files"])
 
     with tabs[0]:
         render_overview(cross)
@@ -958,9 +1027,12 @@ def render() -> None:
         render_run_catalog(load_run_catalog())
 
     with tabs[7]:
-        render_project_health(load_artifact_manifest(), load_checkpoint_payload())
+        render_active_selection(load_active_selection())
 
     with tabs[8]:
+        render_project_health(load_artifact_manifest(), load_checkpoint_payload())
+
+    with tabs[9]:
         render_reports(selected_paths)
 
 

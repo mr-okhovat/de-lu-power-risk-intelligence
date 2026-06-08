@@ -71,6 +71,15 @@ def default_stages(*, include_screenshots: bool = False) -> list[Stage]:
             ],
         ),
         Stage(
+            name="active_selection",
+            command=["bash", "scripts/build_active_run_selection.sh"],
+            required_outputs=[
+                "reports/active_run_selection.md",
+                "reports/active_run_selection.json",
+                "dashboards/active_run_selection.csv",
+            ],
+        ),
+        Stage(
             name="reviewer_ready_v2",
             command=[
                 "python",

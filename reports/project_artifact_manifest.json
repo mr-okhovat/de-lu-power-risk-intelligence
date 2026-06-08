@@ -2,10 +2,10 @@
   "manifest_csv": "dashboards/project_artifact_manifest.csv",
   "metrics": {
     "all_required_present": true,
-    "artifacts": 33,
-    "existing_artifacts": 33,
+    "artifacts": 36,
+    "existing_artifacts": 36,
     "missing_required_artifacts": 0,
-    "required_artifacts": 33
+    "required_artifacts": 36
   },
   "version": "13B.1"
 }
