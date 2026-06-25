@@ -31,5 +31,9 @@ signal or independently estimated low-renewable-share effect.
 
 ## Next research stage
 
-Complete a primary literature, regulator and market-design scan before adding
+Complete the source-vintage and pre-auction eligibility audit before adding
 new data fields or formulating an external industry question.
+
+The central constraint is not whether a variable is public today. It is
+whether a historically reproducible version was observable before the
+D-1 12:00 CET/CEST day-ahead auction gate for the delivery day.
