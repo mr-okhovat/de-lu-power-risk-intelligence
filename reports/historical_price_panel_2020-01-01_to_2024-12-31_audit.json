@@ -1,0 +1,55 @@
+{
+  "duplicate_timestamp_count": 0,
+  "expected_hour_count": 43848,
+  "first_timestamp_utc": "2019-12-31 23:00:00+00:00",
+  "invalid_timestamp_count": 0,
+  "last_timestamp_utc": "2024-12-31 22:00:00+00:00",
+  "missing_expected_hour_count": 0,
+  "missing_price_count": 0,
+  "missing_required_columns": [],
+  "observed_filter_ids": [
+    "4169"
+  ],
+  "observed_market_labels": [
+    "DE-LU"
+  ],
+  "observed_regions": [
+    "DE-LU"
+  ],
+  "observed_schema_versions": [
+    "8B.1"
+  ],
+  "observed_sources": [
+    "SMARD / Bundesnetzagentur"
+  ],
+  "price_max_eur_per_mwh": 936.28,
+  "price_mean_eur_per_mwh": 107.23305304688925,
+  "price_min_eur_per_mwh": -500.0,
+  "price_table_quality": {
+    "duplicate_timestamps": 0,
+    "expected_rows": 43848,
+    "max_price": 936.28,
+    "mean_price": 107.23305304688925,
+    "min_price": -500.0,
+    "missing_prices": 0,
+    "missing_rows": 0,
+    "notes": [
+      "Price table passed hourly completeness and value checks."
+    ],
+    "row_count": 43848,
+    "source_filter_id": "4169",
+    "source_region": "DE-LU",
+    "status": "PASS"
+  },
+  "price_table_quality_status": "PASS",
+  "row_count": 43848,
+  "scope": "Historical DE-LU day-ahead price source panel only; no prediction claim.",
+  "source_contract": {
+    "filter_id": "4169",
+    "market_label": "DE-LU",
+    "region": "DE-LU",
+    "resolution": "hour"
+  },
+  "status": "PASS",
+  "unexpected_hour_count": 0
+}

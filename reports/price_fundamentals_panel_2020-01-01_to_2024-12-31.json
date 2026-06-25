@@ -1,0 +1,21 @@
+{
+  "feature_duplicate_timestamps": 0,
+  "feature_input": "data/processed/hourly_features_DE-LU_2020-01-01_to_2024-12-31.csv",
+  "feature_invalid_timestamps": 0,
+  "feature_rows": 43848,
+  "merged_rows": 43848,
+  "missing_feature_columns": [],
+  "missing_price_columns": [],
+  "missing_prices_after_merge": 0,
+  "observed_price_filter_ids": [
+    "4169"
+  ],
+  "output": "data/processed/price_fundamentals_panel_DE-LU_2020-01-01_to_2024-12-31.csv",
+  "price_duplicate_timestamps": 0,
+  "price_input": "data/processed/hourly_prices_DE-LU_2020-01-01_to_2024-12-31.csv",
+  "price_invalid_timestamps": 0,
+  "price_rows": 43848,
+  "status": "PASS",
+  "unmatched_feature_timestamps": 0,
+  "unmatched_price_timestamps": 0
+}

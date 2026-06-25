@@ -1,0 +1,31 @@
+{
+  "annual_composite_positive_lift_years": 5,
+  "annual_composite_years_available": 5,
+  "calendar_control": "year_month_x_delivery_hour",
+  "fundamental_state_definition": "Within-month percentile states: residual top decile, renewable share bottom decile, absolute residual ramp top decile; composite means at least two states.",
+  "input_panel": "data/processed/price_fundamentals_panel_DE-LU_2020-01-01_to_2024-12-31.csv",
+  "metrics_csv": "dashboards/market_discovery_metrics_DE-LU_2020-01-01_to_2024-12-31.csv",
+  "overall_composite_controlled": {
+    "control": "year_month_x_delivery_hour",
+    "event_rate_difference_pp": 50.81163693471178,
+    "exposed_event_rate": 0.6626008031280637,
+    "exposed_price_event_rows": 1547,
+    "exposed_rows": 2317,
+    "exposure": "composite_fundamental_stress",
+    "period": "overall",
+    "relative_lift": 4.289110474830177,
+    "rows": 43848,
+    "unexposed_event_rate": 0.15448443378094584,
+    "unexposed_price_event_rows": 2863,
+    "unexposed_rows": 41531,
+    "valid_strata": 632.0,
+    "weighted_common_support_rows": 19209.0
+  },
+  "price_high_event_rate": 0.10057471264367816,
+  "rows_analysed": 43848,
+  "rows_excluded": 0,
+  "rows_input": 43848,
+  "scope": "Ex-post association screen only. No causality, forecasting, tradability or pre-auction availability claim.",
+  "state_summary_csv": "dashboards/market_discovery_state_rates_DE-LU_2020-01-01_to_2024-12-31.csv",
+  "status": "DISCOVERY SCREEN COMPLETE"
+}

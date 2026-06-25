@@ -1,0 +1,165 @@
+{
+  "analysed_rows": 43847,
+  "artifacts": {
+    "leave_one_year_out_csv": "dashboards/market_discovery_confirmation_leave_one_year_out_DE-LU_2020-01-01_to_2024-12-31.csv",
+    "monthly_blocks_csv": "dashboards/market_discovery_confirmation_month_blocks_DE-LU_2020-01-01_to_2024-12-31.csv",
+    "placebos_csv": "dashboards/market_discovery_confirmation_placebos_DE-LU_2020-01-01_to_2024-12-31.csv"
+  },
+  "calendar_strata": [
+    "year_month",
+    "delivery_hour",
+    "is_weekend"
+  ],
+  "checks": {
+    "all_leave_one_year_out_effects_positive": true,
+    "monthly_block_bootstrap_ci_positive": true,
+    "observed_effect_exceeds_weekly_placebos": true
+  },
+  "excluded_rows": 1,
+  "exposure": "composite_fundamental_stress",
+  "input_rows": 43848,
+  "leave_one_year_out": [
+    {
+      "effect_pp": 47.6756502800591,
+      "held_out_year": 2020,
+      "max_month_effect_pp": 76.05948933929983,
+      "min_month_effect_pp": -14.417177914110429,
+      "months_used": 48
+    },
+    {
+      "effect_pp": 49.39198367961657,
+      "held_out_year": 2021,
+      "max_month_effect_pp": 76.44859813084112,
+      "min_month_effect_pp": -14.417177914110429,
+      "months_used": 48
+    },
+    {
+      "effect_pp": 48.7907379313503,
+      "held_out_year": 2022,
+      "max_month_effect_pp": 76.44859813084112,
+      "min_month_effect_pp": 5.661140315406393,
+      "months_used": 48
+    },
+    {
+      "effect_pp": 45.79398480722845,
+      "held_out_year": 2023,
+      "max_month_effect_pp": 76.44859813084112,
+      "min_month_effect_pp": -14.417177914110429,
+      "months_used": 48
+    },
+    {
+      "effect_pp": 48.3917754026504,
+      "held_out_year": 2024,
+      "max_month_effect_pp": 76.44859813084112,
+      "min_month_effect_pp": -14.417177914110429,
+      "months_used": 48
+    }
+  ],
+  "monthly_block_bootstrap": {
+    "bootstrap_ci_025_pp": 42.44675107981321,
+    "bootstrap_ci_500_pp": 48.096649177495394,
+    "bootstrap_ci_975_pp": 53.0104737009581,
+    "bootstrap_mean_pp": 47.97923802560591,
+    "bootstrap_std_pp": 2.730019506692563,
+    "point_estimate_pp": 48.02669485149875
+  },
+  "monthly_block_count": 60,
+  "observed_controlled_metric": {
+    "difference_pp": 46.32643663200965,
+    "exposed_event_rate": 0.6613137556833848,
+    "exposed_rows": 2317,
+    "relative_lift": 3.3391355449741686,
+    "unexposed_event_rate": 0.19804938936328825,
+    "unexposed_rows": 41530,
+    "valid_strata": 696,
+    "weighted_common_support_rows": 14241
+  },
+  "placebos": [
+    {
+      "alignment": "observed",
+      "difference_pp": 46.32643663200965,
+      "exposed_event_rate": 0.6613137556833848,
+      "exposed_rows": 2317,
+      "relative_lift": 3.3391355449741686,
+      "shift_hours": 0,
+      "unexposed_event_rate": 0.19804938936328825,
+      "unexposed_rows": 41530,
+      "valid_strata": 696,
+      "weighted_common_support_rows": 14241
+    },
+    {
+      "alignment": "weekly_circular_placebo",
+      "difference_pp": -2.333233545934932,
+      "exposed_event_rate": 0.2555907773825168,
+      "exposed_rows": 2317,
+      "relative_lift": 0.9163485047129191,
+      "shift_hours": 168,
+      "unexposed_event_rate": 0.2789231128418661,
+      "unexposed_rows": 41530,
+      "valid_strata": 696,
+      "weighted_common_support_rows": 14241
+    },
+    {
+      "alignment": "weekly_circular_placebo",
+      "difference_pp": -3.430116032398506,
+      "exposed_event_rate": 0.21902731476418863,
+      "exposed_rows": 2317,
+      "relative_lift": 0.8645980862907489,
+      "shift_hours": 336,
+      "unexposed_event_rate": 0.2533284750881737,
+      "unexposed_rows": 41530,
+      "valid_strata": 696,
+      "weighted_common_support_rows": 14241
+    },
+    {
+      "alignment": "weekly_circular_placebo",
+      "difference_pp": -1.4479421074851202,
+      "exposed_event_rate": 0.2154852950668394,
+      "exposed_rows": 2317,
+      "relative_lift": 0.9370363361919841,
+      "shift_hours": 504,
+      "unexposed_event_rate": 0.2299647161416906,
+      "unexposed_rows": 41530,
+      "valid_strata": 696,
+      "weighted_common_support_rows": 14241
+    },
+    {
+      "alignment": "weekly_circular_placebo",
+      "difference_pp": -0.9345617890107849,
+      "exposed_event_rate": 0.2704425625606425,
+      "exposed_rows": 2317,
+      "relative_lift": 0.9665975243305429,
+      "shift_hours": -168,
+      "unexposed_event_rate": 0.2797881804507503,
+      "unexposed_rows": 41530,
+      "valid_strata": 696,
+      "weighted_common_support_rows": 14241
+    },
+    {
+      "alignment": "weekly_circular_placebo",
+      "difference_pp": -5.006687736859608,
+      "exposed_event_rate": 0.2152406170990697,
+      "exposed_rows": 2317,
+      "relative_lift": 0.8112873612219125,
+      "shift_hours": -336,
+      "unexposed_event_rate": 0.26530749446766577,
+      "unexposed_rows": 41530,
+      "valid_strata": 696,
+      "weighted_common_support_rows": 14241
+    },
+    {
+      "alignment": "weekly_circular_placebo",
+      "difference_pp": -4.926397730252888,
+      "exposed_event_rate": 0.19773388523396385,
+      "exposed_rows": 2317,
+      "relative_lift": 0.8005489731910115,
+      "shift_hours": -504,
+      "unexposed_event_rate": 0.24699786253649272,
+      "unexposed_rows": 41530,
+      "valid_strata": 696,
+      "weighted_common_support_rows": 14241
+    }
+  ],
+  "scope": "Ex-post explanatory association only. No causality, forecasting, tradability or pre-auction information claim.",
+  "status": "CONFIRMATION GATE PASSED"
+}
