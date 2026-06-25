@@ -49,9 +49,13 @@ the joint high-residual / low-renewable state:
 ## Interpretation
 
 The evidence supports a candidate joint-state amplification pattern:
-high residual load is the principal price-stress state, while low renewable
-share appears to add conditional explanatory information beyond residual load.
+the threshold-defined joint state is associated with greater observed price
+stress than a high-residual indicator alone.
+
+This does not yet isolate an independent low-renewable-share effect after
+continuous residual-load control or controls for fuel costs, conventional
+availability and cross-border market conditions.
 
 No risk-engine recalibration is justified yet. The next step is a targeted
-literature and mechanism scan to determine whether this result is already
-well-established, unresolved, or operationally under-specified.
+literature and mechanism scan before any new data field, market claim or
+external industry question is introduced.
