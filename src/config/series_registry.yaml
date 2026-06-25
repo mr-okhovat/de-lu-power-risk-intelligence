@@ -45,7 +45,7 @@ series:
     allowed_for_staging: true
     allowed_for_final_features: true
     expected_direction: "positive"
-    notes: "Endpoint verified and numerically validated as a residual-load component through exact reconciliation in Phase 2B."
+    notes: "Endpoint verified as a residual-load component. Five-year reconciliation is controlled by the documented endpoint exception policy; no claim of globally exact reconciliation is made."
 
   - filter_id: "4068"
     internal_name: "solar_validated"
@@ -61,7 +61,7 @@ series:
     allowed_for_staging: true
     allowed_for_final_features: true
     expected_direction: "positive"
-    notes: "Endpoint verified and numerically validated as a residual-load component through exact reconciliation in Phase 2B."
+    notes: "Endpoint verified as a residual-load component. Five-year reconciliation is controlled by the documented endpoint exception policy; no claim of globally exact reconciliation is made."
 
   - filter_id: "1225"
     internal_name: "wind_offshore_validated"
@@ -77,4 +77,4 @@ series:
     allowed_for_staging: true
     allowed_for_final_features: true
     expected_direction: "positive"
-    notes: "Endpoint verified and numerically validated as a residual-load component through exact reconciliation in Phase 2B."
+    notes: "Endpoint verified as a residual-load component. Five-year reconciliation is controlled by the documented endpoint exception policy; no claim of globally exact reconciliation is made."

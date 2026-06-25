@@ -7,6 +7,12 @@ from pathlib import Path
 
 import pandas as pd
 
+from src.data_quality.residual_reconciliation_policy import (
+    DEFAULT_EXCEPTION_REGISTRY_PATH,
+    ResidualExceptionPolicyMatch,
+    match_documented_residual_exceptions,
+)
+
 
 @dataclass(frozen=True)
 class ResidualReconciliationResult:
@@ -29,6 +35,8 @@ class StagingHardCheckResult:
     missing_by_column: dict[str, int]
     range_violations: dict[str, int]
     residual_reconciliation: ResidualReconciliationResult
+    residual_exception_policy: ResidualExceptionPolicyMatch
+    residual_control_pass: bool
     notes: list[str]
 
 
@@ -132,13 +140,14 @@ def reconcile_residual_load(
 
     if pass_check:
         note = (
-            "Residual reconciliation passed. Candidate renewable columns reconcile "
-            "against official residual load within tolerance."
+            "Residual reconciliation has no strict deviations above the "
+            "configured tolerance."
         )
     else:
         note = (
-            "Residual reconciliation failed. Candidate renewable columns do not "
-            "reconcile against official residual load within tolerance."
+            "Residual reconciliation exceeds the configured strict tolerance. "
+            "A documented endpoint-exception policy is required for a "
+            "non-blocking outcome."
         )
 
     return ResidualReconciliationResult(
@@ -155,6 +164,7 @@ def run_staging_hard_checks(
     staging_path: str | Path,
     *,
     residual_tolerance_mw: float = 1.0,
+    exception_registry_path: str | Path = DEFAULT_EXCEPTION_REGISTRY_PATH,
 ) -> StagingHardCheckResult:
     path = Path(staging_path)
 
@@ -202,6 +212,31 @@ def run_staging_hard_checks(
         tolerance_mw=residual_tolerance_mw,
     )
 
+    if residual_result.checked:
+        recomputed_residual = (
+            df["total_load_mw"]
+            - df["wind_onshore_validated_mw"]
+            - df["solar_validated_mw"]
+            - df["wind_offshore_validated_mw"]
+        )
+
+        residual_exception_policy = match_documented_residual_exceptions(
+            df["timestamp_utc"],
+            recomputed_residual - df["residual_load_official_mw"],
+            registry_path=exception_registry_path,
+        )
+    else:
+        residual_exception_policy = match_documented_residual_exceptions(
+            [],
+            [],
+            registry_path=exception_registry_path,
+        )
+
+    residual_control_pass = bool(
+        residual_result.checked
+        and residual_exception_policy.pass_check
+    )
+
     notes: list[str] = []
 
     if required_columns_missing:
@@ -220,11 +255,16 @@ def run_staging_hard_checks(
         notes.append("Value range violations found.")
 
     notes.append(residual_result.note)
+    notes.append(residual_exception_policy.note)
 
-    notes.append(
-        "Renewable component series have been promoted based on exact residual-load "
-        "reconciliation evidence. This validates staging coherence, not predictive value."
-    )
+    if (
+        residual_exception_policy.pass_check
+        and residual_exception_policy.observed_material_exception_count > 0
+    ):
+        notes.append(
+            "Documented source-published endpoint reconciliation exceptions "
+            "were accepted without changing raw data, tolerance or source fields."
+        )
 
     blocking_issue = (
         bool(required_columns_missing)
@@ -232,11 +272,13 @@ def run_staging_hard_checks(
         or hourly_continuity_breaks > 0
         or sum(missing_by_column.values()) > 0
         or sum(range_violations.values()) > 0
-        or not residual_result.pass_check
+        or not residual_control_pass
     )
 
     if blocking_issue:
         status = "STOP — NEEDS VERIFICATION"
+    elif residual_exception_policy.observed_material_exception_count > 0:
+        status = "PASS WITH DOCUMENTED ENDPOINT RECONCILIATION EXCEPTIONS"
     else:
         status = "PASS"
 
@@ -250,6 +292,8 @@ def run_staging_hard_checks(
         missing_by_column=missing_by_column,
         range_violations=range_violations,
         residual_reconciliation=residual_result,
+        residual_exception_policy=residual_exception_policy,
+        residual_control_pass=residual_control_pass,
         notes=notes,
     )
 
@@ -259,6 +303,8 @@ def render_hard_check_report(
     *,
     staging_path: str | Path,
 ) -> str:
+    policy = result.residual_exception_policy
+
     lines: list[str] = [
         "# Staging Validation Hardening Report",
         "",
@@ -296,10 +342,26 @@ def render_hard_check_report(
             "",
             f"- Checked: `{result.residual_reconciliation.checked}`",
             f"- Tolerance MW: `{result.residual_reconciliation.tolerance_mw}`",
-            f"- Pass: `{result.residual_reconciliation.pass_check}`",
+            f"- Strict tolerance pass: `{result.residual_reconciliation.pass_check}`",
+            f"- Residual control pass: `{result.residual_control_pass}`",
             f"- Max absolute error MW: `{result.residual_reconciliation.max_abs_error_mw}`",
             f"- Mean absolute error MW: `{result.residual_reconciliation.mean_abs_error_mw}`",
-            f"- Note: {result.residual_reconciliation.note}",
+            f"- Strict-check note: {result.residual_reconciliation.note}",
+            "",
+            "## Documented Endpoint Exception Policy",
+            "",
+            f"- Policy ID: `{policy.policy_id}`",
+            f"- Registry path: `{policy.registry_path}`",
+            f"- Registry loaded: `{policy.registry_loaded}`",
+            f"- Materiality threshold MW: `{policy.materiality_threshold_mw}`",
+            f"- Match tolerance MW: `{policy.match_tolerance_mw}`",
+            f"- Policy pass: `{policy.pass_check}`",
+            f"- Observed material exceptions: `{policy.observed_material_exception_count}`",
+            f"- Expected exceptions in window: `{policy.expected_exception_count_in_window}`",
+            f"- Unexpected timestamps: `{policy.unexpected_timestamp_count}`",
+            f"- Signed-error mismatches: `{policy.signed_error_mismatch_count}`",
+            f"- Missing documented exceptions: `{policy.missing_documented_exception_count}`",
+            f"- Policy note: {policy.note}",
             "",
             "## Notes",
             "",
@@ -355,6 +417,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--report-output", default="reports/staging_hard_checks.md")
     parser.add_argument("--json-output", default="reports/staging_hard_checks.json")
     parser.add_argument("--residual-tolerance-mw", type=float, default=1.0)
+    parser.add_argument(
+        "--residual-exception-registry",
+        default=str(DEFAULT_EXCEPTION_REGISTRY_PATH),
+    )
 
     return parser.parse_args()
 
@@ -365,6 +431,7 @@ def main() -> None:
     result = run_staging_hard_checks(
         args.staging_file,
         residual_tolerance_mw=args.residual_tolerance_mw,
+        exception_registry_path=args.residual_exception_registry,
     )
 
     write_hard_check_outputs(

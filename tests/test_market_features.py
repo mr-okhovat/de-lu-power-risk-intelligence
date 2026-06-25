@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pandas as pd
 
 from src.features.market_features import (
@@ -63,3 +65,67 @@ def test_validate_feature_frame_passes() -> None:
     assert result.row_count == 3
     assert result.residual_gap_pass is True
     assert result.ramp_missing_by_column["load_ramp_mw"] == 1
+
+
+def _write_feature_exception_registry(
+    path: Path,
+    *,
+    timestamp_utc: str,
+    signed_error_mw: float,
+) -> Path:
+    path.write_text(
+        (
+            "version: \"test\"\n"
+            "policy_id: \"test-policy\"\n"
+            "materiality_threshold_mw: 0.1\n"
+            "match_tolerance_mw: 0.01\n"
+            "exceptions:\n"
+            f"  - timestamp_utc: \"{timestamp_utc}\"\n"
+            f"    expected_signed_error_mw: {signed_error_mw}\n"
+        ),
+        encoding="utf-8",
+    )
+    return path
+
+
+def test_documented_exception_profile_passes_feature_gate(tmp_path: Path) -> None:
+    staging = make_staging_frame()
+    staging.loc[1, "residual_load_official_mw"] = 77.5
+    features = engineer_market_features(staging)
+
+    registry_file = _write_feature_exception_registry(
+        tmp_path / "registry.yaml",
+        timestamp_utc="2024-06-01T01:00:00Z",
+        signed_error_mw=2.5,
+    )
+
+    result = validate_feature_frame(
+        features,
+        exception_registry_path=registry_file,
+    )
+
+    assert result.status == "PASS WITH DOCUMENTED ENDPOINT RECONCILIATION EXCEPTIONS"
+    assert result.residual_gap_pass is False
+    assert result.residual_exception_policy.pass_check is True
+    assert result.residual_control_pass is True
+
+
+def test_unknown_exception_profile_stops_feature_gate(tmp_path: Path) -> None:
+    staging = make_staging_frame()
+    staging.loc[1, "residual_load_official_mw"] = 77.25
+    features = engineer_market_features(staging)
+
+    registry_file = _write_feature_exception_registry(
+        tmp_path / "registry.yaml",
+        timestamp_utc="2024-06-01T01:00:00Z",
+        signed_error_mw=2.5,
+    )
+
+    result = validate_feature_frame(
+        features,
+        exception_registry_path=registry_file,
+    )
+
+    assert result.status == "STOP — NEEDS VERIFICATION"
+    assert result.residual_exception_policy.pass_check is False
+    assert result.residual_exception_policy.signed_error_mismatch_count == 1

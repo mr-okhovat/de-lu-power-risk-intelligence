@@ -8,6 +8,12 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from src.data_quality.residual_reconciliation_policy import (
+    DEFAULT_EXCEPTION_REGISTRY_PATH,
+    ResidualExceptionPolicyMatch,
+    match_documented_residual_exceptions,
+)
+
 
 FEATURE_SCHEMA_VERSION = "3A.1"
 
@@ -55,6 +61,8 @@ class FeatureQualityResult:
     mean_abs_residual_gap_mw: float
     residual_gap_tolerance_mw: float
     residual_gap_pass: bool
+    residual_exception_policy: ResidualExceptionPolicyMatch
+    residual_control_pass: bool
     share_range_violations: dict[str, int]
     notes: list[str]
 
@@ -138,6 +146,7 @@ def validate_feature_frame(
     df: pd.DataFrame,
     *,
     residual_gap_tolerance_mw: float = 1.0,
+    exception_registry_path: str | Path = DEFAULT_EXCEPTION_REGISTRY_PATH,
 ) -> FeatureQualityResult:
     required_output_columns = REQUIRED_STAGING_COLUMNS + CORE_FEATURE_COLUMNS + RAMP_COLUMNS
 
@@ -171,6 +180,21 @@ def validate_feature_frame(
 
     residual_gap_pass = max_abs_residual_gap_mw <= residual_gap_tolerance_mw
 
+    if {"timestamp_utc", "residual_gap_mw"}.issubset(df.columns):
+        residual_exception_policy = match_documented_residual_exceptions(
+            df["timestamp_utc"],
+            df["residual_gap_mw"],
+            registry_path=exception_registry_path,
+        )
+    else:
+        residual_exception_policy = match_documented_residual_exceptions(
+            [],
+            [],
+            registry_path=exception_registry_path,
+        )
+
+    residual_control_pass = bool(residual_exception_policy.pass_check)
+
     share_columns = ["renewable_share", "wind_share", "solar_share"]
 
     share_range_violations = {
@@ -194,7 +218,18 @@ def validate_feature_frame(
             )
 
     if not residual_gap_pass:
-        notes.append("Residual gap tolerance failed.")
+        notes.append("Residual gap exceeds the configured strict tolerance.")
+
+    if not residual_exception_policy.pass_check:
+        notes.append(
+            "Residual reconciliation deviations do not match the documented "
+            "endpoint exception profile."
+        )
+    elif residual_exception_policy.observed_material_exception_count > 0:
+        notes.append(
+            "Documented source-published endpoint reconciliation exceptions "
+            "were accepted without changing feature values."
+        )
 
     if sum(share_range_violations.values()) > 0:
         notes.append("Share range violations found.")
@@ -206,11 +241,16 @@ def validate_feature_frame(
         bool(required_columns_missing)
         or sum(core_missing_by_column.values()) > 0
         or any(count != 1 for count in ramp_missing_by_column.values())
-        or not residual_gap_pass
+        or not residual_control_pass
         or sum(share_range_violations.values()) > 0
     )
 
-    status = "STOP — NEEDS VERIFICATION" if blocking_issue else "PASS"
+    if blocking_issue:
+        status = "STOP — NEEDS VERIFICATION"
+    elif residual_exception_policy.observed_material_exception_count > 0:
+        status = "PASS WITH DOCUMENTED ENDPOINT RECONCILIATION EXCEPTIONS"
+    else:
+        status = "PASS"
 
     return FeatureQualityResult(
         status=status,
@@ -222,6 +262,8 @@ def validate_feature_frame(
         mean_abs_residual_gap_mw=mean_abs_residual_gap_mw,
         residual_gap_tolerance_mw=residual_gap_tolerance_mw,
         residual_gap_pass=residual_gap_pass,
+        residual_exception_policy=residual_exception_policy,
+        residual_control_pass=residual_control_pass,
         share_range_violations=share_range_violations,
         notes=notes,
     )
@@ -233,6 +275,8 @@ def render_feature_quality_report(
     staging_path: str | Path,
     output_path: str | Path,
 ) -> str:
+    policy = result.residual_exception_policy
+
     lines: list[str] = [
         "# Feature Quality Report — Phase 3A",
         "",
@@ -268,9 +312,25 @@ def render_feature_quality_report(
             "## Residual Gap Check",
             "",
             f"- Tolerance MW: `{result.residual_gap_tolerance_mw}`",
-            f"- Pass: `{result.residual_gap_pass}`",
+            f"- Strict tolerance pass: `{result.residual_gap_pass}`",
+            f"- Residual control pass: `{result.residual_control_pass}`",
             f"- Max absolute residual gap MW: `{result.max_abs_residual_gap_mw}`",
             f"- Mean absolute residual gap MW: `{result.mean_abs_residual_gap_mw}`",
+            "",
+            "## Documented Endpoint Exception Policy",
+            "",
+            f"- Policy ID: `{policy.policy_id}`",
+            f"- Registry path: `{policy.registry_path}`",
+            f"- Registry loaded: `{policy.registry_loaded}`",
+            f"- Materiality threshold MW: `{policy.materiality_threshold_mw}`",
+            f"- Match tolerance MW: `{policy.match_tolerance_mw}`",
+            f"- Policy pass: `{policy.pass_check}`",
+            f"- Observed material exceptions: `{policy.observed_material_exception_count}`",
+            f"- Expected exceptions in window: `{policy.expected_exception_count_in_window}`",
+            f"- Unexpected timestamps: `{policy.unexpected_timestamp_count}`",
+            f"- Signed-error mismatches: `{policy.signed_error_mismatch_count}`",
+            f"- Missing documented exceptions: `{policy.missing_documented_exception_count}`",
+            f"- Policy note: {policy.note}",
             "",
             "## Share Range Violations",
             "",
@@ -307,6 +367,7 @@ def build_market_features(
     report_path: str | Path,
     metadata_path: str | Path | None = None,
     residual_gap_tolerance_mw: float = 1.0,
+    exception_registry_path: str | Path = DEFAULT_EXCEPTION_REGISTRY_PATH,
 ) -> pd.DataFrame:
     staging = load_staging_frame(staging_path)
     features = engineer_market_features(staging)
@@ -314,6 +375,7 @@ def build_market_features(
     quality_result = validate_feature_frame(
         features,
         residual_gap_tolerance_mw=residual_gap_tolerance_mw,
+        exception_registry_path=exception_registry_path,
     )
 
     output_path = Path(output_path)
@@ -375,6 +437,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--report-output", required=True)
     parser.add_argument("--metadata-output", default=None)
     parser.add_argument("--residual-gap-tolerance-mw", type=float, default=1.0)
+    parser.add_argument(
+        "--residual-exception-registry",
+        default=str(DEFAULT_EXCEPTION_REGISTRY_PATH),
+    )
 
     return parser.parse_args()
 
@@ -388,6 +454,7 @@ def main() -> None:
         report_path=args.report_output,
         metadata_path=args.metadata_output,
         residual_gap_tolerance_mw=args.residual_gap_tolerance_mw,
+        exception_registry_path=args.residual_exception_registry,
     )
 
 

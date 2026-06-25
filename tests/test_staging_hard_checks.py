@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pandas as pd
 
 from src.data_quality.staging_hard_checks import (
@@ -69,3 +71,69 @@ def test_run_staging_hard_checks_pass_with_limitation(tmp_path) -> None:
     assert result.duplicate_timestamp_count == 0
     assert result.hourly_continuity_breaks == 0
     assert result.residual_reconciliation.pass_check is True
+
+
+def _write_exception_registry(
+    path: Path,
+    *,
+    timestamp_utc: str,
+    signed_error_mw: float,
+) -> Path:
+    path.write_text(
+        (
+            "version: \"test\"\n"
+            "policy_id: \"test-policy\"\n"
+            "materiality_threshold_mw: 0.1\n"
+            "match_tolerance_mw: 0.01\n"
+            "exceptions:\n"
+            f"  - timestamp_utc: \"{timestamp_utc}\"\n"
+            f"    expected_signed_error_mw: {signed_error_mw}\n"
+        ),
+        encoding="utf-8",
+    )
+    return path
+
+
+def test_documented_exception_profile_passes_staging_gate(tmp_path: Path) -> None:
+    df = make_valid_staging_frame()
+    df.loc[1, "residual_load_official_mw"] = 72.5
+
+    staging_file = tmp_path / "staging.csv"
+    registry_file = _write_exception_registry(
+        tmp_path / "registry.yaml",
+        timestamp_utc="2024-06-01T01:00:00Z",
+        signed_error_mw=2.5,
+    )
+    df.to_csv(staging_file, index=False)
+
+    result = run_staging_hard_checks(
+        staging_file,
+        exception_registry_path=registry_file,
+    )
+
+    assert result.status == "PASS WITH DOCUMENTED ENDPOINT RECONCILIATION EXCEPTIONS"
+    assert result.residual_reconciliation.pass_check is False
+    assert result.residual_exception_policy.pass_check is True
+    assert result.residual_control_pass is True
+
+
+def test_unknown_exception_profile_stops_staging_gate(tmp_path: Path) -> None:
+    df = make_valid_staging_frame()
+    df.loc[1, "residual_load_official_mw"] = 72.25
+
+    staging_file = tmp_path / "staging.csv"
+    registry_file = _write_exception_registry(
+        tmp_path / "registry.yaml",
+        timestamp_utc="2024-06-01T01:00:00Z",
+        signed_error_mw=2.5,
+    )
+    df.to_csv(staging_file, index=False)
+
+    result = run_staging_hard_checks(
+        staging_file,
+        exception_registry_path=registry_file,
+    )
+
+    assert result.status == "STOP — NEEDS VERIFICATION"
+    assert result.residual_exception_policy.pass_check is False
+    assert result.residual_exception_policy.signed_error_mismatch_count == 1

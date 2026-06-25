@@ -1,0 +1,21 @@
+{
+  "detail_path": "reports/residual_input_sensitivity_2020_2024.csv",
+  "implementation_note": "A fast order-statistics implementation was parity-checked against src.signals.risk_engine.past_percentile_rank on 600-row samples for seven ranked series before full-panel execution.",
+  "materiality_threshold_mw": 0.1,
+  "maximum_absolute_residual_gap_mw": 16.5,
+  "maximum_absolute_risk_score_delta": 0,
+  "method": "Full-panel counterfactual comparison: source-published residual load versus residual load recomputed from total load minus wind onshore, solar and wind offshore.",
+  "policy_id": "de-lu-smard-residual-reconciliation-2021-01",
+  "ranking_semantics": "At each timestamp, percentile equals the share of non-null historical values strictly before that timestamp that are less than or equal to the current value.",
+  "residual_level_input_changed_rows": 95,
+  "residual_percentile_changed_rows": 99,
+  "residual_ramp_input_changed_rows": 89,
+  "residual_ramp_percentile_changed_rows": 1012,
+  "risk_output_changed_rows": 0,
+  "risk_output_changed_rows_inside_exception_window": 0,
+  "risk_output_changed_rows_outside_exception_window": 0,
+  "rows_analysed": 43848,
+  "source_reconciliation_exception_rows": 70,
+  "status": "PASS — NO RISK OUTPUT CHANGE",
+  "version": "1.0"
+}
