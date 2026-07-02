@@ -1,0 +1,68 @@
+{
+  "blocking_reasons": [],
+  "core_missing_by_column": {
+    "renewable_generation_mw": 0,
+    "renewable_share": 0,
+    "residual_gap_abs_mw": 0,
+    "residual_gap_mw": 0,
+    "residual_load_calculated_mw": 0,
+    "residual_load_official_mw": 0,
+    "solar_share": 0,
+    "solar_validated_mw": 0,
+    "total_load_mw": 0,
+    "wind_offshore_validated_mw": 0,
+    "wind_onshore_validated_mw": 0,
+    "wind_share": 0,
+    "wind_total_mw": 0
+  },
+  "duplicate_timestamp_count": 0,
+  "expected_hour_count": 72,
+  "hourly_continuity_breaks": 0,
+  "identity_missing_by_column": {
+    "feature_schema_version": 0,
+    "is_weekend": 0,
+    "local_date": 0,
+    "local_hour": 0,
+    "local_weekday": 0,
+    "market_label": 0,
+    "missing_any_flag": 0,
+    "smard_region": 0,
+    "timestamp_local": 0
+  },
+  "invalid_timestamp_count": 0,
+  "market_label_values": [
+    "DE-LU"
+  ],
+  "metadata_checks": {
+    "feature_output_matches": true,
+    "feature_schema_version_matches": true,
+    "metadata_file_exists": true,
+    "metadata_is_valid_json_object": true,
+    "metadata_quality_status_pass": true,
+    "metadata_row_count_matches": true
+  },
+  "missing_any_flag_true_count": 0,
+  "notes": [
+    "This gate validates release readiness, not predictive value or trading performance.",
+    "Null ramp values are accepted only for the first observation."
+  ],
+  "ramp_missing_outside_first_by_column": {
+    "load_ramp_mw": 0,
+    "renewable_generation_ramp_mw": 0,
+    "residual_load_ramp_mw": 0
+  },
+  "required_columns_missing": [],
+  "residual_gap_max_abs_mw": 0.0,
+  "residual_gap_pass": true,
+  "residual_gap_tolerance_mw": 1.0,
+  "row_count": 72,
+  "share_range_violations": {
+    "renewable_share": 0,
+    "solar_share": 0,
+    "wind_share": 0
+  },
+  "smard_region_values": [
+    "DE"
+  ],
+  "status": "READY"
+}
