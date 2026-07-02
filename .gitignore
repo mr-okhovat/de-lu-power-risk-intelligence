@@ -53,3 +53,9 @@ Thumbs.db
 dist/
 build/
 .cache/
+
+# Temporary Databricks notebook exports
+notebooks/databricks/_exports/
+
+# Temporary Databricks notebook exports
+notebooks/databricks/_exports/
