@@ -1,0 +1,28 @@
+name: hourly_market_dataset
+version: 17A.1
+
+timestamp_column: timestamp_utc
+
+coverage_ratio:
+  warn_below: 0.995
+  quarantine_below: 0.980
+
+duplicate_timestamp_rows:
+  quarantine_above: 0
+
+maximum_gap_hours:
+  warn_above: 2
+  quarantine_above: 6
+
+freshness_lag_hours:
+  warn_above: 24
+  quarantine_above: 72
+
+decision_thresholds:
+  accept_min_score: 90
+  warning_min_score: 70
+
+score_penalties:
+  warning: 5
+  quarantine: 25
+  reject: 100
