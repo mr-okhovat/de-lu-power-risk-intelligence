@@ -34,6 +34,7 @@ class AdmissionResult:
     dataset_id: str
     decision: str
     reliability_score: float
+    score_breakdown: dict[str, Any]
     operational_use_allowed: bool
     research_use_allowed: bool
     row_count: int
@@ -89,22 +90,63 @@ def expected_hour_count(
     ) + 1
 
 
+def calculate_score_breakdown(
+    findings: list[Finding],
+    penalties: dict[str, float],
+) -> dict[str, Any]:
+    starting_score = 100.0
+    penalty_entries: list[dict[str, Any]] = []
+
+    for finding in findings:
+        penalty = float(
+            penalties.get(finding.severity, 0.0)
+        )
+
+        penalty_entries.append(
+            {
+                "finding_code": finding.code,
+                "severity": finding.severity,
+                "penalty": penalty,
+            }
+        )
+
+    total_penalty = round(
+        sum(
+            entry["penalty"]
+            for entry in penalty_entries
+        ),
+        2,
+    )
+
+    final_score = round(
+        max(
+            0.0,
+            min(
+                100.0,
+                starting_score - total_penalty,
+            ),
+        ),
+        2,
+    )
+
+    return {
+        "starting_score": starting_score,
+        "penalties": penalty_entries,
+        "total_penalty": total_penalty,
+        "final_score": final_score,
+    }
+
+
 def calculate_score(
     findings: list[Finding],
     penalties: dict[str, float],
 ) -> float:
-    score = 100.0
-
-    for finding in findings:
-        score -= float(
-            penalties.get(finding.severity, 0.0)
-        )
-
-    return round(
-        max(0.0, min(100.0, score)),
-        2,
+    return float(
+        calculate_score_breakdown(
+            findings,
+            penalties,
+        )["final_score"]
     )
-
 
 def determine_decision(
     findings: list[Finding],
@@ -508,9 +550,13 @@ def evaluate_dataframe(
         ).items()
     }
 
-    reliability_score = calculate_score(
+    score_breakdown = calculate_score_breakdown(
         findings,
         penalties,
+    )
+
+    reliability_score = float(
+        score_breakdown["final_score"]
     )
 
     decision = determine_decision(
@@ -531,6 +577,7 @@ def evaluate_dataframe(
         dataset_id=dataset_id,
         decision=decision.value,
         reliability_score=reliability_score,
+        score_breakdown=score_breakdown,
         operational_use_allowed=operational_use_allowed,
         research_use_allowed=research_use_allowed,
         row_count=int(len(frame)),
