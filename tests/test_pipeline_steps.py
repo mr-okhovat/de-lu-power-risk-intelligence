@@ -40,3 +40,14 @@ def test_pipeline_excludes_future_backtest_steps() -> None:
 
     assert "build_event_study_skeleton" not in names
     assert "build_signal_event_evaluation" not in names
+
+
+def test_market_data_admission_position():
+    config = load_pipeline_config("config/pipeline_august_2024.yaml")
+
+    names = [step.name for step in build_pipeline_steps(config)]
+
+    idx = names.index("market_data_admission")
+
+    assert names[idx - 1] == "build_features"
+    assert names[idx + 1] == "build_dashboard_exports"
