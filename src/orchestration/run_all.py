@@ -53,7 +53,31 @@ def run_step(step: PipelineStep, dry_run: bool) -> dict[str, object]:
     }
 
 
-def render_summary(config: PipelineConfig, results: list[dict[str, object]], status: str) -> str:
+def read_admission_summary(
+    path: str | Path,
+) -> dict[str, object] | None:
+    report_path = Path(path)
+
+    if not report_path.exists():
+        return None
+
+    try:
+        payload = json.loads(report_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+
+    if not isinstance(payload, dict):
+        return None
+
+    return payload
+
+
+def render_summary(
+    config: PipelineConfig,
+    results: list[dict[str, object]],
+    status: str,
+    admission: dict[str, object] | None = None,
+) -> str:
     paths = output_paths(config)
 
     lines = [
@@ -74,6 +98,30 @@ def render_summary(config: PipelineConfig, results: list[dict[str, object]], sta
 
     for item in results:
         lines.append(f"| {item['name']} | {item['status']} | {item['duration_seconds']} |")
+
+    admission_executed = any(
+        item.get("name") == "market_data_admission"
+        for item in results
+    )
+
+    if admission is not None:
+        lines += [
+            "",
+            "## Market data admission",
+            "",
+            f"- Decision: {admission.get('decision', 'UNKNOWN')}",
+            f"- Reliability score: {admission.get('reliability_score', 'UNKNOWN')}",
+            f"- Dataset: {admission.get('dataset_id', 'UNKNOWN')}",
+            f"- Report: `{paths['market_data_admission_json']}`",
+        ]
+    elif admission_executed:
+        lines += [
+            "",
+            "## Market data admission",
+            "",
+            "- Result: unavailable",
+            f"- Expected report: `{paths['market_data_admission_json']}`",
+        ]
 
     lines += [
         "",
@@ -106,7 +154,19 @@ def write_summary(config: PipelineConfig, results: list[dict[str, object]], stat
     md.parent.mkdir(parents=True, exist_ok=True)
     js.parent.mkdir(parents=True, exist_ok=True)
 
-    md.write_text(render_summary(config, results, status), encoding="utf-8")
+    admission = read_admission_summary(
+        paths["market_data_admission_json"]
+    )
+
+    md.write_text(
+        render_summary(
+            config,
+            results,
+            status,
+            admission=admission,
+        ),
+        encoding="utf-8",
+    )
 
     js.write_text(
         json.dumps(
@@ -114,6 +174,7 @@ def write_summary(config: PipelineConfig, results: list[dict[str, object]], stat
                 "config": asdict(config),
                 "status": status,
                 "steps": results,
+                "market_data_admission": admission,
                 "outputs": paths,
             },
             indent=2,
