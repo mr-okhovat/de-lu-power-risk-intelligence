@@ -1,0 +1,22 @@
+{
+  "coverage_ratio": 0.997312,
+  "dataset_id": "hourly_features_DE-LU_2024-08-01_to_2024-08-31",
+  "decision": "ACCEPT",
+  "duplicate_timestamp_rows": 0,
+  "expected_rows": 744,
+  "findings": [],
+  "freshness_lag_hours": 2.0,
+  "invalid_timestamp_rows": 0,
+  "maximum_gap_hours": 1.0,
+  "operational_use_allowed": true,
+  "reliability_score": 100.0,
+  "research_use_allowed": true,
+  "row_count": 744,
+  "score_breakdown": {
+    "final_score": 100.0,
+    "penalties": [],
+    "starting_score": 100.0,
+    "total_penalty": 0
+  },
+  "version": "17A.1"
+}

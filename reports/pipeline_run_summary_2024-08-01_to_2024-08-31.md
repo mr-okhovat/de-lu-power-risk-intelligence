@@ -11,21 +11,30 @@ SMARD region: DE
 
 | step | status | seconds |
 |---|---:|---:|
-| tests_start | PASS | 1.422 |
-| smard_filter_discovery | PASS | 0.344 |
-| smard_ingestion | PASS | 1.3 |
-| build_staging | PASS | 0.791 |
-| staging_hard_checks | PASS | 0.394 |
-| build_features | PASS | 0.584 |
-| build_dashboard_exports | PASS | 0.493 |
-| build_risk_signals | PASS | 0.959 |
-| build_risk_diagnostics | PASS | 0.54 |
-| build_reviewer_pack | PASS | 0.408 |
-| tests_end | PASS | 1.423 |
+| tests_start | PASS | 3.404 |
+| smard_filter_discovery | PASS | 0.425 |
+| smard_ingestion | PASS | 1.199 |
+| build_staging | PASS | 0.938 |
+| staging_hard_checks | PASS | 0.491 |
+| build_features | PASS | 0.667 |
+| market_data_admission | PASS | 0.484 |
+| build_dashboard_exports | PASS | 0.639 |
+| build_risk_signals | PASS | 1.504 |
+| build_risk_diagnostics | PASS | 0.609 |
+| build_reviewer_pack | PASS | 0.512 |
+| tests_end | PASS | 3.027 |
+
+## Market data admission
+
+- Decision: ACCEPT
+- Reliability score: 100.0
+- Dataset: hourly_features_DE-LU_2024-08-01_to_2024-08-31
+- Report: `reports/market_data_admission_2024-08-01_to_2024-08-31.json`
 
 ## Outputs
 
 - features: `data/processed/hourly_features_DE-LU_2024-08-01_to_2024-08-31.csv` (yes)
+- market_data_admission_json: `reports/market_data_admission_2024-08-01_to_2024-08-31.json` (yes)
 - market_export: `dashboards/market_overview_DE-LU_2024-08-01_to_2024-08-31.csv` (yes)
 - reviewer_pack: `reports/reviewer_pack_2024-08-01_to_2024-08-31.md` (yes)
 - reviewer_pack_json: `reports/reviewer_pack_2024-08-01_to_2024-08-31.json` (yes)
@@ -35,8 +44,8 @@ SMARD region: DE
 - risk_regime_distribution: `dashboards/risk_regime_distribution_DE-LU_2024-08-01_to_2024-08-31.csv` (yes)
 - risk_signal_report: `reports/risk_signal_quality_2024-08-01_to_2024-08-31.md` (yes)
 - risk_signals: `data/processed/risk_signals_DE-LU_2024-08-01_to_2024-08-31.csv` (yes)
-- run_summary: `reports/pipeline_run_summary_2024-08-01_to_2024-08-31.md` (no)
-- run_summary_json: `reports/pipeline_run_summary_2024-08-01_to_2024-08-31.json` (no)
+- run_summary: `reports/pipeline_run_summary_2024-08-01_to_2024-08-31.md` (written by this run)
+- run_summary_json: `reports/pipeline_run_summary_2024-08-01_to_2024-08-31.json` (written by this run)
 - staging: `data/staging/clean_hourly_DE-LU_2024-08-01_to_2024-08-31.csv` (yes)
 - staging_hard_json: `reports/staging_hard_checks_2024-08-01_to_2024-08-31.json` (yes)
 - staging_hard_report: `reports/staging_hard_checks_2024-08-01_to_2024-08-31.md` (yes)

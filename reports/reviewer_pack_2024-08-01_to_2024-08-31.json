@@ -4,7 +4,7 @@
     "feature_quality": true,
     "features": true,
     "market_export": true,
-    "pipeline_summary": false,
+    "pipeline_summary": true,
     "reason_codes": true,
     "regime_distribution": true,
     "risk_diagnostics": true,
@@ -38,7 +38,7 @@
   "report_statuses": {
     "data_quality": "PASS",
     "feature_quality": "PASS",
-    "pipeline_summary": "missing",
+    "pipeline_summary": "not stated",
     "risk_diagnostics": "PASS",
     "risk_quality": "PASS",
     "staging_checks": "PASS"

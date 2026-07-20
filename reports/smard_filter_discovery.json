@@ -6,9 +6,9 @@
     "category": "consumption",
     "ok": true,
     "index_url": "https://www.smard.de/app/chart_data/410/DE/index_hour.json",
-    "timestamp_count": 597,
+    "timestamp_count": 603,
     "first_chunk_utc": "2014-12-28T23:00:00+00:00",
-    "last_chunk_utc": "2026-05-31T22:00:00+00:00",
+    "last_chunk_utc": "2026-07-12T22:00:00+00:00",
     "error": null
   },
   {
@@ -18,9 +18,9 @@
     "category": "generation",
     "ok": true,
     "index_url": "https://www.smard.de/app/chart_data/1225/DE/index_hour.json",
-    "timestamp_count": 597,
+    "timestamp_count": 603,
     "first_chunk_utc": "2014-12-28T23:00:00+00:00",
-    "last_chunk_utc": "2026-05-31T22:00:00+00:00",
+    "last_chunk_utc": "2026-07-12T22:00:00+00:00",
     "error": null
   },
   {
@@ -30,9 +30,9 @@
     "category": "generation",
     "ok": true,
     "index_url": "https://www.smard.de/app/chart_data/4067/DE/index_hour.json",
-    "timestamp_count": 597,
+    "timestamp_count": 603,
     "first_chunk_utc": "2014-12-28T23:00:00+00:00",
-    "last_chunk_utc": "2026-05-31T22:00:00+00:00",
+    "last_chunk_utc": "2026-07-12T22:00:00+00:00",
     "error": null
   },
   {
@@ -42,9 +42,9 @@
     "category": "generation",
     "ok": true,
     "index_url": "https://www.smard.de/app/chart_data/4068/DE/index_hour.json",
-    "timestamp_count": 597,
+    "timestamp_count": 603,
     "first_chunk_utc": "2014-12-28T23:00:00+00:00",
-    "last_chunk_utc": "2026-05-31T22:00:00+00:00",
+    "last_chunk_utc": "2026-07-12T22:00:00+00:00",
     "error": null
   },
   {
@@ -54,9 +54,9 @@
     "category": "consumption",
     "ok": true,
     "index_url": "https://www.smard.de/app/chart_data/4359/DE/index_hour.json",
-    "timestamp_count": 597,
+    "timestamp_count": 603,
     "first_chunk_utc": "2014-12-28T23:00:00+00:00",
-    "last_chunk_utc": "2026-05-31T22:00:00+00:00",
+    "last_chunk_utc": "2026-07-12T22:00:00+00:00",
     "error": null
   }
 ]
