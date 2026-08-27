@@ -1,204 +1,323 @@
-# DE-LU Power Risk Intelligence
+DE-LU Power Risk Intelligence
 
-## Reviewer quick path
+A reproducible public-data analytics project for the German/Luxembourg power market.
 
-For a fast technical review, start with:
+I built this project to answer a practical question: can public market and system data be turned into a transparent, reviewable risk-intelligence layer that helps explain when the power market is under stress — without pretending to be a trading bot or a black-box forecasting model?
 
-1. `reports/reviewer_quick_path.md`
-2. `reports/senior_reviewer_note.md`
-3. `reports/reviewer_ready_v2.md`
-4. `reports/market_month_run_catalog.md`
-5. `reports/active_run_selection.md`
-6. Streamlit dashboard: `streamlit run app/streamlit_app.py`
+The project focuses on data quality, market-state diagnostics, residual-load and renewable stress, price-event analysis, and reviewer-ready evidence. The goal is not to claim a profitable strategy. The goal is to build a technically disciplined framework that can be inspected, challenged, extended, and eventually connected to richer market and operational data.
 
-The project should be read as a reproducible public-data DE-LU power-market risk-intelligence prototype. It is not presented as live trading infrastructure or as a proven alpha model.
+What the project does
 
+The current framework covers several layers:
 
-A small public-data pipeline for German/Luxembourg power-market risk analytics.
+Public-data ingestion and staging
 
-The project ingests SMARD data, builds a clean hourly market table, derives load, renewable and residual-load features, exports dashboard-ready files, and creates a first rule-based stress signal.
+SMARD-based electricity-market and system data
 
-It is not a trading bot. It does not claim P&L, price forecasting ability, execution logic, or a profitable strategy.
+hourly DE-LU market tables
 
-## Current pipeline
+reproducible staging and metadata handling
 
-SMARD raw data
-→ clean hourly staging
-→ staging checks
-→ feature table
-→ SQL / Power BI export files
-→ rule-based risk signals
-→ risk diagnostics
-→ reviewer pack
+Data quality and release control
 
-Current automated scope stops at risk diagnostics and reviewer-pack generation. Event-study and backtest modules are intentionally not enabled yet.
+hard staging checks
 
-## Quick start
+residual-load reconciliation policy
+
+feature-quality checks
+
+release-gate logic
+
+dataset provenance and availability controls
+
+Market-risk feature engineering
+
+load and renewable share
+
+residual load
+
+load / renewable / residual-load ramps
+
+percentile-based stress indicators
+
+explainable multi-factor risk scores
+
+rule-based signal logic
+
+Price and event diagnostics
+
+same-hour signal / price-event evaluation
+
+cross-month diagnostics
+
+lead-time aggregates
+
+event-lift, precision and recall diagnostics
+
+explicit separation between diagnostic usefulness and forecast-skill claims
+
+Review and downstream outputs
+
+reviewer packs and evidence notes
+
+run catalog and active-run selection
+
+SQL-ready exports
+
+Power BI-ready outputs
+
+Streamlit review dashboard
+
+project-health and artifact tracking
+
+Current validated development baseline
+
+The latest validated working baseline includes:
+
+189 automated tests passing
+
+a policy-driven Market Data Admission layer with the decisions:
+
+ACCEPT
+
+ACCEPT_WITH_WARNINGS
+
+QUARANTINE
+
+REJECT
+
+explainable reliability scoring
+
+coverage, gap, provenance and contract-status checks
+
+fail-fast orchestration for rejected datasets
+
+an end-to-end August 2024 validation sample that returned:
+
+decision: ACCEPT
+
+reliability score: 100.0
+
+The project should still be read as a research / analytics prototype, not as production trading infrastructure.
+
+Repository-status note
+
+Some validation and admission-control work has been developed and tested in working / feature snapshots before full consolidation into main. The README reflects the latest validated project baseline available to me, while individual files on main may temporarily lag the newest working snapshot.
+
+That distinction is intentional: I would rather state the repository status clearly than imply that every working-build artifact is already merged and productionized.
+
+Reviewer quick path
+
+If you only have a few minutes, start here:
+
+reports/reviewer_quick_path.md
+
+reports/senior_reviewer_note.md
+
+reports/reviewer_ready_v2.md
+
+reports/market_month_run_catalog.md
+
+reports/active_run_selection.md
+
+Streamlit dashboard:
+
+streamlit run app/streamlit_app.py
+
+For the newer admission-control work, also inspect the relevant feature branch and validation evidence before drawing conclusions from main alone.
+
+How I think about the pipeline
+
+At a high level:
+
+public market data
+    ↓
+raw ingestion
+    ↓
+hourly staging
+    ↓
+hard quality checks
+    ↓
+feature engineering
+    ↓
+market-data admission / release controls
+    ↓
+risk and stress diagnostics
+    ↓
+price-event and lead-time analysis
+    ↓
+reviewer / SQL / BI outputs
+
+The important design choice is that analytics should not silently proceed when the input data is unreliable. The quality and admission layers are therefore treated as part of the analytical system, not as an afterthought.
+
+Signal logic
+
+The explainable stress logic currently uses combinations of:
+
+residual load
+
+renewable share
+
+load ramp
+
+residual-load ramp
+
+renewable-generation ramp
+
+percentile / regime thresholds
+
+These signals are deliberately simple enough to inspect.
+
+They are best understood as stress proxies and diagnostic features, not as finished desk signals.
+
+Price-event diagnostics
+
+The reviewer-ready checkpoint includes both same-hour and lead-time diagnostics.
+
+Current reviewer readout includes:
+
+same-hour aggregate event lift: 1.770
+
+aggregate precision: 0.463
+
+aggregate recall: 0.025
+
+The interpretation matters more than the raw numbers:
+
+same-hour event lift can be useful as a diagnostic
+
+low recall means the current rule set is selective and incomplete
+
+some forward-window event concentration appears within the next few hours
+
+this is not yet evidence of forecast skill
+
+The relevant reviewer file is:
+
+reports/reviewer_ready_v2.md
+
+Running the project
 
 Install dependencies:
 
-    pip install -r requirements.txt
+pip install -r requirements.txt
 
 Run tests:
 
-    python -m pytest
+python -m pytest
 
 Run the sample pipeline:
 
-    bash scripts/run_sample_pipeline.sh
+bash scripts/run_sample_pipeline.sh
 
 Or, if make is available:
 
-    make sample
+make sample
 
-Dry-run the plan without executing it:
+Dry-run the orchestration plan:
 
-    python -m src.orchestration.run_all --config config/pipeline_sample.yaml --dry-run
+python -m src.orchestration.run_all --config config/pipeline_sample.yaml --dry-run
 
-## Sample window
+A higher-level project checkpoint/orchestration layer is also available in the newer development work.
 
-Default sample run:
+Dashboard
 
-    market_label: DE-LU
-    smard_region: DE
-    start: 2024-06-01
-    end: 2024-06-03
-    resolution: hour
+The Streamlit dashboard is intended as a review surface, not as the core model.
 
-This is a short technical sample, not a performance study.
+Current panels include:
 
-## Main outputs
+cross-month overview
 
-    data/staging/clean_hourly_DE-LU_2024-06-01_to_2024-06-03.csv
-    data/processed/hourly_features_DE-LU_2024-06-01_to_2024-06-03.csv
-    data/processed/risk_signals_DE-LU_2024-06-01_to_2024-06-03.csv
-    dashboards/market_overview_DE-LU_2024-06-01_to_2024-06-03.csv
-    dashboards/risk_regime_distribution_DE-LU_2024-06-01_to_2024-06-03.csv
-    dashboards/top_risk_hours_DE-LU_2024-06-01_to_2024-06-03.csv
-    reports/reviewer_pack_2024-06-01_to_2024-06-03.md
-    reports/pipeline_run_summary_2024-06-01_to_2024-06-03.md
-    sql/schema_power_market_features.sql
+selected-month KPI cards
 
-## Signal logic
+market / price and risk timelines
 
-The current risk signal uses:
+event-lift diagnostics
 
-- residual load
-- renewable share
-- load ramp
-- residual-load ramp
-- renewable-generation ramp
+confusion buckets
 
-The rules are simple and explainable. They are a first stress proxy, not a finished desk model.
+signal-positive hours
 
-## Current limitations
+reason-code diagnostics
 
-- only SMARD data is used
-- no price data yet
-- no forecast error data yet
-- no balancing-market layer yet
-- no weather, outage, or cross-border flow layer yet
-- no backtest in the automated pipeline
-- no P&L or trading-performance claim
+lead-time views
 
-## Reviewer entry point
+dataset-intake views
 
-Start with:
+reviewer-file checklist
 
-    reports/reviewer_pack_2024-06-01_to_2024-06-03.md
+Run it locally with:
 
-Then check:
+streamlit run app/streamlit_app.py
 
-    reports/risk_diagnostics_2024-06-01_to_2024-06-03.md
-    dashboards/top_risk_hours_DE-LU_2024-06-01_to_2024-06-03.csv
-    src/signals/risk_engine.py
+Dashboard screenshots are stored under:
 
-Useful reviewer question:
+reports/figures/dashboard/
 
-Is this feature framing directionally useful for power trading analytics, or is the rule logic still too simple compared with how a real desk would look at residual load, renewables and ramps?
+What this project does not claim
 
-## Project status
+To keep the project useful, I try to be explicit about what it is not.
 
-The current build is a reproducible analytics prototype. The next serious step is a longer historical run, followed by a careful event/backtest layer.
+It is not:
 
-## Dashboard screenshots
+a live trading system
 
-The project also includes a lightweight local Streamlit dashboard for reviewing the current analytics outputs.
+an execution engine
 
-Run:
+a proven alpha model
 
-    streamlit run app/streamlit_app.py
+a P&L backtest claiming profitability
 
-### Dashboard overview
+a grid-control / SCADA / EMS / redispatch application
 
-![Dashboard overview](reports/figures/dashboard/dashboard_overview.png)
+a replacement for proprietary desk data
 
-### Selected month view
+a production forecast of balancing or intraday prices
 
-![Dashboard selected month](reports/figures/dashboard/dashboard_selected_month.png)
+Those would require additional data, validation and operational context.
 
-### Diagnostics view
+Main limitations / next research questions
 
-![Dashboard diagnostics](reports/figures/dashboard/dashboard_diagnostics.png)
+The next useful extensions are not “more features for the sake of features.” They are mainly about stronger evidence.
 
-### Lead-time view
+Priority areas include:
 
-![Dashboard lead time](reports/figures/dashboard/dashboard_lead_time.png)
+longer-window validation
 
-### Dataset intake view
+forecast-error data
 
-![Dashboard dataset intake](reports/figures/dashboard/dashboard_dataset_intake.png)
+balancing-market data
 
-### Reviewer files view
+outages and cross-border flows
 
-![Dashboard reviewer files](reports/figures/dashboard/dashboard_reviewer_files.png)
+weather and renewable forecasts
 
-## Local dashboard
+stronger regime calibration
 
-A lightweight Streamlit dashboard is available for local review.
+separation of structural versus event-driven stress
 
-Run:
+richer portfolio / exposure mapping
 
-    streamlit run app/streamlit_app.py
+clearer testing of whether signals add information beyond simple market baselines
 
-Current dashboard panels:
+I am especially interested in feedback on which parts of the framework are directionally useful for real market-risk / trading-analytics work, and which parts remain too simple or too research-like for a desk environment.
 
-- cross-month overview
-- monthly event lift
-- base event rate versus signal-positive event rate
-- selected month KPI cards
-- price and risk timelines
-- confusion buckets
-- signal-positive hours
-- reason-code diagnostics
-- price-event label diagnostics
-- reviewer file checklist
+Why this project exists
 
-The dashboard reads existing CSV/report outputs. It does not rebuild ingestion and does not change the model.
+The project is also a portfolio of how I work:
 
-See:
+evidence before claims
 
-    docs/dashboard_runbook.md
-    docs/dashboard_screenshot_guide.md
+data quality before modelling
 
+explicit limitations
 
-## Reviewer-ready v2
+reproducible pipelines
 
-The current reviewer checkpoint includes both same-hour signal-price evaluation and lead-time diagnostics.
+reviewer-oriented outputs
 
-Key points:
+market logic that can be explained rather than hidden
 
-- Same-hour aggregate event lift: 1.770
-- Aggregate precision: 0.463
-- Aggregate recall: 0.025
-- Same-hour lift is useful as a diagnostic readout.
-- Lead-time behavior is now explicitly checked before making any early-warning claim.
+My broader interest is at the intersection of European power markets, market / portfolio risk, data analytics, and decision support.
 
-Lead-time readout:
-
-Lead-time check shows some forward-window event concentration, especially within the next 3 hours. This is still not forecast skill and needs longer-window validation.
-
-Main file:
-
-    reports/reviewer_ready_v2.md
-
+If you are reviewing this from an energy company, research group, or trading / risk team, practical criticism is very welcome.
