@@ -18,6 +18,12 @@ def test_output_paths() -> None:
 
     assert paths["staging"].endswith("clean_hourly_DE-LU_2024-06-01_to_2024-06-03.csv")
     assert paths["risk_signals"].endswith("risk_signals_DE-LU_2024-06-01_to_2024-06-03.csv")
+    assert paths["operational_risk"].endswith(
+        "operational_risk_DE-LU_2024-06-01_to_2024-06-03.csv"
+    )
+    assert paths["operational_risk_json"].endswith(
+        "operational_risk_diagnostics_2024-06-01_to_2024-06-03.json"
+    )
     assert paths["reviewer_pack"].endswith("reviewer_pack_2024-06-01_to_2024-06-03.md")
 
 
@@ -31,6 +37,8 @@ def test_pipeline_has_current_steps() -> None:
     assert "build_dashboard_exports" in names
     assert "build_risk_signals" in names
     assert "build_risk_diagnostics" in names
+    assert "build_operational_risk" in names
+    assert "build_operational_risk_diagnostics" in names
     assert "build_reviewer_pack" in names
 
 
@@ -51,3 +59,18 @@ def test_market_data_admission_position():
 
     assert names[idx - 1] == "build_features"
     assert names[idx + 1] == "build_dashboard_exports"
+
+
+
+def test_operational_risk_step_order() -> None:
+    config = load_pipeline_config("config/pipeline_sample.yaml")
+    names = [step.name for step in build_pipeline_steps(config)]
+
+    risk_diagnostics_index = names.index("build_risk_diagnostics")
+    operational_risk_index = names.index("build_operational_risk")
+    operational_diagnostics_index = names.index(
+        "build_operational_risk_diagnostics"
+    )
+
+    assert operational_risk_index == risk_diagnostics_index + 1
+    assert operational_diagnostics_index == operational_risk_index + 1

@@ -10,6 +10,13 @@ from src.features.market_features import build_market_features
 from src.reporting.dashboard_exports import build_dashboard_exports
 from src.signals.risk_engine import build_risk_signal_table
 from src.reporting.risk_diagnostics import build_risk_diagnostics
+from src.risk.operational_risk import build_operational_risk_table
+from src.risk.operational_risk_diagnostics import (
+    build_operational_risk_diagnostics,
+)
+from src.risk.operational_event_intelligence import (
+    build_operational_event_table,
+)
 
 
 def setup_logging() -> None:
@@ -34,7 +41,21 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--end", required=True, help="End date YYYY-MM-DD")
     parser.add_argument("--market-label", default="DE-LU")
     parser.add_argument("--smard-region", default="DE")
-    parser.add_argument("--phase", default="smard-ingest", choices=["smard-ingest", "build-staging", "build-features", "build-dashboard-exports", "build-risk-signals", "build-risk-diagnostics"])
+    parser.add_argument(
+        "--phase",
+        default="smard-ingest",
+        choices=[
+            "smard-ingest",
+            "build-staging",
+            "build-features",
+            "build-dashboard-exports",
+            "build-risk-signals",
+            "build-risk-diagnostics",
+            "build-operational-risk",
+            "build-operational-risk-diagnostics",
+            "build-operational-events",
+        ],
+    )
     parser.add_argument("--filters", nargs="+", default=["410"])
     parser.add_argument("--resolution", default="hour")
     parser.add_argument("--config", default="src/config/sources.yaml")
@@ -57,6 +78,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--risk-diagnostic-report-output", default=None)
     parser.add_argument("--risk-diagnostic-json-output", default=None)
     parser.add_argument("--top-n", type=int, default=20)
+    parser.add_argument("--operational-risk-output", default=None)
+    parser.add_argument("--operational-risk-report-output", default=None)
+    parser.add_argument("--operational-risk-json-output", default=None)
+    parser.add_argument("--operational-state-distribution-output", default=None)
+    parser.add_argument("--operational-attention-distribution-output", default=None)
+    parser.add_argument("--operational-dominant-driver-output", default=None)
+    parser.add_argument("--operational-driver-count-output", default=None)
+    parser.add_argument("--operational-events-output", default=None)
     parser.add_argument(
         "--continue-on-error",
         action="store_true",
@@ -231,6 +260,82 @@ def main() -> None:
             report_output=risk_diagnostic_report_output,
             json_output=risk_diagnostic_json_output,
             top_n=args.top_n,
+        )
+        return
+
+    if args.phase == "build-operational-risk":
+        risk_signal_input = args.risk_output or (
+            f"data/processed/risk_signals_{args.market_label}_{args.start}_to_{args.end}.csv"
+        )
+
+        operational_risk_output = args.operational_risk_output or (
+            f"data/processed/operational_risk_{args.market_label}_{args.start}_to_{args.end}.csv"
+        )
+
+        build_operational_risk_table(
+            input_file=risk_signal_input,
+            output_file=operational_risk_output,
+        )
+        return
+
+    if args.phase == "build-operational-risk-diagnostics":
+        operational_risk_input = args.operational_risk_output or (
+            f"data/processed/operational_risk_{args.market_label}_{args.start}_to_{args.end}.csv"
+        )
+
+        operational_risk_report_output = (
+            args.operational_risk_report_output
+            or f"reports/operational_risk_diagnostics_{args.start}_to_{args.end}.md"
+        )
+
+        operational_risk_json_output = (
+            args.operational_risk_json_output
+            or f"reports/operational_risk_diagnostics_{args.start}_to_{args.end}.json"
+        )
+
+        state_distribution_output = (
+            args.operational_state_distribution_output
+            or f"dashboards/operational_state_distribution_{args.market_label}_{args.start}_to_{args.end}.csv"
+        )
+
+        attention_distribution_output = (
+            args.operational_attention_distribution_output
+            or f"dashboards/operational_attention_distribution_{args.market_label}_{args.start}_to_{args.end}.csv"
+        )
+
+        dominant_driver_output = (
+            args.operational_dominant_driver_output
+            or f"dashboards/operational_dominant_driver_{args.market_label}_{args.start}_to_{args.end}.csv"
+        )
+
+        driver_count_output = (
+            args.operational_driver_count_output
+            or f"dashboards/operational_driver_count_{args.market_label}_{args.start}_to_{args.end}.csv"
+        )
+
+        build_operational_risk_diagnostics(
+            input_file=operational_risk_input,
+            output_report=operational_risk_report_output,
+            output_json=operational_risk_json_output,
+            state_distribution_output=state_distribution_output,
+            attention_distribution_output=attention_distribution_output,
+            dominant_driver_output=dominant_driver_output,
+            driver_count_output=driver_count_output,
+        )
+        return
+
+    if args.phase == "build-operational-events":
+        operational_risk_input = args.operational_risk_output or (
+            f"data/processed/operational_risk_{args.market_label}_{args.start}_to_{args.end}.csv"
+        )
+
+        operational_events_output = args.operational_events_output or (
+            f"data/processed/operational_events_{args.market_label}_{args.start}_to_{args.end}.csv"
+        )
+
+        build_operational_event_table(
+            input_path=operational_risk_input,
+            output_path=operational_events_output,
         )
         return
 
